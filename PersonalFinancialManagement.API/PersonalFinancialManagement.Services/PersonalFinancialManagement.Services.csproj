@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PersonalFinancialManagement.EFCore\PersonalFinancialManagement.EFCore.csproj" />
+    <ProjectReference Include="..\PersonalFinancialManagement.Repositories\PersonalFinancialManagement.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
