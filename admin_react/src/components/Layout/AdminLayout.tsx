@@ -1,6 +1,9 @@
 import { Box } from "@mui/material";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { Dashboard } from "../../features/Dashboard";
 import { Header } from "../Commons";
 import { Sidebar } from "../Commons/Sidebar";
+import styles from "./AdminLayout.module.scss";
 
 export interface IAdminLayoutProps {}
 
@@ -8,32 +11,22 @@ export function AdminLayout(props: IAdminLayoutProps) {
   return (
     <Box>
       <Box>
-        <Header />
+        <Header
+          title="Personal Financial Management"
+          className={styles.header}
+        />
       </Box>
 
       <Box>
-        <Sidebar />
+        <Sidebar className={styles.sidebar} />
       </Box>
 
-      <Box className="test">
-        Main
-        {/* <Switch>
-          <Route path="/admin/dashboard">
-            <Dashboard />
-          </Route>
-
-          <Route path="/admin/students">
-            <StudentFeature />
-          </Route>
-
-          <Route path="/admin/product-category">
-            <ProductCategory />
-          </Route>
-
-          <Route path="/admin/category">
-            <Category />
-          </Route>
-        </Switch> */}
+      <Box className={styles.main}>
+        <Routes>
+          <Route path={`/dashboard/`} element={<Dashboard />}></Route>\
+          <Route path="/" element={<Dashboard />}></Route>
+          <Route path="*" element={<Navigate to="/NotFound" />}></Route>
+        </Routes>
       </Box>
     </Box>
   );

@@ -11,8 +11,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AdminLayout />}></Route>
-          <Route path="/admin" element={<AdminLayout />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/admin/*" element={<AdminLayout />}></Route>
+          <Route path="/login/" element={<LoginPage />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
