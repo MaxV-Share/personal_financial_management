@@ -11,7 +11,7 @@ namespace PersonalFinancialManagement.Common
         /// Parse string data json to a object data
         /// </summary>
         /// <returns></returns>
-        public static void TryParse<T>(this string data, out T result) where T : new()
+        public static void TryParse<T>(this string data, out T? result) where T : new()
         {
             try
             {
@@ -26,7 +26,7 @@ namespace PersonalFinancialManagement.Common
         /// Parse string data json to a object data
         /// </summary>
         /// <returns></returns>
-        public static T Parse<T>(this string data)
+        public static T? Parse<T>(this string data)
         {
             return JsonConvert.DeserializeObject<T>(data);
         }
@@ -49,7 +49,7 @@ namespace PersonalFinancialManagement.Common
         /// <summary>
         /// Parse a object to string of json structure
         /// </summary>
-        public static string TryParseToBase64<T>(this T data)
+        public static string? TryParseToBase64<T>(this T data)
         {
             string result = string.Empty;
             try

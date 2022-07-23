@@ -23,13 +23,13 @@ namespace PersonalFinancialManagement.Common.Interceptors
         protected override void CompletedTiming(IInvocation invocation, Stopwatch stopwatch)
         {
             var requestCtx = InitRequest();
-            _logger.LogInformation($"[PERF] - RequestId - [{ requestCtx.Item1 }] - Method { ToStringInvocation(invocation) } completed in { stopwatch.ElapsedMilliseconds }ms");
+            _logger.LogInformation($"[PERF] - RequestId - [{requestCtx.Item1}] - Method {ToStringInvocation(invocation)} completed in {stopwatch.ElapsedMilliseconds}ms");
         }
 
         protected override void StartingTiming(IInvocation invocation)
         {
             var requestCtx = InitRequest();
-            _logger.LogInformation($"[PERF] - RequestId - [{ requestCtx.Item1 }] - Method { ToStringInvocation(invocation) } invoked!");
+            _logger.LogInformation($"[PERF] - RequestId - [{requestCtx.Item1}] - Method {ToStringInvocation(invocation)} invoked!");
         }
 
         private Tuple<string, DateTime> InitRequest()
@@ -52,7 +52,7 @@ namespace PersonalFinancialManagement.Common.Interceptors
             var result = string.Empty;
             if (invocation.MethodInvocationTarget != null)
             {
-                return $"{ invocation.MethodInvocationTarget.ReflectedType.FullName }.{ invocation.MethodInvocationTarget.Name }";
+                return $"{invocation.MethodInvocationTarget.ReflectedType?.FullName}.{invocation.MethodInvocationTarget.Name}";
             }
             return result.ToString();
         }

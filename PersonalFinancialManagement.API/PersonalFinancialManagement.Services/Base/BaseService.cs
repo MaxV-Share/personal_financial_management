@@ -74,7 +74,7 @@ namespace PersonalFinancialManagement.Services.Base
         }
         public virtual async Task<int> UpdateAsync(TKey id, TUpdateRequest request)
         {
-            if (!id.Equals(request.Id))
+            if (id is null && !id.Equals(request.Id))
                 throw new KeyNotFoundException();
             var entity = await _unitOffWork.Repository<TEntity, TKey>().GetByIdAsync(id);
 

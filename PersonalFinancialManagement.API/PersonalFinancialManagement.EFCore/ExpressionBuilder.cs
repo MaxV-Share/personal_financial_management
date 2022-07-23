@@ -12,7 +12,7 @@ namespace PersonalFinancialManagement.EFCore
     internal class Criteria
     {
         public string? Field { get; set; }
-        public object Value { get; set; }
+        public object? Value { get; set; }
         public FilterType Operator { get; set; }
         public FilterLogicalOperator LogicalOperator { get; set; }
     }
@@ -128,35 +128,35 @@ namespace PersonalFinancialManagement.EFCore
                     return ExpressionUtils.IsNotNullOrWhiteSpace(member);
 
                 case FilterType.Equal:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsEqual(member, value);
 
                 case FilterType.NotEqual:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsNotEqual(member, value);
 
                 case FilterType.StartsWith:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsStartsWith(member, value);
 
                 case FilterType.EndsWith:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsEndsWith(member, value);
 
                 case FilterType.GreaterThan:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsGreaterThan(member, value);
 
                 case FilterType.GreaterThanOrEqual:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsGreaterThanOrEqual(member, value);
 
                 case FilterType.LessThan:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsLessThan(member, value);
 
                 case FilterType.LessThanOrEqual:
-                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.ToString(), valueType);
+                    value = ExpressionUtils.CreateConstantExpression(filterDecriptor.Value.TryParseToString(), valueType);
                     return ExpressionUtils.IsLessThanOrEqual(member, value);
 
                 case FilterType.Between:
@@ -167,7 +167,7 @@ namespace PersonalFinancialManagement.EFCore
 
                 case FilterType.Contains:
                     var containsValues = filterDecriptor.Value as string[];
-                    if (containsValues.Length == 1)
+                    if (containsValues != null && containsValues.Any())
                     {
                         value = ExpressionUtils.CreateConstantExpression(containsValues[0], valueType);
                         return ExpressionUtils.IsLike(member, value);
@@ -211,7 +211,7 @@ namespace PersonalFinancialManagement.EFCore
                     }
                     var notInElementType = member.Type.GenericTypeArguments[0]; var notInContainsMethod = member.Type.GetRuntimeMethod("Contains", new[] { notInElementType });
 
-                    Expression notInExpression = null;
+                    Expression? notInExpression = null;
                     foreach (var notInValue in notInValues)
                     {
                         var notContainValue = ExpressionUtils.CreateConstantExpression(notInValue, notInElementType); var innerExpression = Expression.Call(member, notInContainsMethod, notContainValue);

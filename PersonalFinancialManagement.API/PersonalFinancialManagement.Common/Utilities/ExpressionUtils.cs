@@ -35,17 +35,17 @@ namespace PersonalFinancialManagement.Common.Utilities
         /// <summary>
         ///
         /// </summary>
-        public static readonly MethodInfo TrimMethod = typeof(string).GetRuntimeMethod("Trim", Array.Empty<Type>());
+        public static readonly MethodInfo? TrimMethod = typeof(string).GetRuntimeMethod("Trim", Array.Empty<Type>());
 
         /// <summary>
         ///
         /// </summary>
-        public static readonly MethodInfo StartsWithMethod = typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) });
+        public static readonly MethodInfo? StartsWithMethod = typeof(string).GetRuntimeMethod("StartsWith", new[] { typeof(string) });
 
         /// <summary>
         ///
         /// </summary>
-        public static readonly MethodInfo EndsWithMethod = typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) });
+        public static readonly MethodInfo? EndsWithMethod = typeof(string).GetRuntimeMethod("EndsWith", new[] { typeof(string) });
 
         /// <summary>
         /// Creates the typed constant expression from string.
@@ -314,9 +314,7 @@ namespace PersonalFinancialManagement.Common.Utilities
             {
                 return Expression.GreaterThan(left, right);
             }
-            {
-                return Expression.AndAlso(IsNotNull(left), Expression.GreaterThan(left, right));
-            }
+            return Expression.AndAlso(IsNotNull(left), Expression.GreaterThan(left, right));
         }
 
         /// <summary>
@@ -335,9 +333,7 @@ namespace PersonalFinancialManagement.Common.Utilities
             {
                 return Expression.GreaterThanOrEqual(left, right);
             }
-            {
-                return Expression.AndAlso(IsNotNull(left), Expression.GreaterThanOrEqual(left, right));
-            }
+            return Expression.AndAlso(IsNotNull(left), Expression.GreaterThanOrEqual(left, right));
         }
 
         /// <summary>
