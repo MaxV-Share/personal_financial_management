@@ -33,16 +33,16 @@ export function Sidebar(props: ISidebarProps) {
       >
         <ListItemButton component={Link} to={"/admin/dashboard"}>
           <ListItemIcon>
-            <Icon>add_a_photo_outlined</Icon>
+            <Icon>{"home"}</Icon>
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/admin/currency">
           <ListItemIcon>
-            <Icon>ac_unit</Icon>
+            <Icon>paid</Icon>
             {/* <MaterialIcon name="DeleteIcon" /> */}
           </ListItemIcon>
-          <ListItemText primary="Drafts" />
+          <ListItemText primary="Currency" />
         </ListItemButton>
         <ListItemButton onClick={handleClick}>
           <ListItemIcon>
