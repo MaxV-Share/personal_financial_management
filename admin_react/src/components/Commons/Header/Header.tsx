@@ -1,4 +1,5 @@
 import { AppBar, Button, Toolbar, Typography } from "@mui/material";
+import { useAppDispatch } from "../../../app/hooks";
 import styles from "./Header.module.scss";
 export interface IHeaderProps {
   title?: string;
@@ -7,7 +8,7 @@ export interface IHeaderProps {
   onLogout?: () => void;
 }
 export function Header(props: IHeaderProps) {
-  //const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { title, className, onLogout } = props;
 
   return (
