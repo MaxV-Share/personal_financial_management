@@ -1,0 +1,22 @@
+export enum FilterType {
+  Equal,
+  NotEqual,
+  StartsWith,
+  EndsWith,
+  GreaterThan,
+  LessThan,
+  LessThanOrEqual,
+  GreaterThanOrEqual,
+  Between,
+  NotBetween,
+  IsNotNull,
+  IsNull,
+  IsNotNullOrWhiteSpace,
+  IsNullOrWhiteSpace,
+  IsEmpty,
+  IsNotEmpty,
+  In,
+  NotIn,
+  Contains,
+  NotContains
+}

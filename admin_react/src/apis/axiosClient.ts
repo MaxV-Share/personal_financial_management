@@ -1,10 +1,10 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-const axiosClient = (contentType: any = "application/json") => {
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+const axiosClient = (contentType: any = 'application/json') => {
   const axiosClient = axios.create({
-    baseURL: "https://localhost:5000/api",
+    baseURL: 'https://localhost:5000/api',
     headers: {
-      "Content-Type": contentType,
-    },
+      'Content-Type': contentType
+    }
   });
 
   // Add a request interceptor

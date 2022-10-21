@@ -1,23 +1,25 @@
-import createSagaMiddleware from "@redux-saga/core";
+import createSagaMiddleware from '@redux-saga/core';
 import {
   Action,
   combineReducers,
   configureStore,
-  ThunkAction,
-} from "@reduxjs/toolkit";
-import { connectRouter, routerMiddleware } from "connected-react-router";
-import { history } from "../utils";
-import rootSaga from "./rootsaga";
+  ThunkAction
+} from '@reduxjs/toolkit';
+import currencyReducer from 'src/features/Currency/currencySlice';
+import globalReducer from './globalSlice';
+import rootSaga from './rootsaga';
 
 const rootReducer = combineReducers({
-  router: connectRouter(history),
+  //   router: connectRouter(history),
+  global: globalReducer,
+  currency: currencyReducer
 });
 
 const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware, routerMiddleware(history)),
+    getDefaultMiddleware().concat(sagaMiddleware)
 });
 sagaMiddleware.run(rootSaga);
 
