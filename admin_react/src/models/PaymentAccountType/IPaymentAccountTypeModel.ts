@@ -1,6 +1,6 @@
 import { IBaseModel } from "../Bases";
 
-export interface IPaymentAccountType extends IBaseModel<string> {
+export interface IPaymentAccountTypeModel extends IBaseModel<string> {
   /**
    * The payment account code identifier
    */

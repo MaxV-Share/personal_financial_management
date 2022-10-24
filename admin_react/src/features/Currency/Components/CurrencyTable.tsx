@@ -1,28 +1,29 @@
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import * as React from 'react';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/app/hooks';
-import { selectCurrencyTable } from '../currencySlice';
+import { Button } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import * as React from "react";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
+import { selectCurrencyTable } from "../currencySlice";
 
 interface Column {
-  id: 'id' | 'name' | 'code';
+  id: "id" | "name" | "code";
   label: string;
   minWidth?: number;
-  align?: 'right';
+  align?: "right";
   format?: (value: number) => string;
 }
 
 const columns: Column[] = [
-  { id: 'id', label: 'Id', minWidth: 170 },
-  { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 }
+  { id: "id", label: "Id", minWidth: 170 },
+  { id: "name", label: "Name", minWidth: 170 },
+  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
   // {
   //   id: 'population',
   //   label: 'Population',
@@ -76,7 +77,7 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
   };
   const tableCurrencies = useAppSelector(selectCurrencyTable);
   useEffect(() => {
-    console.log('tableCurrencies', tableCurrencies);
+    console.log("tableCurrencies", tableCurrencies);
   }, [dispatch, tableCurrencies]);
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -86,12 +87,12 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
   };
 
   return (
-    <Paper sx={{ width: '100%' }}>
+    <Paper sx={{ width: "100%" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={columns.length}>
+              <TableCell align="center" colSpan={columns.length + 1}>
                 Currency Table
               </TableCell>
             </TableRow>
@@ -105,6 +106,7 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
                   {column.label}
                 </TableCell>
               ))}
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -115,12 +117,22 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number'
+                        {column.format && typeof value === "number"
                           ? column.format(value)
                           : value}
                       </TableCell>
                     );
                   })}
+                  <TableCell>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      sx={{ margin: 1 }}
+                      onClick={(): void => {}}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
                 </TableRow>
               );
             })}

@@ -1,12 +1,17 @@
-import { lazy, Suspense } from 'react';
-import { RouteObject } from 'react-router';
-import { Navigate } from 'react-router-dom';
+import { lazy, Suspense } from "react";
+import { RouteObject } from "react-router";
+import { Navigate } from "react-router-dom";
 
-import BaseLayout from 'src/layouts/BaseLayout';
-import SidebarLayout from 'src/layouts/SidebarLayout';
+import BaseLayout from "src/layouts/BaseLayout";
+import SidebarLayout from "src/layouts/SidebarLayout";
 
-import SuspenseLoader from 'src/components/SuspenseLoader';
-import { Auth } from './features/Auth';
+import SuspenseLoader from "src/components/SuspenseLoader";
+import CurrencyAddOrUpdate from "src/features/Currency/CurrencyAddOrUpdate";
+import { Auth } from "./features/Auth";
+import PaymentAccount from "./features/PaymentAccount";
+import PaymentAccountAddOrUpdate from "./features/PaymentAccount/PaymentAccountAddOrUpdate";
+import PaymentAccountType from "./features/PaymentAccountType";
+import PaymentAccountTypeAddOrUpdate from "./features/PaymentAccountType/PaymentAccountTypeAddOrUpdate";
 
 const Loader = (Component) => (props) =>
   (
@@ -17,242 +22,268 @@ const Loader = (Component) => (props) =>
 
 // Pages
 
-const Overview = Loader(lazy(() => import('src/content/overview')));
+const Overview = Loader(lazy(() => import("src/content/overview")));
 
 // Admin
 
-const Currency = Loader(lazy(() => import('src/features/Currency')));
+const Currency = Loader(lazy(() => import("src/features/Currency")));
 const CategoryAddOrUpdate = Loader(
-  lazy(() => import('src/features/Currency/CategoryAddOrUpdate'))
+  lazy(() => import("src/features/Currency/CurrencyAddOrUpdate"))
 );
 // Dashboards
 
-const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
+const Crypto = Loader(lazy(() => import("src/content/dashboards/Crypto")));
 
 // Applications
 
 const Messenger = Loader(
-  lazy(() => import('src/content/applications/Messenger'))
+  lazy(() => import("src/content/applications/Messenger"))
 );
 const Transactions = Loader(
-  lazy(() => import('src/content/applications/Transactions'))
+  lazy(() => import("src/content/applications/Transactions"))
 );
 const UserProfile = Loader(
-  lazy(() => import('src/content/applications/Users/profile'))
+  lazy(() => import("src/content/applications/Users/profile"))
 );
 const UserSettings = Loader(
-  lazy(() => import('src/content/applications/Users/settings'))
+  lazy(() => import("src/content/applications/Users/settings"))
 );
 
 // Components
 
 const Buttons = Loader(
-  lazy(() => import('src/content/pages/Components/Buttons'))
+  lazy(() => import("src/content/pages/Components/Buttons"))
 );
 const Modals = Loader(
-  lazy(() => import('src/content/pages/Components/Modals'))
+  lazy(() => import("src/content/pages/Components/Modals"))
 );
 const Accordions = Loader(
-  lazy(() => import('src/content/pages/Components/Accordions'))
+  lazy(() => import("src/content/pages/Components/Accordions"))
 );
-const Tabs = Loader(lazy(() => import('src/content/pages/Components/Tabs')));
+const Tabs = Loader(lazy(() => import("src/content/pages/Components/Tabs")));
 const Badges = Loader(
-  lazy(() => import('src/content/pages/Components/Badges'))
+  lazy(() => import("src/content/pages/Components/Badges"))
 );
 const Tooltips = Loader(
-  lazy(() => import('src/content/pages/Components/Tooltips'))
+  lazy(() => import("src/content/pages/Components/Tooltips"))
 );
 const Avatars = Loader(
-  lazy(() => import('src/content/pages/Components/Avatars'))
+  lazy(() => import("src/content/pages/Components/Avatars"))
 );
-const Cards = Loader(lazy(() => import('src/content/pages/Components/Cards')));
-const Forms = Loader(lazy(() => import('src/content/pages/Components/Forms')));
+const Cards = Loader(lazy(() => import("src/content/pages/Components/Cards")));
+const Forms = Loader(lazy(() => import("src/content/pages/Components/Forms")));
 
 // Status
 
 const Status404 = Loader(
-  lazy(() => import('src/content/pages/Status/Status404'))
+  lazy(() => import("src/content/pages/Status/Status404"))
 );
 const Status500 = Loader(
-  lazy(() => import('src/content/pages/Status/Status500'))
+  lazy(() => import("src/content/pages/Status/Status500"))
 );
 const StatusComingSoon = Loader(
-  lazy(() => import('src/content/pages/Status/ComingSoon'))
+  lazy(() => import("src/content/pages/Status/ComingSoon"))
 );
 const StatusMaintenance = Loader(
-  lazy(() => import('src/content/pages/Status/Maintenance'))
+  lazy(() => import("src/content/pages/Status/Maintenance"))
 );
 
 const routes: RouteObject[] = [
   {
-    path: '',
+    path: "",
     element: <BaseLayout />,
     children: [
       {
-        path: '/',
-        element: <Navigate to="/dashboards" replace />
+        path: "/",
+        element: <Navigate to="/dashboards" replace />,
       },
       {
-        path: '/dashboards',
-        element: <Navigate to="/dashboards" replace />
+        path: "/dashboards",
+        element: <Navigate to="/dashboards" replace />,
       },
       {
-        path: 'overview',
-        element: <Navigate to="/dashboards" replace />
+        path: "overview",
+        element: <Navigate to="/dashboards" replace />,
       },
       {
-        path: 'status',
+        path: "status",
         children: [
           {
-            path: '',
-            element: <Navigate to="404" replace />
+            path: "",
+            element: <Navigate to="404" replace />,
           },
           {
-            path: '404',
-            element: <Status404 />
+            path: "404",
+            element: <Status404 />,
           },
           {
-            path: '500',
-            element: <Status500 />
+            path: "500",
+            element: <Status500 />,
           },
           {
-            path: 'maintenance',
-            element: <StatusMaintenance />
+            path: "maintenance",
+            element: <StatusMaintenance />,
           },
           {
-            path: 'coming-soon',
-            element: <StatusComingSoon />
-          }
-        ]
+            path: "coming-soon",
+            element: <StatusComingSoon />,
+          },
+        ],
       },
       {
-        path: '*',
-        element: <Status404 />
+        path: "*",
+        element: <Status404 />,
       },
       {
-        path: 'login',
-        element: <Auth />
-      }
-    ]
+        path: "login",
+        element: <Auth />,
+      },
+    ],
   },
   {
-    path: 'dashboards',
+    path: "dashboards",
     element: <SidebarLayout />,
     children: [
       {
-        path: '',
-        element: <Navigate to="crypto" replace />
+        path: "",
+        element: <Navigate to="crypto" replace />,
       },
       {
-        path: 'crypto',
-        element: <Crypto />
+        path: "crypto",
+        element: <Crypto />,
       },
       {
-        path: 'messenger',
-        element: <Messenger />
-      }
-    ]
+        path: "messenger",
+        element: <Messenger />,
+      },
+    ],
   },
   {
-    path: 'admin',
+    path: "admin",
     element: <SidebarLayout />,
     children: [
       {
-        path: '',
-        element: <Navigate to="currency" replace />
+        path: "",
+        element: <Navigate to="currency" replace />,
       },
       {
-        path: 'currency',
+        path: "currency",
         children: [
           {
-            path: '',
-            element: <Currency />
+            path: "",
+            element: <Currency />,
           },
           {
-            path: 'add-or-update/:id',
-            element: <CategoryAddOrUpdate />
-          }
-        ]
-      }
-    ]
-  },
-  {
-    path: 'management',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="transactions" replace />
+            path: "add-or-update/:id",
+            element: <CurrencyAddOrUpdate />,
+          },
+        ],
       },
       {
-        path: 'transactions',
-        element: <Transactions />
-      },
-      {
-        path: 'profile',
+        path: "payment-account",
         children: [
           {
-            path: '',
-            element: <Navigate to="details" replace />
+            path: "",
+            element: <PaymentAccount />,
           },
           {
-            path: 'details',
-            element: <UserProfile />
+            path: "add-or-update/:id",
+            element: <PaymentAccountAddOrUpdate />,
+          },
+        ],
+      },
+      {
+        path: "payment-account-type",
+        children: [
+          {
+            path: "",
+            element: <PaymentAccountType />,
           },
           {
-            path: 'settings',
-            element: <UserSettings />
-          }
-        ]
-      }
-    ]
+            path: "add-or-update/:id",
+            element: <PaymentAccountTypeAddOrUpdate />,
+          },
+        ],
+      },
+    ],
   },
   {
-    path: '/components',
+    path: "management",
     element: <SidebarLayout />,
     children: [
       {
-        path: '',
-        element: <Navigate to="buttons" replace />
+        path: "",
+        element: <Navigate to="transactions" replace />,
       },
       {
-        path: 'buttons',
-        element: <Buttons />
+        path: "transactions",
+        element: <Transactions />,
       },
       {
-        path: 'modals',
-        element: <Modals />
+        path: "profile",
+        children: [
+          {
+            path: "",
+            element: <Navigate to="details" replace />,
+          },
+          {
+            path: "details",
+            element: <UserProfile />,
+          },
+          {
+            path: "settings",
+            element: <UserSettings />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/components",
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: "",
+        element: <Navigate to="buttons" replace />,
       },
       {
-        path: 'accordions',
-        element: <Accordions />
+        path: "buttons",
+        element: <Buttons />,
       },
       {
-        path: 'tabs',
-        element: <Tabs />
+        path: "modals",
+        element: <Modals />,
       },
       {
-        path: 'badges',
-        element: <Badges />
+        path: "accordions",
+        element: <Accordions />,
       },
       {
-        path: 'tooltips',
-        element: <Tooltips />
+        path: "tabs",
+        element: <Tabs />,
       },
       {
-        path: 'avatars',
-        element: <Avatars />
+        path: "badges",
+        element: <Badges />,
       },
       {
-        path: 'cards',
-        element: <Cards />
+        path: "tooltips",
+        element: <Tooltips />,
       },
       {
-        path: 'forms',
-        element: <Forms />
-      }
-    ]
-  }
+        path: "avatars",
+        element: <Avatars />,
+      },
+      {
+        path: "cards",
+        element: <Cards />,
+      },
+      {
+        path: "forms",
+        element: <Forms />,
+      },
+    ],
+  },
 ];
 
 export default routes;

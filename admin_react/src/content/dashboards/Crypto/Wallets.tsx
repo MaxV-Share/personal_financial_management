@@ -1,17 +1,17 @@
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import {
+  alpha,
+  Avatar,
+  Box,
   Button,
   Card,
-  Grid,
-  Box,
-  CardContent,
-  Typography,
-  Avatar,
-  alpha,
-  Tooltip,
   CardActionArea,
-  styled
-} from '@mui/material';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+  CardContent,
+  Grid,
+  styled,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -25,7 +25,7 @@ const AvatarWrapper = styled(Avatar)(
     height: ${theme.spacing(5.5)};
     width: ${theme.spacing(5.5)};
     background: ${
-      theme.palette.mode === 'dark'
+      theme.palette.mode === "dark"
         ? theme.colors.alpha.trueWhite[30]
         : alpha(theme.colors.alpha.black[100], 0.07)
     };
@@ -55,7 +55,7 @@ const CardAddAction = styled(Card)(
         border: ${theme.colors.primary.main} dashed 1px;
         height: 100%;
         color: ${theme.colors.primary.main};
-        transition: ${theme.transitions.create(['all'])};
+        transition: ${theme.transitions.create(["all"])};
         
         .MuiCardActionArea-root {
           height: 100%;
@@ -82,7 +82,7 @@ function Wallets() {
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          pb: 3
+          pb: 3,
         }}
       >
         <Typography variant="h3">Wallets</Typography>
@@ -95,10 +95,10 @@ function Wallets() {
         </Button>
       </Box>
       <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3} item>
+        <Grid xs={12} sm={6} md={4} item>
           <Card
             sx={{
-              px: 1
+              px: 1,
             }}
           >
             <CardContent>
@@ -116,7 +116,7 @@ function Wallets() {
               </Typography>
               <Box
                 sx={{
-                  pt: 3
+                  pt: 3,
                 }}
               >
                 <Typography variant="h3" gutterBottom noWrap>
@@ -129,10 +129,10 @@ function Wallets() {
             </CardContent>
           </Card>
         </Grid>
-        <Grid xs={12} sm={6} md={3} item>
+        <Grid xs={12} sm={6} md={4} item>
           <Card
             sx={{
-              px: 1
+              px: 1,
             }}
           >
             <CardContent>
@@ -150,7 +150,7 @@ function Wallets() {
               </Typography>
               <Box
                 sx={{
-                  pt: 3
+                  pt: 3,
                 }}
               >
                 <Typography variant="h3" gutterBottom noWrap>
@@ -163,11 +163,13 @@ function Wallets() {
             </CardContent>
           </Card>
         </Grid>
-        <Grid xs={12} sm={6} md={3} item>
+        <Grid xs={12} sm={6} md={4} item>
           <Card
             sx={{
-              px: 1
+              px: 1,
+              cursor: "pointer",
             }}
+            onClick={() => {}}
           >
             <CardContent>
               <AvatarWrapper>
@@ -184,7 +186,7 @@ function Wallets() {
               </Typography>
               <Box
                 sx={{
-                  pt: 3
+                  pt: 3,
                 }}
               >
                 <Typography variant="h3" gutterBottom noWrap>
@@ -197,12 +199,12 @@ function Wallets() {
             </CardContent>
           </Card>
         </Grid>
-        <Grid xs={12} sm={6} md={3} item>
+        <Grid xs={12} sm={6} md={4} item>
           <Tooltip arrow title="Click to add a new wallet">
             <CardAddAction>
               <CardActionArea
                 sx={{
-                  px: 1
+                  px: 1,
                 }}
               >
                 <CardContent>

@@ -4,12 +4,12 @@ export interface ICurrencyModel extends IBaseModel<string> {
   /**
    * The currency code identifier
    */
-  code: string;
+  code?: string;
 
   /**
    * The currency name
    */
-  name: string;
+  name?: string;
 
   /**
    * The currency icon

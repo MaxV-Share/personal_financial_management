@@ -15,8 +15,8 @@ import { InputField } from "src/components/FormFields/InputField";
 import { SelectField } from "src/components/FormFields/SelectField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
 import * as yup from "yup";
-export interface ICategoryAddOrUpdateProps {}
-export type ICategoryAddOrUpdateParams = {
+export interface ICurrencyAddOrUpdateProps {}
+export type ICurrencyAddOrUpdateParams = {
   id?: string;
 };
 const schema = yup.object().shape({
@@ -27,8 +27,8 @@ const schema = yup.object().shape({
   }),
 });
 
-export default function CategoryAddOrUpdate(props: ICategoryAddOrUpdateProps) {
-  const { id } = useParams<ICategoryAddOrUpdateParams>();
+export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
+  const { id } = useParams<ICurrencyAddOrUpdateParams>();
   const navigate = useNavigate();
   const {
     control,
@@ -56,7 +56,7 @@ export default function CategoryAddOrUpdate(props: ICategoryAddOrUpdateProps) {
               color="primary"
               sx={{ p: 1, mr: 1 }}
               size={"small"}
-              onClick={() => navigate("/admin/currency")}
+              onClick={() => navigate(-1)}
             >
               <ArrowBackTwoToneIcon />
             </IconButton>
@@ -76,7 +76,7 @@ export default function CategoryAddOrUpdate(props: ICategoryAddOrUpdateProps) {
           <InputField
             name={`data.code`}
             control={control}
-            label={`Category code`}
+            label={`Currency code`}
           />
           <InputField
             name={`data.name`}

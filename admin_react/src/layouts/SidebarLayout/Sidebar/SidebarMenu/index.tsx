@@ -219,6 +219,28 @@ function SidebarMenu() {
                   Currency
                 </Button>
               </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/admin/payment-account"
+                  startIcon={<Icon>star</Icon>}
+                >
+                  Payment Account
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/admin/payment-account-type"
+                  startIcon={<Icon>star</Icon>}
+                >
+                  Payment Account Type
+                </Button>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
