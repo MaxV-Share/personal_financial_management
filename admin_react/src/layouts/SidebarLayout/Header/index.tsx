@@ -1,23 +1,25 @@
-import { useContext } from 'react';
+import { useContext } from "react";
 
+import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
+import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import {
-  Box,
   alpha,
-  Stack,
-  lighten,
+  Box,
   Divider,
   IconButton,
-  Tooltip,
+  lighten,
+  Stack,
   styled,
-  useTheme
-} from '@mui/material';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { SidebarContext } from 'src/contexts/SidebarContext';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
+  Tooltip,
+  useTheme,
+} from "@mui/material";
+import { SidebarContext } from "src/contexts/SidebarContext";
 
-import HeaderButtons from './Buttons';
-import HeaderUserbox from './Userbox';
-import HeaderMenu from './Menu';
+import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
+import { useNavigate } from "react-router";
+import HeaderButtons from "./Buttons";
+import HeaderMenu from "./Menu";
+import HeaderUserbox from "./Userbox";
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -41,14 +43,14 @@ const HeaderWrapper = styled(Box)(
 function Header() {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const theme = useTheme();
-
+  const navigate = useNavigate();
   return (
     <HeaderWrapper
       display="flex"
       alignItems="center"
       sx={{
         boxShadow:
-          theme.palette.mode === 'dark'
+          theme.palette.mode === "dark"
             ? `0 1px 0 ${alpha(
                 lighten(theme.colors.primary.main, 0.7),
                 0.15
@@ -59,17 +61,29 @@ function Header() {
               )}, 0px 5px 22px -4px ${alpha(
                 theme.colors.alpha.black[100],
                 0.1
-              )}`
+              )}`,
       }}
     >
-      <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        alignItems="center"
-        spacing={2}
-      >
-        <HeaderMenu />
-      </Stack>
+      <Box display="flex" alignItems="center">
+        <Tooltip arrow placement="top" title="Go back">
+          <IconButton
+            color="primary"
+            sx={{ p: 1, mr: 1 }}
+            size={"small"}
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackTwoToneIcon />
+          </IconButton>
+        </Tooltip>
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          alignItems="center"
+          spacing={2}
+        >
+          <HeaderMenu />
+        </Stack>
+      </Box>
       <Box display="flex" alignItems="center">
         <HeaderButtons />
         <HeaderUserbox />
@@ -77,7 +91,7 @@ function Header() {
           component="span"
           sx={{
             ml: 2,
-            display: { lg: 'none', xs: 'inline-block' }
+            display: { lg: "none", xs: "inline-block" },
           }}
         >
           <Tooltip arrow title="Toggle Menu">

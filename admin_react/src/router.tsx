@@ -31,6 +31,9 @@ const CurrencyAddOrUpdate = Loader(
 const PaymentAccount = Loader(
   lazy(() => import("src/features/PaymentAccount"))
 );
+const PaymentAccountDetail = Loader(
+  lazy(() => import("src/features/PaymentAccount/PaymentAccountDetail"))
+);
 const PaymentAccountAddOrUpdate = Loader(
   lazy(() => import("src/features/PaymentAccount/PaymentAccountAddOrUpdate"))
 );
@@ -189,7 +192,11 @@ const routes: RouteObject[] = [
             element: <Currency />,
           },
           {
-            path: "add-or-update/:id",
+            path: "add",
+            element: <CurrencyAddOrUpdate />,
+          },
+          {
+            path: "update/:id",
             element: <CurrencyAddOrUpdate />,
           },
         ],
@@ -202,7 +209,15 @@ const routes: RouteObject[] = [
             element: <PaymentAccount />,
           },
           {
-            path: "add-or-update/:id",
+            path: ":id",
+            element: <PaymentAccountDetail />,
+          },
+          {
+            path: "add",
+            element: <PaymentAccountAddOrUpdate />,
+          },
+          {
+            path: "update/:id",
             element: <PaymentAccountAddOrUpdate />,
           },
         ],
@@ -215,7 +230,11 @@ const routes: RouteObject[] = [
             element: <PaymentAccountType />,
           },
           {
-            path: "add-or-update/:id",
+            path: "add",
+            element: <PaymentAccountTypeAddOrUpdate />,
+          },
+          {
+            path: "update/:id",
             element: <PaymentAccountTypeAddOrUpdate />,
           },
         ],

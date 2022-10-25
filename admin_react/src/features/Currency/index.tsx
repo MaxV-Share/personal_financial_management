@@ -34,7 +34,7 @@ export default function Currency(props: ICurrencyProps) {
             <Button
               variant="outlined"
               sx={{ margin: 1 }}
-              onClick={() => navigate("add-or-update/1")}
+              onClick={() => navigate("add")}
             >
               Add
             </Button>

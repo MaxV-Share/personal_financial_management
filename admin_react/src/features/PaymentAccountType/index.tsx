@@ -20,7 +20,7 @@ export default function PaymentAccountType(props: IPaymentAccountTypeProps) {
             <Button
               variant="outlined"
               sx={{ margin: 1 }}
-              onClick={() => navigate("add-or-update/1")}
+              onClick={() => navigate("add")}
             >
               Add
             </Button>

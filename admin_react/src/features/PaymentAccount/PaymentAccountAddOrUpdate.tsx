@@ -1,13 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
@@ -59,25 +51,23 @@ export default function PaymentAccountAddOrUpdate(
   return (
     <>
       <Container maxWidth="lg">
-        <Box display="flex" mb={3}>
-          <Tooltip arrow placement="top" title="Go back">
-            <IconButton
-              color="primary"
-              sx={{ p: 1, mr: 1 }}
-              size={"small"}
-              onClick={() => navigate(-1)}
-            >
-              <ArrowBackTwoToneIcon />
-            </IconButton>
-          </Tooltip>
-          <Box alignItems="center" justifyContent="center">
+        <Box
+          display="flex"
+          mb={3}
+          mt={2}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box>
             <Typography
               variant="h3"
               component="h3"
               gutterBottom
               align="justify"
             >
-              PaymentAccountAddOrUpdate {id}
+              {id == null
+                ? "Add PaymentAccount"
+                : `Update PaymentAccount ${id}`}
             </Typography>
           </Box>
         </Box>

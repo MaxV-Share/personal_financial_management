@@ -1,4 +1,6 @@
-import { Button } from "@mui/material";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import { IconButton, Tooltip, useTheme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +11,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { selectCurrencyTable } from "../currencySlice";
 
@@ -85,6 +88,8 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -106,7 +111,7 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell>Action</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -124,14 +129,33 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
                     );
                   })}
                   <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      sx={{ margin: 1 }}
-                      onClick={(): void => {}}
-                    >
-                      Delete
-                    </Button>
+                    <Tooltip title="Edit Currency" arrow>
+                      <IconButton
+                        sx={{
+                          "&:hover": {
+                            background: theme.colors.primary.lighter,
+                          },
+                          color: theme.palette.primary.main,
+                        }}
+                        color="inherit"
+                        size="small"
+                        onClick={() => navigate(`update/${row.id}`)}
+                      >
+                        <EditTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Currency" arrow>
+                      <IconButton
+                        sx={{
+                          "&:hover": { background: theme.colors.error.lighter },
+                          color: theme.palette.error.main,
+                        }}
+                        color="inherit"
+                        size="small"
+                      >
+                        <DeleteTwoToneIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );

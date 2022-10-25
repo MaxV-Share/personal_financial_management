@@ -81,20 +81,13 @@ export default function PaymentAccountList(props: IPaymentAccountListProps) {
   return (
     <>
       <Grid container spacing={3}>
-        {paymentAccounts.map((item, index) => {
-          return (
-            <Grid xs={12} sm={6} md={3} item key={index}>
-              <PaymentAccountItem data={item} />
-            </Grid>
-          );
-        })}
         <Grid
           xs={12}
           sm={6}
           md={3}
           item
           onClick={() => {
-            navigate("add-or-update/1");
+            navigate("add");
           }}
         >
           <Tooltip arrow title="Click to add a new wallet">
@@ -113,6 +106,13 @@ export default function PaymentAccountList(props: IPaymentAccountListProps) {
             </CardAddAction>
           </Tooltip>
         </Grid>
+        {paymentAccounts.map((item, index) => {
+          return (
+            <Grid xs={12} sm={6} md={3} item key={index}>
+              <PaymentAccountItem data={item} />
+            </Grid>
+          );
+        })}
       </Grid>
     </>
   );
