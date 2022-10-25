@@ -52,7 +52,13 @@ export default function PaymentAccountTypeAddOrUpdate(
   return (
     <>
       <Container maxWidth="lg">
-        <Box display="flex" mb={3}>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          mb={3}
+          style={{ textAlign: "center" }}
+        >
           <Tooltip arrow placement="top" title="Go back">
             <IconButton
               color="primary"
@@ -63,14 +69,9 @@ export default function PaymentAccountTypeAddOrUpdate(
               <ArrowBackTwoToneIcon />
             </IconButton>
           </Tooltip>
-          <Box alignItems="center" justifyContent="center">
-            <Typography
-              variant="h3"
-              component="h3"
-              gutterBottom
-              align="justify"
-            >
-              CurrencyAddOrUpdate {id}
+          <Box justifyContent="center">
+            <Typography variant="h3" component="h3" gutterBottom>
+              PaymentAccountTypeAddOrUpdate {id}
             </Typography>
           </Box>
         </Box>

@@ -4,9 +4,9 @@ import {
   FormHelperText,
   FormLabel,
   Radio,
-  RadioGroup
-} from '@mui/material';
-import { Control, useController } from 'react-hook-form';
+  RadioGroup,
+} from "@mui/material";
+import { Control, useController } from "react-hook-form";
 
 export interface RadioOption {
   label?: string;
@@ -26,14 +26,14 @@ export function RadioGroupField({
   control,
   label,
   disabled,
-  options
+  options,
 }: RadioGroupFieldProps) {
   const {
     field: { value, onChange, onBlur },
-    fieldState: { invalid, error }
+    fieldState: { invalid, error },
   } = useController({
     name,
-    control
+    control,
   });
 
   return (

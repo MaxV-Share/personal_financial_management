@@ -11,19 +11,20 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { InputField } from "src/components/FormFields/InputField";
-import { SelectField } from "src/components/FormFields/SelectField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
+import { IPaymentAccountCreateOrUpdateModel } from "src/models/PaymentAccount/IPaymentAccountCreateOrUpdateModel";
 import * as yup from "yup";
 export interface IPaymentAccountAddOrUpdateProps {}
 export type IPaymentAccountAddOrUpdateParams = {
   id?: string;
 };
-const schema = yup.object().shape({
+const schema = yup.object({
   data: yup.object().shape({
-    code: yup.string().required("Please enter code."),
     name: yup.string().required("Please enter name."),
-    icon: yup.string().required("Please enter icon."),
+    icon: yup.boolean().required("Please enter icon."),
+    initialMoney: yup.string().required("Please enter initial money."),
   }),
 });
 
@@ -38,16 +39,22 @@ export default function PaymentAccountAddOrUpdate(
     register,
     reset,
     formState: { isSubmitting, errors },
-  } = useForm<IBaseAddOrUpdateBodyRequest<any>, object>({
+  } = useForm<
+    IBaseAddOrUpdateBodyRequest<IPaymentAccountCreateOrUpdateModel>,
+    object
+  >({
     defaultValues: {
       data: {
-        code: "",
+        name: "",
+        initialMoney: 0,
+        isReport: true,
       },
     },
     resolver: yupResolver(schema),
   });
   const onSubmit = (object) => {
-    console.log(object);
+    console.log("PaymentAccountAddOrUpdate", object);
+    toast.success("Save PaymentAccountAddOrUpdate successfully!");
   };
   return (
     <>
@@ -70,26 +77,26 @@ export default function PaymentAccountAddOrUpdate(
               gutterBottom
               align="justify"
             >
-              CurrencyAddOrUpdate {id}
+              PaymentAccountAddOrUpdate {id}
             </Typography>
           </Box>
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputField
-            name={`data.code`}
+            name={`data.initialMoney`}
             control={control}
-            label={`Category code`}
+            label={`Initial Money`}
+            type="number"
           />
           <InputField
             name={`data.name`}
             control={control}
             label={`Currency name`}
           />
-          <SelectField
-            name={`data.icon`}
+          <InputField
+            name={`data.isReport`}
             control={control}
-            label={`Label`}
-            options={[{ value: 1, label: "1" }]}
+            label={`isReport`}
           />
           <Box
             sx={{

@@ -6,12 +6,7 @@ import BaseLayout from "src/layouts/BaseLayout";
 import SidebarLayout from "src/layouts/SidebarLayout";
 
 import SuspenseLoader from "src/components/SuspenseLoader";
-import CurrencyAddOrUpdate from "src/features/Currency/CurrencyAddOrUpdate";
 import { Auth } from "./features/Auth";
-import PaymentAccount from "./features/PaymentAccount";
-import PaymentAccountAddOrUpdate from "./features/PaymentAccount/PaymentAccountAddOrUpdate";
-import PaymentAccountType from "./features/PaymentAccountType";
-import PaymentAccountTypeAddOrUpdate from "./features/PaymentAccountType/PaymentAccountTypeAddOrUpdate";
 
 const Loader = (Component) => (props) =>
   (
@@ -25,11 +20,31 @@ const Loader = (Component) => (props) =>
 const Overview = Loader(lazy(() => import("src/content/overview")));
 
 // Admin
-
+/**
+ * Currency component
+ */
 const Currency = Loader(lazy(() => import("src/features/Currency")));
-const CategoryAddOrUpdate = Loader(
+const CurrencyAddOrUpdate = Loader(
   lazy(() => import("src/features/Currency/CurrencyAddOrUpdate"))
 );
+
+const PaymentAccount = Loader(
+  lazy(() => import("src/features/PaymentAccount"))
+);
+const PaymentAccountAddOrUpdate = Loader(
+  lazy(() => import("src/features/PaymentAccount/PaymentAccountAddOrUpdate"))
+);
+
+const PaymentAccountType = Loader(
+  lazy(() => import("src/features/PaymentAccountType"))
+);
+const PaymentAccountTypeAddOrUpdate = Loader(
+  lazy(
+    () =>
+      import("src/features/PaymentAccountType/PaymentAccountTypeAddOrUpdate")
+  )
+);
+
 // Dashboards
 
 const Crypto = Loader(lazy(() => import("src/content/dashboards/Crypto")));
