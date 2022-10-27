@@ -20,7 +20,7 @@ export interface IPaymentAccountItemProps {
 
 export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
   const { data } = props;
-  let dollarUSLocale = Intl.NumberFormat("vi-VN");
+  let vndLocale = Intl.NumberFormat("vi-VN");
   const navigate = useNavigate();
   const theme = useTheme();
   const onHandleClick = () => {
@@ -60,13 +60,13 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
             }}
           >
             <Typography variant="h3" gutterBottom noWrap>
-              {dollarUSLocale.format(data.currentBalance)}
+              {vndLocale.format(data.currentBalance)}
             </Typography>
             <Typography variant="subtitle2" noWrap>
-              Số dư khả dụng: {dollarUSLocale.format(data.availableBalance)}
+              Số dư khả dụng: {vndLocale.format(data.availableBalance)}
             </Typography>
             <Typography variant="subtitle2" noWrap>
-              Hạn mức: {dollarUSLocale.format(data.creditLimit)}
+              Hạn mức: {vndLocale.format(data.creditLimit)}
             </Typography>
           </Box>
         </CardContent>

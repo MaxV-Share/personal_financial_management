@@ -24,9 +24,9 @@ interface Column {
 }
 
 const columns: Column[] = [
-  { id: "id", label: "Id", minWidth: 170 },
-  { id: "name", label: "Name", minWidth: 170 },
-  { id: "code", label: "ISO\u00a0Code", minWidth: 100 },
+  { id: "id", label: "Id" },
+  { id: "name", label: "Name" },
+  { id: "code", label: "ISO\u00a0Code" },
   // {
   //   id: 'population',
   //   label: 'Population',
@@ -162,16 +162,16 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
             })}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100, { value: -1, label: "All" }]}
+          component="div"
+          count={tableCurrencies.pagination.totalRows}
+          rowsPerPage={tableCurrencies.pagination.pageSize}
+          page={tableCurrencies.pagination.pageIndex - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={tableCurrencies.pagination.totalRows}
-        rowsPerPage={tableCurrencies.pagination.pageSize}
-        page={tableCurrencies.pagination.pageIndex - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </Paper>
   );
 }

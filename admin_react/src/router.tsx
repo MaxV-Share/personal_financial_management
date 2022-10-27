@@ -47,6 +47,12 @@ const PaymentAccountTypeAddOrUpdate = Loader(
       import("src/features/PaymentAccountType/PaymentAccountTypeAddOrUpdate")
   )
 );
+const TransactionDetail = Loader(
+  lazy(() => import("src/features/Transactions/TransactionDetail"))
+);
+const TransactionAddOrUpdate = Loader(
+  lazy(() => import("src/features/Transactions/TransactionAddOrUpdate"))
+);
 
 // Dashboards
 
@@ -113,15 +119,15 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <Navigate to="/dashboards" replace />,
+        element: <Navigate to="/overview" replace />,
       },
       {
         path: "/dashboards",
-        element: <Navigate to="/dashboards" replace />,
+        element: <Navigate to="/overview" replace />,
       },
       {
         path: "overview",
-        element: <Navigate to="/dashboards" replace />,
+        element: <Overview />,
       },
       {
         path: "status",
@@ -236,6 +242,27 @@ const routes: RouteObject[] = [
           {
             path: "update/:id",
             element: <PaymentAccountTypeAddOrUpdate />,
+          },
+        ],
+      },
+      {
+        path: "transactions",
+        children: [
+          {
+            path: "",
+            element: <TransactionDetail />,
+          },
+          {
+            path: ":id",
+            element: <TransactionDetail />,
+          },
+          {
+            path: "add",
+            element: <TransactionAddOrUpdate />,
+          },
+          {
+            path: "update/:id",
+            element: <TransactionAddOrUpdate />,
           },
         ],
       },

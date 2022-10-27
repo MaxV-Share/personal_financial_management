@@ -1,13 +1,25 @@
 import { Card, Container, Grid, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 // import { DateRange } from "@mui/x-date-pickers";
+import TextField from "@mui/material/TextField";
+import { Box } from "@mui/system";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { useState } from "react";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
+import TransactionDateList from "../Transactions/Components/TransactionDateList";
 export interface IPaymentAccountDetailProps {}
 
 export default function PaymentAccountDetail(
   props: IPaymentAccountDetailProps
 ) {
-  // const [value, setValue] = React.useState<DateRange<Dayjs>>([null, null]);
+  const [value, setValue] = useState<Dayjs | null>(
+    dayjs("2014-08-18T21:11:54")
+  );
+
+  const handleChange = (newValue: Dayjs | null) => {
+    setValue(newValue);
+  };
 
   return (
     <>
@@ -30,9 +42,42 @@ export default function PaymentAccountDetail(
         </Grid>
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        <Card sx={{ p: 1 }}></Card>
+        <Card sx={{ p: 2 }}>
+          <Grid
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            spacing={3}
+          >
+            <Box mx={1}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  label="From"
+                  inputFormat="MM/YYYY"
+                  views={["year", "month"]}
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Box>
+            <Box mx={1}>
+              <LocalizationProvider dateAdapter={AdapterDayjs} mx={1}>
+                <MobileDatePicker
+                  label="To"
+                  inputFormat="MM/YYYY"
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </Box>
+          </Grid>
+        </Card>
+        <Box pt={2}>
+          <TransactionDateList />
+        </Box>
       </Container>
-      <Box>ss e</Box>
     </>
   );
 }
