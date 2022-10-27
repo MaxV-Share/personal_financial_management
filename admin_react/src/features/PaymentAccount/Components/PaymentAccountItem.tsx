@@ -1,16 +1,21 @@
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Avatar,
   Card,
   CardContent,
   IconButton,
+  Menu,
   Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/system";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { NavLink } from "react-router-dom";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
 
 export interface IPaymentAccountItemProps {
@@ -26,16 +31,25 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
   const onHandleClick = () => {
     navigate(`${data.id}`);
   };
+  const ref = useRef<any>(null);
+  const [isOpen, setOpen] = useState<boolean>(false);
+
+  const handleOpen = (): void => {
+    setOpen(true);
+  };
+
+  const handleClose = (): void => {
+    setOpen(false);
+  };
   return (
     <>
       <Card
         sx={{
           px: 1,
           py: 0.5,
-          cursor: "pointer",
         }}
       >
-        <CardContent onClick={onHandleClick}>
+        <CardContent>
           <Box
             display="flex"
             alignItems="center"
@@ -47,9 +61,55 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
                 src="/static/images/placeholders/logo/noImg.png"
               />
             </Avatar>
-            <Typography variant="h5" noWrap align="center" sx={{ width: 100 }}>
-              {data.name}
-            </Typography>
+            <Box
+              sx={{
+                cursor: "pointer",
+              }}
+            >
+              <Typography
+                variant="h5"
+                noWrap
+                align="center"
+                sx={{ width: 100 }}
+                onClick={onHandleClick}
+              >
+                {data.name}
+              </Typography>
+            </Box>
+            <IconButton
+              size="small"
+              aria-label="settings"
+              ref={ref}
+              onClick={handleOpen}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu anchorEl={ref.current} onClose={handleClose} open={isOpen}>
+              <MenuItem sx={{ px: 3 }} component={NavLink} to="/overview">
+                Overview
+              </MenuItem>
+              <MenuItem
+                sx={{ px: 3 }}
+                component={NavLink}
+                to="/components/tabs"
+              >
+                Tabs
+              </MenuItem>
+              <MenuItem
+                sx={{ px: 3 }}
+                component={NavLink}
+                to="/components/cards"
+              >
+                Cards
+              </MenuItem>
+              <MenuItem
+                sx={{ px: 3 }}
+                component={NavLink}
+                to="/components/modals"
+              >
+                Modals
+              </MenuItem>
+            </Menu>
           </Box>
           {/* <Typography variant="subtitle1" noWrap>
             ADA
@@ -80,10 +140,10 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
                 color: theme.palette.primary.main,
               }}
               color="inherit"
-              size="large"
+              size="medium"
               onClick={() => navigate(`update/${data.id}`)}
             >
-              <EditTwoToneIcon fontSize="large" />
+              <EditTwoToneIcon fontSize="medium" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete Currency" arrow>

@@ -1,4 +1,4 @@
-import { Card, Container, Grid, Typography } from "@mui/material";
+import { Button, Card, Container, Grid, Typography } from "@mui/material";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 // import { DateRange } from "@mui/x-date-pickers";
 import TextField from "@mui/material/TextField";
@@ -43,12 +43,7 @@ export default function PaymentAccountDetail(
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Card sx={{ p: 2 }}>
-          <Grid
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            spacing={3}
-          >
+          <Grid display="flex" justifyContent="center" alignItems="center">
             <Box mx={1}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MobileDatePicker
@@ -71,6 +66,15 @@ export default function PaymentAccountDetail(
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
+            </Box>
+            <Box>
+              <Button
+                variant="outlined"
+                // sx={{ margin: 1 }}
+                // onClick={() => {}}
+              >
+                Search
+              </Button>
             </Box>
           </Grid>
         </Card>
