@@ -19,7 +19,7 @@ export default function TransactionDateList(props: ITransactionListProps) {
         <TransactionPerDate id={"panel3a"} />
         <Divider />
       </Box>
-      s{/* </Grid> */}
+      {/* </Grid> */}
     </>
   );
 }

@@ -24,8 +24,9 @@ export default function TransactionItem(props: ITransactionItemProps) {
           borderRadius: 1,
           width: "100%",
         }}
+        onClick={() => navigate("/admin/transactions/update/transactionId1")}
       >
-        <Box onClick={() => navigate("/admin/transactions/transactionId1")}>
+        <Box>
           <Hidden mdUp>
             <Typography
               sx={{
@@ -37,7 +38,7 @@ export default function TransactionItem(props: ITransactionItemProps) {
               }}
             >
               {
-                "1Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum "
+                "1Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lo rem ipsum Description lorem ipsum Description lorem ipsum "
               }
             </Typography>
           </Hidden>

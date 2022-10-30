@@ -12,7 +12,7 @@ namespace PersonalFinancialManagement.Models.Entities
     /// </summary>
     public class Transaction : BaseEntity<Guid>
     {
-        public string? Amount { get; set; }
+        public double? Amount { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public DateTime? TransactionDate { get; set; }
@@ -20,7 +20,8 @@ namespace PersonalFinancialManagement.Models.Entities
         public bool? Fees { get; set; }
         public ImageInfo? ImageInfo { get; set; }
         public TransactionCategory? FeesCategory { get; set; }
-        public PaymentAccount? PaymentAccount { get; set; }
+        public PaymentAccount? FromPaymentAccount { get; set; }
+        public PaymentAccount? ToPaymentAccount { get; set; }
         public TransactionCategory? Category { get; set; }
     }
 }

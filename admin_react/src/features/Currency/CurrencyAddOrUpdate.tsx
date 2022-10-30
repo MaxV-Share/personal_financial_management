@@ -6,7 +6,7 @@ import {
   Container,
   IconButton,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -15,7 +15,7 @@ import { InputField } from "src/components/FormFields/InputField";
 import { SelectField } from "src/components/FormFields/SelectField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
 import * as yup from "yup";
-export interface ICurrencyAddOrUpdateProps {}
+export interface ICurrencyAddOrUpdateProps { }
 export type ICurrencyAddOrUpdateParams = {
   id?: string;
 };
@@ -74,11 +74,13 @@ export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputField
+            id={`data.code`}
             name={`data.code`}
             control={control}
             label={`Currency code`}
           />
           <InputField
+            id={`data.name`}
             name={`data.name`}
             control={control}
             label={`Currency name`}

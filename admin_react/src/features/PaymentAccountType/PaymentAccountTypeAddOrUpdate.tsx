@@ -6,7 +6,7 @@ import {
   Container,
   IconButton,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -15,7 +15,7 @@ import { InputField } from "src/components/FormFields/InputField";
 import { SelectField } from "src/components/FormFields/SelectField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
 import * as yup from "yup";
-export interface IPaymentAccountTypeAddOrUpdateProps {}
+export interface IPaymentAccountTypeAddOrUpdateProps { }
 export type IPaymentAccountTypeAddOrUpdateParams = {
   id?: string;
 };
@@ -77,11 +77,13 @@ export default function PaymentAccountTypeAddOrUpdate(
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputField
+            id={`data.code`}
             name={`data.code`}
             control={control}
             label={`Category code`}
           />
           <InputField
+            id={`data.name`}
             name={`data.name`}
             control={control}
             label={`Currency name`}

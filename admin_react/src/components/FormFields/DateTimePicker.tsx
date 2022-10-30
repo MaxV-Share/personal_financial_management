@@ -1,12 +1,13 @@
+// import { InputOutlined } from "@mui/icons-material";
 import {
   FormControl,
   FormHelperText,
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
+import * as React from "react";
 import { InputHTMLAttributes } from "react";
 import { Control, useController } from "react-hook-form";
-
 export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   control: Control<any>;
@@ -14,9 +15,10 @@ export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;
+  //   defaultValue?: any;
 }
 
-export function InputField({
+export function DateTimePicker({
   name,
   control,
   label,
@@ -24,6 +26,7 @@ export function InputField({
   id,
   startAdornment,
   endAdornment,
+  //   defaultValue,
   ...inputProps
 }: InputFieldProps) {
   const {
@@ -55,8 +58,18 @@ export function InputField({
         onBlur={onBlur}
         label={label}
         inputRef={ref}
+        type="datetime-local"
         inputProps={inputProps}
-      />
+      ></OutlinedInput>
+      {/* <TextField
+        id={id}
+        label={"dsds"}
+        sx={{ width: "100%" }}
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputProps={inputProps}
+      /> */}
       <FormHelperText id="component-error-text">
         {error?.message}
       </FormHelperText>

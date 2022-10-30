@@ -8,15 +8,15 @@ import { InputField } from "src/components/FormFields/InputField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
 import { IPaymentAccountCreateOrUpdateModel } from "src/models/PaymentAccount/IPaymentAccountCreateOrUpdateModel";
 import * as yup from "yup";
-export interface IPaymentAccountAddOrUpdateProps {}
+export interface IPaymentAccountAddOrUpdateProps { }
 export type IPaymentAccountAddOrUpdateParams = {
   id?: string;
 };
 const schema = yup.object({
   data: yup.object().shape({
-    name: yup.string().required("Please enter name."),
-    icon: yup.boolean().required("Please enter icon."),
-    initialMoney: yup.string().required("Please enter initial money."),
+    // name: yup.string().required("Please enter name."),
+    // icon: yup.boolean().required("Please enter icon."),
+    // initialMoney: yup.string().required("Please enter initial money."),
   }),
 });
 
@@ -32,7 +32,7 @@ export default function PaymentAccountAddOrUpdate(
     reset,
     formState: { isSubmitting, errors },
   } = useForm<
-    IBaseAddOrUpdateBodyRequest<IPaymentAccountCreateOrUpdateModel>,
+    IBaseAddOrUpdateBodyRequest<IPaymentAccountCreateOrUpdateModel & { country: any }>,
     object
   >({
     defaultValues: {
@@ -73,21 +73,24 @@ export default function PaymentAccountAddOrUpdate(
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputField
+            id={`data.initialMoney`}
             name={`data.initialMoney`}
             control={control}
             label={`Initial Money`}
             type="number"
           />
           <InputField
+            id={`data.name`}
             name={`data.name`}
             control={control}
             label={`Currency name`}
           />
-          <InputField
+          {/* <InputField
+            id={`data.isReport`}
             name={`data.isReport`}
             control={control}
             label={`isReport`}
-          />
+          /> */}
           <Box
             sx={{
               display: "flex",
