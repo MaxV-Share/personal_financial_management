@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AddCircle } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -6,6 +7,7 @@ import {
   Container,
   FormControlLabel,
   FormGroup,
+  IconButton,
   InputAdornment,
   Typography,
 } from "@mui/material";
@@ -157,6 +159,18 @@ export default function TransactionAddOrUpdate(
             control={control}
             name="data.fromPaymentAccount"
             optionsData={optionsData}
+            startAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  sx={{ ml: -0.5 }}
+                  color="success"
+                  size="small"
+                  onClick={() => {}}
+                >
+                  <AddCircle />
+                </IconButton>
+              </InputAdornment>
+            }
           />
           <PaymentAccountAutocomplete
             id={`data.toPaymentAccount`}
@@ -164,6 +178,18 @@ export default function TransactionAddOrUpdate(
             control={control}
             name="data.toPaymentAccount"
             optionsData={optionsData}
+            startAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  sx={{ ml: -0.5 }}
+                  color="success"
+                  size="small"
+                  onClick={() => {}}
+                >
+                  <AddCircle />
+                </IconButton>
+              </InputAdornment>
+            }
           />
           <FormGroup>
             <FormControlLabel

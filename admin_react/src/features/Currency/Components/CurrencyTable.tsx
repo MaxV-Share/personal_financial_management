@@ -111,7 +111,12 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell>Actions</TableCell>
+              <TableCell
+                align="right"
+                style={{ top: 57, maxWidth: 150, width: 150 }}
+              >
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -128,7 +133,7 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
                       </TableCell>
                     );
                   })}
-                  <TableCell>
+                  <TableCell align="right">
                     <Tooltip title="Edit Currency" arrow>
                       <IconButton
                         sx={{

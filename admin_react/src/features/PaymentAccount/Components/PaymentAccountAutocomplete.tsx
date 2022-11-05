@@ -9,6 +9,7 @@ export interface IPaymentAccountAutocompleteProps {
   id: string;
   name: string;
   label: string;
+  startAdornment?: React.ReactNode;
   optionsData: IPaymentAccountSelectModel[];
 }
 
@@ -18,6 +19,7 @@ export default function PaymentAccountAutocomplete({
   name,
   label,
   optionsData,
+  startAdornment,
 }: IPaymentAccountAutocompleteProps) {
   return (
     <Controller
@@ -28,7 +30,15 @@ export default function PaymentAccountAutocomplete({
           options={optionsData}
           getOptionLabel={(option: IPaymentAccountSelectModel) => option.name}
           renderInput={(params) => (
-            <TextField {...params} label={label} margin="normal" />
+            <TextField
+              {...params}
+              label={label}
+              margin="normal"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: startAdornment,
+              }}
+            />
           )}
           filterOptions={(options: IPaymentAccountSelectModel[], object) => {
             return options.filter(

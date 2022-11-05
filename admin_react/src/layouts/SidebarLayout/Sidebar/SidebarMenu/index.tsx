@@ -241,6 +241,17 @@ function SidebarMenu() {
                   Payment Account Type
                 </Button>
               </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/admin/transaction-category"
+                  startIcon={<Icon>star</Icon>}
+                >
+                  Transaction Category
+                </Button>
+              </ListItem>
             </List>
           </SubMenuWrapper>
         </List>
@@ -284,30 +295,6 @@ function SidebarMenu() {
           subheader={
             <ListSubheader component="div" disableSticky>
               Management
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/management/transactions"
-                  startIcon={<TableChartTwoToneIcon />}
-                >
-                  Transactions List
-                </Button>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Admin
             </ListSubheader>
           }
         >

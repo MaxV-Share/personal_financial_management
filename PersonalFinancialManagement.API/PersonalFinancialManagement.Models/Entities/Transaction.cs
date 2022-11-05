@@ -13,11 +13,12 @@ namespace PersonalFinancialManagement.Models.Entities
     public class Transaction : BaseEntity<Guid>
     {
         public double? Amount { get; set; }
+        public double? TotalAmount { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public DateTime? TransactionDate { get; set; }
         public bool? IsReport { get; set; }
-        public bool? Fees { get; set; }
+        public double? Fees { get; set; }
         public ImageInfo? ImageInfo { get; set; }
         public TransactionCategory? FeesCategory { get; set; }
         public PaymentAccount? FromPaymentAccount { get; set; }

@@ -38,7 +38,7 @@ export default function Currency(props: ICurrencyProps) {
             >
               Add
             </Button>
-            <CurrencyTable></CurrencyTable>
+            <CurrencyTable />
           </Grid>
         </Grid>
       </Container>

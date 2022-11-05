@@ -15,16 +15,20 @@ export default function TransactionItem(props: ITransactionItemProps) {
   );
   const navigate = useNavigate();
   return (
-    <ListItem button>
+    <ListItem
+      button
+      sx={{
+        borderBottom: "solid 1px black",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          borderRadius: 1,
+          // borderRadius: 1,
           width: "100%",
         }}
-        onClick={() => navigate("/admin/transactions/update/transactionId1")}
       >
         <Box>
           <Hidden mdUp>
@@ -61,6 +65,7 @@ export default function TransactionItem(props: ITransactionItemProps) {
 
         <Box>{money}</Box>
       </Box>
+      {/* <Divider /> */}
     </ListItem>
   );
 }

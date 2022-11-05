@@ -7,6 +7,7 @@ import {
 } from "@reduxjs/toolkit";
 import currencyReducer from "src/features/Currency/currencySlice";
 import paymentAccountReducer from "src/features/PaymentAccount/paymentAccountSlice";
+import transactionCategoryReducer from "src/features/TransactionCategory/transactionCategorySlice";
 import globalReducer from "./globalSlice";
 import rootSaga from "./rootsaga";
 
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   global: globalReducer,
   currency: currencyReducer,
   paymentAccount: paymentAccountReducer,
+  transactionCategory: transactionCategoryReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

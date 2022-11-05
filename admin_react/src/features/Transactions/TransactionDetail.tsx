@@ -1,14 +1,15 @@
 export interface ITransactionDetailProps {}
-import { Container, Grid, Typography } from '@mui/material';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import { Container, Grid, Typography } from "@mui/material";
+import PageTitleWrapper from "src/components/PageTitleWrapper";
 
 export default function TransactionDetail(props: ITransactionDetailProps) {
-  return <>
+  return (
+    <>
       <PageTitleWrapper>
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="h4" component="h3" gutterBottom>
-              PaymentAccountDetail header
+              TransactionDetail header
             </Typography>
           </Grid>
           <Grid item>
@@ -22,6 +23,7 @@ export default function TransactionDetail(props: ITransactionDetailProps) {
           </Grid>
         </Grid>
       </PageTitleWrapper>
-    <Container maxWidth="lg">TransactionDetail</Container>
-  </>;
+      <Container maxWidth="lg">TransactionDetail</Container>
+    </>
+  );
 }

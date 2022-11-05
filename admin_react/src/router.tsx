@@ -53,6 +53,15 @@ const TransactionDetail = Loader(
 const TransactionAddOrUpdate = Loader(
   lazy(() => import("src/features/Transactions/TransactionAddOrUpdate"))
 );
+const TransactionCategory = Loader(
+  lazy(() => import("src/features/TransactionCategory"))
+);
+const TransactionCategoryAddOrUpdate = Loader(
+  lazy(
+    () =>
+      import("src/features/TransactionCategory/TransactionCategoryAddOrUpdate")
+  )
+);
 
 // Dashboards
 
@@ -263,6 +272,27 @@ const routes: RouteObject[] = [
           {
             path: "update/:id",
             element: <TransactionAddOrUpdate />,
+          },
+        ],
+      },
+      {
+        path: "transaction-category",
+        children: [
+          {
+            path: "",
+            element: <TransactionCategory />,
+          },
+          {
+            path: ":id",
+            element: <TransactionCategory />,
+          },
+          {
+            path: "add",
+            element: <TransactionCategoryAddOrUpdate />,
+          },
+          {
+            path: "update/:id",
+            element: <TransactionCategoryAddOrUpdate />,
           },
         ],
       },

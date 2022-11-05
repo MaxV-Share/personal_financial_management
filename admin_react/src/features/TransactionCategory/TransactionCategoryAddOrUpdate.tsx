@@ -8,8 +8,8 @@ import { SelectField } from "src/components/FormFields/SelectField";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
 import * as yup from "yup";
-export interface ICurrencyAddOrUpdateProps {}
-export type ICurrencyAddOrUpdateParams = {
+export interface ITransactionCategoryAddOrUpdateProps {}
+export type ITransactionCategoryAddOrUpdateParams = {
   id?: string;
 };
 const schema = yup.object().shape({
@@ -20,8 +20,10 @@ const schema = yup.object().shape({
   }),
 });
 
-export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
-  const { id } = useParams<ICurrencyAddOrUpdateParams>();
+export default function TransactionCategoryAddOrUpdate(
+  props: ITransactionCategoryAddOrUpdateProps
+) {
+  const { id } = useParams<ITransactionCategoryAddOrUpdateParams>();
   const navigate = useNavigate();
   const {
     control,
@@ -46,7 +48,7 @@ export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="h3" component="h3" gutterBottom>
-              CurrencyAddOrUpdate {id}
+              TransactionCategoryAddOrUpdate {id}
             </Typography>
           </Grid>
         </Grid>
@@ -57,13 +59,13 @@ export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
             id={`data.code`}
             name={`data.code`}
             control={control}
-            label={`Currency code`}
+            label={`TransactionCategory code`}
           />
           <InputField
             id={`data.name`}
             name={`data.name`}
             control={control}
-            label={`Currency name`}
+            label={`TransactionCategory name`}
           />
           <SelectField
             name={`data.icon`}

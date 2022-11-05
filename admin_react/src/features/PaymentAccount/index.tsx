@@ -17,9 +17,7 @@ export default function PaymentAccount(props: IPaymentAccountProps) {
           spacing={3}
           sx={{ mt: 1 }}
         >
-          <Grid item xs={12}>
-            <PaymentAccountList />
-          </Grid>
+          <PaymentAccountList />
         </Grid>
       </Container>
     </>
