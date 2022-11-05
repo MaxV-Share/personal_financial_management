@@ -27,27 +27,6 @@ const columns: Column[] = [
   { id: "id", label: "Id" },
   { id: "name", label: "Name" },
   { id: "code", label: "ISO\u00a0Code" },
-  // {
-  //   id: 'population',
-  //   label: 'Population',
-  //   minWidth: 170,
-  //   align: 'right',
-  //   format: (value: number) => value.toLocaleString('en-US')
-  // },
-  // {
-  //   id: 'size',
-  //   label: 'Size\u00a0(km\u00b2)',
-  //   minWidth: 170,
-  //   align: 'right',
-  //   format: (value: number) => value.toLocaleString('en-US')
-  // },
-  // {
-  //   id: 'density',
-  //   label: 'Density',
-  //   minWidth: 170,
-  //   align: 'right',
-  //   format: (value: number) => value.toFixed(2)
-  // }
 ];
 
 interface Data {
@@ -71,6 +50,7 @@ function createData(
 export interface ICurrencyTableProps {}
 
 export default function CurrencyTable(props: ICurrencyTableProps) {
+  const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const dispatch = useAppDispatch();
@@ -89,7 +69,6 @@ export default function CurrencyTable(props: ICurrencyTableProps) {
     setPage(0);
   };
   const theme = useTheme();
-  const navigate = useNavigate();
 
   return (
     <Paper sx={{ width: "100%" }}>

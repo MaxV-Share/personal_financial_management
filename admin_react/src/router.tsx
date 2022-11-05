@@ -231,12 +231,8 @@ const routes: RouteObject[] = [
                 element: <PaymentAccountDetail />,
               },
               {
-                path: "update",
-                element: <Navigate to="/admin/transactions/update/:id" />,
-              },
-              {
                 path: "update/:id",
-                element: <Navigate to="/admin/transactions/update/:id" />,
+                element: <TransactionAddOrUpdate />,
               },
             ],
           },

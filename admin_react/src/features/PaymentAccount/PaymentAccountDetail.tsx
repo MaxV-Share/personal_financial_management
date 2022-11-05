@@ -1,6 +1,7 @@
 import { Button, Card, Container, Grid, Typography } from "@mui/material";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 // import { DateRange } from "@mui/x-date-pickers";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,12 +14,15 @@ export interface IPaymentAccountDetailProps {}
 export default function PaymentAccountDetail(
   props: IPaymentAccountDetailProps
 ) {
-  const [value, setValue] = useState<Dayjs | null>(
-    dayjs("2014-08-18T21:11:54")
+  const [fromDate, setFromDate] = useState<Dayjs | null>(
+    dayjs()
+      .add(-1, "M")
+      .add(+1, "d")
   );
+  const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
 
   const handleChange = (newValue: Dayjs | null) => {
-    setValue(newValue);
+    //setValue(newValue);
   };
 
   return (
@@ -31,13 +35,13 @@ export default function PaymentAccountDetail(
             </Typography>
           </Grid>
           <Grid item>
-            {/* <Button
+            <Button
               sx={{ mt: { xs: 2, md: 0 } }}
-              variant="contained"
+              variant="outlined"
               startIcon={<AddTwoToneIcon fontSize="small" />}
             >
               Create transaction
-            </Button> */}
+            </Button>
           </Grid>
         </Grid>
       </PageTitleWrapper>
@@ -48,9 +52,9 @@ export default function PaymentAccountDetail(
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MobileDatePicker
                   label="From"
-                  inputFormat="MM/YYYY"
+                  inputFormat="DD/MM/YYYY"
                   views={["year", "month"]}
-                  value={value}
+                  value={fromDate}
                   onChange={handleChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
@@ -60,8 +64,8 @@ export default function PaymentAccountDetail(
               <LocalizationProvider dateAdapter={AdapterDayjs} mx={1}>
                 <MobileDatePicker
                   label="To"
-                  inputFormat="MM/YYYY"
-                  value={value}
+                  inputFormat="DD/MM/YYYY"
+                  value={toDate}
                   onChange={handleChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
@@ -79,7 +83,7 @@ export default function PaymentAccountDetail(
           </Grid>
         </Card>
         <Box pt={2}>
-          <TransactionDateList />
+          <TransactionDateList data={[]} />
         </Box>
       </Container>
     </>

@@ -6,12 +6,15 @@ import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
+import { ITransactionPerDateModel } from "src/models/Transaction/ITransactionPerDateModel";
 import TransactionList from "./TransactionList";
 export interface ITransactionPerDateProps {
   id: string;
+  data: ITransactionPerDateModel;
 }
 
 export default function TransactionPerDate(props: ITransactionPerDateProps) {
+  const { data } = props;
   const { id } = props;
   const theme = useTheme();
   let vndLocale = Intl.NumberFormat("vi-VN");
@@ -33,20 +36,26 @@ export default function TransactionPerDate(props: ITransactionPerDateProps) {
           }}
         >
           <Box>
-            <Typography>{dayjs().format("DD/MM/YYYY")}</Typography>
+            <Typography>
+              {data?.date == null
+                ? dayjs().format("DD/MM/YYYY") + " demo"
+                : dayjs(data.date).format("DD/MM/YYYY")}
+            </Typography>
           </Box>
 
           <Box>
             <Typography color="success.main">
-              {vndLocale.format(100000)}
+              {vndLocale.format(data?.totalRevenue ?? 0)}
             </Typography>
-            <Typography color="error">{vndLocale.format(200000)}</Typography>
+            <Typography color="error">
+              {vndLocale.format(data?.totalExpense ?? 0)}
+            </Typography>
           </Box>
         </Box>
       </AccordionSummary>
       <AccordionDetails>
         <Divider />
-        <TransactionList />
+        <TransactionList data={data?.transactions ?? []} />
       </AccordionDetails>
     </Accordion>
   );

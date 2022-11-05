@@ -1,5 +1,3 @@
-import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
-import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import { IconButton, Tooltip, useTheme } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -11,10 +9,12 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { selectTransactionCategoryTable } from "../transactionCategorySlice";
 // import { selectTransactionCategoryTable } from "../currencySlice";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import { useNavigate } from "react-router";
 import { ITransactionCategoryModel } from "../../../models/TransactionCategory/ITransactionCategoryModel";
 
 interface Column {
@@ -42,29 +42,28 @@ const columns: Column[] = [
   { id: "parentDescription", label: "parent\u00a0Description" },
 ];
 export interface TransactionCategoryTableRowProps {
-  row: ITransactionCategoryModel;
+  data: ITransactionCategoryModel;
+  id?: any;
 }
 export function TransactionCategoryTableRow(
   props: TransactionCategoryTableRowProps
 ) {
-  const { row } = props;
+  const { data, id } = props;
   const theme = useTheme();
   const navigate = useNavigate();
   return (
-    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+    <TableRow hover role="checkbox" tabIndex={-1} key={id}>
       {columns.map((column) => {
-        const value = row[column.id];
+        const value = data[column.id];
         return (
-          <>
-            <TableCell key={column.id} align={column.align}>
-              {column.format && typeof value === "number"
-                ? column.format(value)
-                : value}
-            </TableCell>
-          </>
+          <TableCell key={column.id + id} align={column.align}>
+            {column.format && typeof value === "number"
+              ? column.format(value)
+              : value}
+          </TableCell>
         );
       })}
-      <TableCell align="right">
+      <TableCell align="right" key={"actions" + id}>
         <Tooltip title="Edit TransactionCategory" arrow>
           <IconButton
             sx={{
@@ -75,7 +74,7 @@ export function TransactionCategoryTableRow(
             }}
             color="inherit"
             size="small"
-            onClick={() => navigate(`update/${row.id}`)}
+            onClick={() => navigate(`update/${data.id}`)}
           >
             <EditTwoToneIcon fontSize="small" />
           </IconButton>
@@ -125,19 +124,18 @@ export default function TransactionCategoryTable(
     setPage(0);
   };
   const theme = useTheme();
-  const navigate = useNavigate();
 
   return (
     <Paper sx={{ width: "100%" }}>
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow key="headerTable1">
               <TableCell align="center" colSpan={columns.length + 1}>
                 TransactionCategory Table
               </TableCell>
             </TableRow>
-            <TableRow>
+            <TableRow key="headerTable2">
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
@@ -150,22 +148,30 @@ export default function TransactionCategoryTable(
               <TableCell
                 align="right"
                 style={{ top: 57, maxWidth: 150, width: 150 }}
+                key="actions"
               >
                 Actions
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableTransactionCategories.data.map((row) => {
+            {tableTransactionCategories?.data?.map((row) => {
               return (
                 <>
-                  <TransactionCategoryTableRow row={row} />
-                  {row.childrens.map((rowChild) => (
-                    <TransactionCategoryTableRow
-                      key={row.parentId + row.id}
-                      row={rowChild}
-                    />
-                  ))}
+                  <TransactionCategoryTableRow
+                    data={row}
+                    id={row.id}
+                    key={row.id}
+                  />
+                  {row.childrens.map((rowChild) => {
+                    return (
+                      <TransactionCategoryTableRow
+                        id={rowChild.parentId + rowChild.id}
+                        key={rowChild.parentId + rowChild.id}
+                        data={rowChild}
+                      />
+                    );
+                  })}
                 </>
               );
             })}

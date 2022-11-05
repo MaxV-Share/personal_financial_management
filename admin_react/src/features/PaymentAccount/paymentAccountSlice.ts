@@ -9,17 +9,21 @@ import {
 } from "src/models/Bases";
 import { IKeyValue } from "src/models/Common";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
+import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/IFetchTransactionsRequest";
+import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
 
-export interface IPaymentAccountTable {
+export interface IPaymentAccountTableModel extends IBaseLoading {
   data: IPaymentAccountModel[];
   pagination: IPagination;
 }
 
 export interface PaymentAccountState {
   isLoading: boolean;
-  table: IBaseLoading & IPaymentAccountTable;
+  table: IPaymentAccountTableModel;
+  paymentAccountTransactions: ITransactionPerDateModelList;
   filterPaymentAccountRequest: IFilterBodyRequest;
   langFilterRequest: IFilterBodyRequest;
+  fetchTransactionsRequest: IFetchTransactionsByPaymentAccountRequest;
 }
 const initialPagination: IPagination = {
   pageIndex: 1,
@@ -42,6 +46,12 @@ const initialState: PaymentAccountState = {
     langId: "",
     pagination: initialPagination,
   },
+  paymentAccountTransactions: {
+    isLoading: false,
+    data: [],
+    pagination: initialPagination,
+  },
+  fetchTransactionsRequest: {},
 };
 
 const paymentAccountSlice = createSlice({
@@ -59,6 +69,10 @@ const paymentAccountSlice = createSlice({
       state.table.pagination = action.payload.pagination;
       state.table.isLoading = false;
     },
+    fetchTransactionsByPaymentAccount(
+      state,
+      action: PayloadAction<IFilterBodyRequest>
+    ) {},
     resetFilter(state) {
       state.filterPaymentAccountRequest = {
         langId: "EN",

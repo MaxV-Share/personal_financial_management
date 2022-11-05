@@ -3,16 +3,12 @@ import ListItem from "@mui/material/ListItem";
 import { useNavigate } from "react-router";
 import { ITransactionItemModel } from "../../../models/Transaction/ITransactionItemModel";
 export interface ITransactionItemProps {
-  data?: ITransactionItemModel;
+  data: ITransactionItemModel;
 }
 
 export default function TransactionItem(props: ITransactionItemProps) {
+  const { data } = props;
   let vndLocale = Intl.NumberFormat("vi-VN");
-  const money = true ? (
-    <Typography color="success.main">{vndLocale.format(100000)}</Typography>
-  ) : (
-    <Typography color="error">{vndLocale.format(200000)}</Typography>
-  );
   const navigate = useNavigate();
   return (
     <ListItem
@@ -64,7 +60,11 @@ export default function TransactionItem(props: ITransactionItemProps) {
           </Hidden>
         </Box>
 
-        <Box>{money}</Box>
+        <Box>
+          <Typography color={data?.totalAmount < 0 ? "error" : "success.main"}>
+            {vndLocale.format(data?.totalAmount)}
+          </Typography>
+        </Box>
       </Box>
       {/* <Divider /> */}
     </ListItem>
