@@ -1,5 +1,6 @@
 import { all } from "redux-saga/effects";
 import currencySaga from "src/features/Currency/currencySaga";
+import paymentAccountTypeSaga from "src/features/PaymentAccountType/paymentAccountTypeSaga";
 import transactionCategorySaga from "src/features/TransactionCategory/transactionCategorySaga";
 
 function* helloSaga() {
@@ -8,5 +9,10 @@ function* helloSaga() {
 }
 
 export default function* rootSaga() {
-  yield all([helloSaga(), currencySaga(), transactionCategorySaga()]);
+  yield all([
+    helloSaga(),
+    currencySaga(),
+    transactionCategorySaga(),
+    paymentAccountTypeSaga(),
+  ]);
 }

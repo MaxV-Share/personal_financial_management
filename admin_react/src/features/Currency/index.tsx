@@ -1,8 +1,9 @@
-import { Button, Container, Grid } from "@mui/material";
-import moment from "moment";
+import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
+import PageTitleWrapper from "src/components/PageTitleWrapper";
 import CurrencyTable from "./Components/CurrencyTable";
 import { currencyActions, selectFilterCurrencyRequest } from "./currencySlice";
 
@@ -15,13 +16,30 @@ export default function Currency(props: ICurrencyProps) {
     dispatch(currencyActions.fetchCurrencies(filter));
   }, [dispatch, filter]);
   const navigate = useNavigate();
-  const yesterday = moment().subtract(1, "day");
-  console.log(yesterday);
   return (
     <>
       {/* <Helmet>
         <title>Currency</title>
       </Helmet> */}
+      <PageTitleWrapper>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <Typography variant="h3" component="h3" gutterBottom>
+              Currency header
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Button
+              sx={{ mt: { xs: 2, md: 0 } }}
+              variant="outlined"
+              startIcon={<AddTwoToneIcon fontSize="small" />}
+              onClick={() => navigate(`add`)}
+            >
+              Create Currency
+            </Button>
+          </Grid>
+        </Grid>
+      </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
           container
@@ -31,13 +49,6 @@ export default function Currency(props: ICurrencyProps) {
           spacing={3}
         >
           <Grid item xs={12}>
-            <Button
-              variant="outlined"
-              sx={{ margin: 1 }}
-              onClick={() => navigate("add")}
-            >
-              Add
-            </Button>
             <CurrencyTable />
           </Grid>
         </Grid>

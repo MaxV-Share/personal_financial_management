@@ -225,7 +225,20 @@ const routes: RouteObject[] = [
           },
           {
             path: ":id",
-            element: <PaymentAccountDetail />,
+            children: [
+              {
+                path: "",
+                element: <PaymentAccountDetail />,
+              },
+              {
+                path: "update",
+                element: <Navigate to="/admin/transactions/update/:id" />,
+              },
+              {
+                path: "update/:id",
+                element: <Navigate to="/admin/transactions/update/:id" />,
+              },
+            ],
           },
           {
             path: "add",

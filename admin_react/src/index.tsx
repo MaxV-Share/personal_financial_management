@@ -1,10 +1,9 @@
+import { StyledEngineProvider } from "@mui/material";
+import "nprogress/nprogress.css";
 import ReactDOM from "react-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-
-import { StyledEngineProvider } from "@mui/material";
-import "nprogress/nprogress.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import App from "src/App";

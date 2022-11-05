@@ -8,6 +8,7 @@ import {
 import currencyReducer from "src/features/Currency/currencySlice";
 import paymentAccountReducer from "src/features/PaymentAccount/paymentAccountSlice";
 import transactionCategoryReducer from "src/features/TransactionCategory/transactionCategorySlice";
+import paymentAccountTypeReducer from "../features/PaymentAccountType/paymentAccountTypeSlice";
 import globalReducer from "./globalSlice";
 import rootSaga from "./rootsaga";
 
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   currency: currencyReducer,
   paymentAccount: paymentAccountReducer,
   transactionCategory: transactionCategoryReducer,
+  paymentAccountType: paymentAccountTypeReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

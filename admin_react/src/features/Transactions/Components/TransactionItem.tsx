@@ -20,6 +20,7 @@ export default function TransactionItem(props: ITransactionItemProps) {
       sx={{
         borderBottom: "solid 1px black",
       }}
+      onClick={() => navigate(`update/${1}`)}
     >
       <Box
         sx={{

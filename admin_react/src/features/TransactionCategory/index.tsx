@@ -30,7 +30,7 @@ export default function TransactionCategory(props: ITransactionCategoryProps) {
           <Grid item>
             <Button
               sx={{ mt: { xs: 2, md: 0 } }}
-              variant="contained"
+              variant="outlined"
               startIcon={<AddTwoToneIcon fontSize="small" />}
               onClick={() => navigate(`add`)}
             >
