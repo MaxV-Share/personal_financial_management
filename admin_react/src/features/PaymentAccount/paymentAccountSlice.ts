@@ -51,7 +51,9 @@ const initialState: PaymentAccountState = {
     data: [],
     pagination: initialPagination,
   },
-  fetchTransactionsRequest: {},
+  fetchTransactionsRequest: {
+    paymentAccountId: null,
+  },
 };
 
 const paymentAccountSlice = createSlice({
@@ -106,7 +108,7 @@ export const selectPaymentAccountTable = createSelector(
   [
     (state: RootState) => state.paymentAccount.table,
     (state: RootState) => state.paymentAccount.table.data,
-    (state: RootState) => state.paymentAccount.table.isLoading,
+    // (state: RootState) => state.paymentAccount.table.isLoading,
     (state: RootState) => state.paymentAccount.table.pagination,
   ],
   (table) => {

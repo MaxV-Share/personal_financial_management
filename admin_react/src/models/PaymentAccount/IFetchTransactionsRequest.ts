@@ -1,1 +1,3 @@
-export interface IFetchTransactionsByPaymentAccountRequest {}
+export interface IFetchTransactionsByPaymentAccountRequest {
+  paymentAccountId?: string;
+}
