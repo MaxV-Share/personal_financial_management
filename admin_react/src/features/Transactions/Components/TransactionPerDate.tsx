@@ -39,15 +39,15 @@ export default function TransactionPerDate(props: ITransactionPerDateProps) {
             <Typography>
               {data?.date == null
                 ? dayjs().format("DD/MM/YYYY") + " demo"
-                : dayjs(data.date).format("DD/MM/YYYY")}
+                : dayjs(data.date).locale("vi").format()}
             </Typography>
           </Box>
 
           <Box>
-            <Typography color="success.main">
+            <Typography color="success.main" align="right">
               {vndLocale.format(data?.totalRevenue ?? 0)}
             </Typography>
-            <Typography color="error">
+            <Typography color="error" align="right">
               {vndLocale.format(data?.totalExpense ?? 0)}
             </Typography>
           </Box>

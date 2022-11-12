@@ -6,9 +6,9 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { InputField } from "src/components/FormFields/InputField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
-import { IPaymentAccountCreateOrUpdateModel } from "src/models/PaymentAccount/IPaymentAccountCreateOrUpdateModel";
+import { IPaymentAccountCreateOrUpdateRequestModel } from "src/models/PaymentAccount";
 import * as yup from "yup";
-export interface IPaymentAccountAddOrUpdateProps { }
+export interface IPaymentAccountAddOrUpdateProps {}
 export type IPaymentAccountAddOrUpdateParams = {
   id?: string;
 };
@@ -32,7 +32,9 @@ export default function PaymentAccountAddOrUpdate(
     reset,
     formState: { isSubmitting, errors },
   } = useForm<
-    IBaseAddOrUpdateBodyRequest<IPaymentAccountCreateOrUpdateModel & { country: any }>,
+    IBaseAddOrUpdateBodyRequest<
+      IPaymentAccountCreateOrUpdateRequestModel & { country: any }
+    >,
     object
   >({
     defaultValues: {

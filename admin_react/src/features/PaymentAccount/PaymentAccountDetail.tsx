@@ -6,14 +6,42 @@ import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import TransactionDateList from "../Transactions/Components/TransactionDateList";
+import {
+  paymentAccountActions,
+  selectPaymentAccountTransactions,
+} from "./paymentAccountSlice";
 export interface IPaymentAccountDetailProps {}
+export type IPaymentAccountDetailParams = {
+  id?: string;
+};
 
 export default function PaymentAccountDetail(
   props: IPaymentAccountDetailProps
 ) {
+  const { id } = useParams<IPaymentAccountDetailParams>();
+  const dispatch = useAppDispatch();
+  dispatch(
+    paymentAccountActions.fetchTransactionsByPaymentAccount({
+      id: id,
+    })
+  );
+  // useEffect(() => {
+  //   dispatch(
+  //     paymentAccountActions.fetchTransactionsByPaymentAccount({
+  //       id: id,
+  //     })
+  //   );
+  // }, [dispatch, id]);
+  const transactionDateList = useAppSelector(selectPaymentAccountTransactions);
+  useEffect(() => {
+    console.log("transactionDateList", transactionDateList);
+  }, [transactionDateList]);
+
   const [fromDate, setFromDate] = useState<Dayjs | null>(
     dayjs()
       .add(-1, "M")
@@ -83,7 +111,7 @@ export default function PaymentAccountDetail(
           </Grid>
         </Card>
         <Box pt={2}>
-          <TransactionDateList data={[]} />
+          <TransactionDateList data={transactionDateList.data} />
         </Box>
       </Container>
     </>

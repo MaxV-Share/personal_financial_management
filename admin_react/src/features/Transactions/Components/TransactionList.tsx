@@ -9,12 +9,10 @@ export interface ITransactionListProps {
 export default function TransactionList(props: ITransactionListProps) {
   const { data } = props;
   return (
-    <>
-      <List component="nav" aria-label="mailbox folders">
-        <TransactionItem data={null} />
-        <TransactionItem data={null} />
-        <TransactionItem data={null} />
-      </List>
-    </>
+    <List component="nav" aria-label="mailbox folders">
+      {data.map((item) => (
+        <TransactionItem data={item} />
+      ))}
+    </List>
   );
 }

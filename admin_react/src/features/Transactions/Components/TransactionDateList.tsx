@@ -19,10 +19,6 @@ export default function TransactionDateList(props: ITransactionListProps) {
           </Box>
         );
       })}
-      <Box mt={1}>
-        <TransactionPerDate data={null} id={"panel2a"} />
-        <Divider />
-      </Box>
       {/* </Grid> */}
     </>
   );

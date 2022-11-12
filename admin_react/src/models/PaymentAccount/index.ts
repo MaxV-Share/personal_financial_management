@@ -1,3 +1,3 @@
-export * from "./IPaymentAccountCreateOrUpdateModel";
 export * from "./IPaymentAccountModel";
-export * from "./IPaymentAccountSelect";
+export * from "./IPaymentAccountSelectModel";
+export * from "./Requests/IPaymentAccountCreateOrUpdateRequestModel";

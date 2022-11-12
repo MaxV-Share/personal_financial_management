@@ -9,7 +9,7 @@ import {
 } from "src/models/Bases";
 import { IKeyValue } from "src/models/Common";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
-import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/IFetchTransactionsRequest";
+import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsRequest";
 import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
 
 export interface IPaymentAccountTableModel extends IBaseLoading {
@@ -20,7 +20,7 @@ export interface IPaymentAccountTableModel extends IBaseLoading {
 export interface PaymentAccountState {
   isLoading: boolean;
   table: IPaymentAccountTableModel;
-  paymentAccountTransactions: ITransactionPerDateModelList;
+  paymentAccountTransactions: ITransactionPerDateModelList & IBaseLoading;
   filterPaymentAccountRequest: IFilterBodyRequest;
   langFilterRequest: IFilterBodyRequest;
   fetchTransactionsRequest: IFetchTransactionsByPaymentAccountRequest;
@@ -73,8 +73,19 @@ const paymentAccountSlice = createSlice({
     },
     fetchTransactionsByPaymentAccount(
       state,
-      action: PayloadAction<IFilterBodyRequest>
-    ) {},
+      action: PayloadAction<IFetchTransactionsByPaymentAccountRequest>
+    ) {
+      state.paymentAccountTransactions.isLoading = true;
+      state.fetchTransactionsRequest = action.payload;
+    },
+    fetchTransactionsByPaymentAccountSuccess(
+      state,
+      action: PayloadAction<ITransactionPerDateModelList>
+    ) {
+      // console.log("fetchTransactionsByPaymentAccountSuccess", action);
+      state.paymentAccountTransactions = action.payload;
+      state.paymentAccountTransactions.isLoading = false;
+    },
     resetFilter(state) {
       state.filterPaymentAccountRequest = {
         langId: "EN",
@@ -121,3 +132,7 @@ export const selectPaymentAccountTablePagination = (state: RootState) =>
   state.paymentAccount.table.pagination;
 export const selectFilterPaymentAccountRequest = (state: RootState) =>
   state.paymentAccount.filterPaymentAccountRequest;
+export const selectPaymentAccountTransactions = createSelector(
+  [(state: RootState) => state.paymentAccount.paymentAccountTransactions],
+  (paymentAccountTransactions) => paymentAccountTransactions
+);

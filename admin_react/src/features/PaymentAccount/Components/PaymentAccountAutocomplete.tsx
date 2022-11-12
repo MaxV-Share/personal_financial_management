@@ -1,7 +1,7 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { Control, Controller } from "react-hook-form";
-import { IPaymentAccountSelectModel } from "src/models/PaymentAccount/IPaymentAccountSelect";
+import { IPaymentAccountSelectModel } from "src/models/PaymentAccount/IPaymentAccountSelectModel";
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
 export interface IPaymentAccountAutocompleteProps {

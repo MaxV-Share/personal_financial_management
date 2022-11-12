@@ -1,8 +1,8 @@
-import { ICurrencyModel } from "../Currency";
-import { IPaymentAccountTypeModel } from "../PaymentAccountType";
-import { IBasePaymentAccountModel } from "./IBasePaymentAccountModel";
+import { ICurrencyModel } from "../../Currency";
+import { IPaymentAccountTypeModel } from "../../PaymentAccountType";
+import { IBasePaymentAccountModel } from "../IBasePaymentAccountModel";
 
-export interface IPaymentAccountCreateOrUpdateModel
+export interface IPaymentAccountCreateOrUpdateRequestModel
   extends IBasePaymentAccountModel {
   name: string;
   initialMoney: number;

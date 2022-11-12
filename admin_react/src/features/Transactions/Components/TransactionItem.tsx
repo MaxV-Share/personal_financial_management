@@ -38,9 +38,7 @@ export default function TransactionItem(props: ITransactionItemProps) {
                 maxWidth: "100%",
               }}
             >
-              {
-                "1Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lo rem ipsum Description lorem ipsum Description lorem ipsum "
-              }
+              {data.description}
             </Typography>
           </Hidden>
           <Hidden mdDown>
@@ -53,16 +51,25 @@ export default function TransactionItem(props: ITransactionItemProps) {
                 maxWidth: "100%",
               }}
             >
-              {
-                "Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum Description lorem ipsum "
-              }
+              {data.description}
             </Typography>
           </Hidden>
         </Box>
 
         <Box>
-          <Typography color={data?.totalAmount < 0 ? "error" : "success.main"}>
+          <Typography
+            color={data?.totalAmount < 0 ? "error" : "success.main"}
+            align="right"
+            sx={{ fontWeight: "bold" }}
+          >
             {vndLocale.format(data?.totalAmount)}
+          </Typography>
+          <Typography
+            // color={data?.totalAmount < 0 ? "error" : "success.main"}
+            align="right"
+            variant="inherit"
+          >
+            ({vndLocale.format(data?.balance ?? 0)})
           </Typography>
         </Box>
       </Box>

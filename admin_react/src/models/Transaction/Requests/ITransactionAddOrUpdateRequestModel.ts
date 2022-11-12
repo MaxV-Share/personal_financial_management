@@ -1,7 +1,8 @@
-import { IPaymentAccountSelectModel } from "./../PaymentAccount/IPaymentAccountSelect";
-import { IBaseTransactionModel } from "./IBaseTransactionModel";
+import { IPaymentAccountSelectModel } from "../../PaymentAccount/IPaymentAccountSelectModel";
+import { IBaseTransactionModel } from "../IBaseTransactionModel";
 
-export interface ITransactionAddOrUpdateModel extends IBaseTransactionModel {
+export interface ITransactionAddOrUpdateRequestModel
+  extends IBaseTransactionModel {
   transactionDate?: Date;
   isReport?: boolean;
   imageUrl?: string;

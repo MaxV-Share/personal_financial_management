@@ -1,5 +1,6 @@
 import { all } from "redux-saga/effects";
 import currencySaga from "src/features/Currency/currencySaga";
+import paymentAccountSaga from "src/features/PaymentAccount/paymentAccountSaga";
 import paymentAccountTypeSaga from "src/features/PaymentAccountType/paymentAccountTypeSaga";
 import transactionCategorySaga from "src/features/TransactionCategory/transactionCategorySaga";
 
@@ -14,5 +15,6 @@ export default function* rootSaga() {
     currencySaga(),
     transactionCategorySaga(),
     paymentAccountTypeSaga(),
+    paymentAccountSaga(),
   ]);
 }

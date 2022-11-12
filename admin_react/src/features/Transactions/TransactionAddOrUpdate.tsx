@@ -19,8 +19,8 @@ import { toast } from "react-toastify";
 import { InputField } from "src/components/FormFields/InputField";
 import PaymentAccountAutocomplete from "src/features/PaymentAccount/Components/PaymentAccountAutocomplete";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
-import { IPaymentAccountSelectModel } from "src/models/PaymentAccount/IPaymentAccountSelect";
-import { ITransactionAddOrUpdateModel } from "src/models/Transaction/ITransactionAddOrUpdateModel";
+import { IPaymentAccountSelectModel } from "src/models/PaymentAccount/IPaymentAccountSelectModel";
+import { ITransactionAddOrUpdateRequestModel } from "src/models/Transaction/Requests/ITransactionAddOrUpdateRequestModel";
 import * as yup from "yup";
 export interface ITransactionAddOrUpdateProps {}
 export type ITransactionAddOrUpdateParams = {
@@ -48,7 +48,7 @@ export default function TransactionAddOrUpdate(
     getValues,
     setValue,
   } = useForm<
-    IBaseAddOrUpdateBodyRequest<ITransactionAddOrUpdateModel>,
+    IBaseAddOrUpdateBodyRequest<ITransactionAddOrUpdateRequestModel>,
     object
   >({
     defaultValues: {
@@ -63,7 +63,7 @@ export default function TransactionAddOrUpdate(
   });
   const onSubmit = (object) => {
     console.log("TransactionAddOrUpdate", object);
-    toast.success("Save TransactionAddOrUpdate successfully!");
+    toast.success(`Save TransactionAddOrUpdate successfully! ${id}`);
   };
   const optionsData: IPaymentAccountSelectModel[] = [
     {
