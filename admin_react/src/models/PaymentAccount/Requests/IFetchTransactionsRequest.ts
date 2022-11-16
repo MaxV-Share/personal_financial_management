@@ -1,3 +1,2 @@
-export interface IFetchTransactionsByPaymentAccountRequest {
-  paymentAccountId?: string;
-}
+import { IBaseTransactionsRequest } from "./IBaseTransactionsRequest";
+export interface IFetchTransactionsRequest extends IBaseTransactionsRequest {}

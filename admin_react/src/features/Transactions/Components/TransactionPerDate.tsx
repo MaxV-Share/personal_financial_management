@@ -39,7 +39,7 @@ export default function TransactionPerDate(props: ITransactionPerDateProps) {
             <Typography>
               {data?.date == null
                 ? dayjs().format("DD/MM/YYYY") + " demo"
-                : dayjs(data.date).locale("vi").format()}
+                : dayjs(data.date).locale("DD/MM/YYYY").format()}
             </Typography>
           </Box>
 

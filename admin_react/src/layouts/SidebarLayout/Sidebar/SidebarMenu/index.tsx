@@ -8,6 +8,7 @@ import {
   ListItem,
   ListSubheader,
   styled,
+  useTheme,
 } from "@mui/material";
 import Icon from "@mui/material/Icon";
 import { NavLink as RouterLink } from "react-router-dom";
@@ -177,7 +178,7 @@ const SubMenuWrapper = styled(Box)(
 
 function SidebarMenu() {
   const { closeSidebar } = useContext(SidebarContext);
-
+  const theme = useTheme();
   return (
     <>
       <MenuWrapper>
@@ -247,9 +248,20 @@ function SidebarMenu() {
                   component={RouterLink}
                   onClick={closeSidebar}
                   to="/admin/transaction-category"
-                  startIcon={<Icon>star</Icon>}
+                  startIcon={<Icon>add_circle</Icon>}
                 >
                   Transaction Category
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/admin/transactions"
+                  startIcon={<Icon className="outlined">settings</Icon>}
+                >
+                  Transactions
                 </Button>
               </ListItem>
             </List>

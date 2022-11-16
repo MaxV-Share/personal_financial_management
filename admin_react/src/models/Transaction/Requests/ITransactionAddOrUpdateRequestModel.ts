@@ -3,7 +3,7 @@ import { IBaseTransactionModel } from "../IBaseTransactionModel";
 
 export interface ITransactionAddOrUpdateRequestModel
   extends IBaseTransactionModel {
-  transactionDate?: Date;
+  transactionDate?: string;
   isReport?: boolean;
   imageUrl?: string;
   fromPaymentAccountId?: string;

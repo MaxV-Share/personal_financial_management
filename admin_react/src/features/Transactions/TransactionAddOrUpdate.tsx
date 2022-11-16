@@ -57,6 +57,7 @@ export default function TransactionAddOrUpdate(
         totalAmount: 0,
         fees: 0,
         isReport: true,
+        transactionDate: dayjs().format("YYYY-MM-DDTHH:mm"),
       },
     },
     resolver: yupResolver(schema),
@@ -121,7 +122,6 @@ export default function TransactionAddOrUpdate(
             control={control}
             label={`transactionDate`}
             type="datetime-local"
-            defaultValue={dayjs().format("YYYY-MM-DDTHH:mm")}
           />
           <InputField
             id={`data.fees`}

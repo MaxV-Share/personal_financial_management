@@ -13,7 +13,7 @@ export default function TransactionDateList(props: ITransactionListProps) {
       {/* <Grid item xs={12}> */}
       {data.map((transactionPerDate) => {
         return (
-          <Box mt={1}>
+          <Box mt={1} key={transactionPerDate.date}>
             <TransactionPerDate data={transactionPerDate} id={"panel1a"} />
             <Divider />
           </Box>

@@ -47,6 +47,7 @@ const PaymentAccountTypeAddOrUpdate = Loader(
       import("src/features/PaymentAccountType/PaymentAccountTypeAddOrUpdate")
   )
 );
+const Transactions = Loader(lazy(() => import("src/features/Transactions")));
 const TransactionDetail = Loader(
   lazy(() => import("src/features/Transactions/TransactionDetail"))
 );
@@ -72,7 +73,7 @@ const Crypto = Loader(lazy(() => import("src/content/dashboards/Crypto")));
 const Messenger = Loader(
   lazy(() => import("src/content/applications/Messenger"))
 );
-const Transactions = Loader(
+const TransactionsContent = Loader(
   lazy(() => import("src/content/applications/Transactions"))
 );
 const UserProfile = Loader(
@@ -268,7 +269,7 @@ const routes: RouteObject[] = [
         children: [
           {
             path: "",
-            element: <TransactionDetail />,
+            element: <Transactions />,
           },
           {
             path: ":id",
@@ -317,7 +318,7 @@ const routes: RouteObject[] = [
       },
       {
         path: "transactions",
-        element: <Transactions />,
+        element: <TransactionsContent />,
       },
       {
         path: "profile",

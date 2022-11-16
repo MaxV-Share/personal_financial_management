@@ -3,6 +3,7 @@ import currencySaga from "src/features/Currency/currencySaga";
 import paymentAccountSaga from "src/features/PaymentAccount/paymentAccountSaga";
 import paymentAccountTypeSaga from "src/features/PaymentAccountType/paymentAccountTypeSaga";
 import transactionCategorySaga from "src/features/TransactionCategory/transactionCategorySaga";
+import transactionSaga from "src/features/Transactions/transactionSaga";
 
 function* helloSaga() {
   console.log("hello saga");
@@ -16,5 +17,6 @@ export default function* rootSaga() {
     transactionCategorySaga(),
     paymentAccountTypeSaga(),
     paymentAccountSaga(),
+    transactionSaga(),
   ]);
 }

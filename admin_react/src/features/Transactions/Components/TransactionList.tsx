@@ -11,7 +11,7 @@ export default function TransactionList(props: ITransactionListProps) {
   return (
     <List component="nav" aria-label="mailbox folders">
       {data.map((item) => (
-        <TransactionItem data={item} />
+        <TransactionItem key={item.id} data={item} />
       ))}
     </List>
   );

@@ -102,17 +102,6 @@ function Hero() {
           >
             Browse Live Preview
           </Button>
-          <Button
-            sx={{ ml: 2 }}
-            component="a"
-            target="_blank"
-            rel="noopener"
-            href="https://bloomui.com/product/tokyo-free-white-react-typescript-material-ui-admin-dashboard"
-            size="large"
-            variant="text"
-          >
-            Key Features
-          </Button>
           <Grid container spacing={3} mt={5}>
             <Grid item md={6}>
               <MuiAvatar>

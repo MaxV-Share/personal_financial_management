@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { put, takeLatest } from "redux-saga/effects";
 import { IBasePaging, IFilterBodyRequest } from "src/models/Bases";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
-import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsRequest";
+import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsByPaymentAccountRequest";
 import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
 import { paymentAccountActions } from "./paymentAccountSlice";
 
@@ -73,7 +73,7 @@ function* fetchTransactionsByPaymentAccount(
     const result: ITransactionPerDateModelList = {
       data: [
         {
-          date: dayjs().toDate(),
+          date: dayjs().toDate().toISOString(),
           totalExpense: -100000,
           totalRevenue: 110000,
           transactions: [
@@ -83,7 +83,7 @@ function* fetchTransactionsByPaymentAccount(
               fees: 10000,
               totalAmount: 110000,
               description: "description",
-              transactionDate: dayjs().toDate(),
+              transactionDate: dayjs().toDate().toISOString(),
             },
             {
               id: "2",
@@ -91,12 +91,12 @@ function* fetchTransactionsByPaymentAccount(
               fees: 0,
               totalAmount: -100000,
               description: "description",
-              transactionDate: dayjs().toDate(),
+              transactionDate: dayjs().toDate().toISOString(),
             },
           ],
         },
         {
-          date: dayjs().add(-1, "d").toDate(),
+          date: dayjs().add(-1, "d").toDate().toISOString(),
           totalExpense: 0,
           totalRevenue: 960000,
           transactions: [
@@ -106,7 +106,7 @@ function* fetchTransactionsByPaymentAccount(
               fees: 10000,
               totalAmount: 910000,
               description: "description",
-              transactionDate: dayjs().add(-1, "d").toDate(),
+              transactionDate: dayjs().add(-1, "d").toDate().toISOString(),
             },
             {
               id: "2",
@@ -114,7 +114,7 @@ function* fetchTransactionsByPaymentAccount(
               fees: 0,
               totalAmount: 50000,
               description: "description",
-              transactionDate: dayjs().add(-1, "d").toDate(),
+              transactionDate: dayjs().add(-1, "d").toDate().toISOString(),
             },
           ],
         },
@@ -126,7 +126,6 @@ function* fetchTransactionsByPaymentAccount(
         totalRows: 100,
       },
     };
-    console.log("paymentAccountSaga.fetchTransactionsByPaymentAccount", result);
     yield put(
       paymentAccountActions.fetchTransactionsByPaymentAccountSuccess(result)
     );

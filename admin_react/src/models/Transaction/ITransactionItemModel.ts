@@ -1,6 +1,6 @@
 import { IBaseTransactionModel } from "./IBaseTransactionModel";
 export interface ITransactionItemModel extends IBaseTransactionModel {
-  transactionDate?: Date;
+  transactionDate?: string;
   isReport?: boolean;
   imageUrl?: string;
   balance?: number;

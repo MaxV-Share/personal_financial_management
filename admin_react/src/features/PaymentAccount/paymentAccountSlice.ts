@@ -9,7 +9,7 @@ import {
 } from "src/models/Bases";
 import { IKeyValue } from "src/models/Common";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
-import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsRequest";
+import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsByPaymentAccountRequest";
 import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
 
 export interface IPaymentAccountTableModel extends IBaseLoading {
@@ -53,6 +53,7 @@ const initialState: PaymentAccountState = {
   },
   fetchTransactionsRequest: {
     paymentAccountId: null,
+    pagination: initialPagination,
   },
 };
 
@@ -82,7 +83,6 @@ const paymentAccountSlice = createSlice({
       state,
       action: PayloadAction<ITransactionPerDateModelList>
     ) {
-      // console.log("fetchTransactionsByPaymentAccountSuccess", action);
       state.paymentAccountTransactions = action.payload;
       state.paymentAccountTransactions.isLoading = false;
     },
