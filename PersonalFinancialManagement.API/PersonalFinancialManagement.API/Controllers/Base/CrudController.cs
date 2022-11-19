@@ -57,7 +57,7 @@ namespace PersonalFinancialManagement.API.Controllers.Base
         [HttpPost("filter")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public abstract Task<ActionResult<IBasePaging<TViewModel>>> GetPaging(IFilterBodyRequest request);
+        public abstract Task<ActionResult<IBasePaging<TViewModel>>> GetPaging(FilterBodyRequest request);
         [HttpGet("{id}")]
         public virtual async Task<ActionResult> GetById(TKey id)
         {

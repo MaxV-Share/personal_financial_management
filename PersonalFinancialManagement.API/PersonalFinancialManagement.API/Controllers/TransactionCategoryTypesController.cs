@@ -23,7 +23,7 @@ namespace PersonalFinancialManagement.API.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionCategoryTypeViewModel>))]
-        public override async Task<ActionResult<IBasePaging<TransactionCategoryTypeViewModel>>> GetPaging(IFilterBodyRequest request)
+        public override async Task<ActionResult<IBasePaging<TransactionCategoryTypeViewModel>>> GetPaging(FilterBodyRequest request)
         {
             var result = await _transactionCategoryTypeService.GetPagingAsync(request);
             return Ok(result);

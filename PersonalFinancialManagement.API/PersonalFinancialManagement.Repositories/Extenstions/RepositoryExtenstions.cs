@@ -11,6 +11,7 @@ namespace PersonalFinancialManagement.Repositories.Extenstions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddProxiedScoped<IBaseRepository<TransactionCategoryType, Guid>, BaseRepository<TransactionCategoryType, Guid>>();
+            services.AddProxiedScoped<IBaseRepository<Currency, Guid>, BaseRepository<Currency, Guid>>();
         }
     }
 }

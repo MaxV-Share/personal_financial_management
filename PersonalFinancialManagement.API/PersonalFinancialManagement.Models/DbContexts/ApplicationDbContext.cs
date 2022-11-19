@@ -15,10 +15,12 @@ namespace PersonalFinancialManagement.Models.DbContexts
             _configuration = configuration;
         }
         public virtual DbSet<TransactionCategoryType> TransactionCategoryTypes { set; get; }
+        public virtual DbSet<Currency> Currencies { set; get; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<TransactionCategoryType>().HasQueryFilter(p => p.Deleted == null);
+            builder.Entity<Currency>().HasQueryFilter(p => p.Deleted == null);
 
             builder.Entity<User>()
                 .HasMany(e => e.UserRoles)
