@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonalFinancialManagement.Models.Dtos.TransactionCategoryType
+namespace PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes
 {
     public interface IBaseTransactionCategoryType
     {

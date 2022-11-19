@@ -11,13 +11,13 @@ using PersonalFinancialManagement.Services.Base;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Services.Interfaces;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
 using PersonalFinancialManagement.Common.Models;
 using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Common.Extensions;
 using PersonalFinancialManagement.EFCore;
 using PersonalFinancialManagement.Models.DbContexts;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
 
 namespace PersonalFinancialManagement.Services
 {

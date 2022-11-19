@@ -12,6 +12,7 @@ namespace PersonalFinancialManagement.Repositories.Extenstions
         {
             services.AddProxiedScoped<IBaseRepository<TransactionCategoryType, Guid>, BaseRepository<TransactionCategoryType, Guid>>();
             services.AddProxiedScoped<IBaseRepository<Currency, Guid>, BaseRepository<Currency, Guid>>();
+            services.AddProxiedScoped<IBaseRepository<PaymentAccountType, Guid>, BaseRepository<PaymentAccountType, Guid>>();
         }
     }
 }

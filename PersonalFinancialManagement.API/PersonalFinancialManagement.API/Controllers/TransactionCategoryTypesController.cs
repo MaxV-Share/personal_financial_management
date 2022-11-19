@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using PersonalFinancialManagement.API.Controllers.Base;
 using PersonalFinancialManagement.Common.Models;
 using PersonalFinancialManagement.Models.DbContexts;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Services;
 using PersonalFinancialManagement.Services.Interfaces;
 using PersonalFinancialManagement.Common.Models.DTOs;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
 
 namespace PersonalFinancialManagement.API.Controllers
 { 

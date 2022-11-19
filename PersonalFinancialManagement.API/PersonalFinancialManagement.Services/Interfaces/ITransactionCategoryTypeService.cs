@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PersonalFinancialManagement.Models.Entities;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
 using PersonalFinancialManagement.Models.DbContexts;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
 
 namespace PersonalFinancialManagement.Services.Interfaces
 {

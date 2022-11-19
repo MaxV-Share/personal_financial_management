@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonalFinancialManagement.Models.Dtos.TransactionCategoryType
+namespace PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests
 {
-    public class TransactionCategoryTypeViewModel : BaseViewModel<Guid>, IBaseTransactionCategoryType
+    public class PaymentAccountTypeUpdateRequest : BaseUpdateRequest<Guid>, IBasePaymentAccountType
     {
         public string? Code { get; set; }
         public string? Name { get; set; }

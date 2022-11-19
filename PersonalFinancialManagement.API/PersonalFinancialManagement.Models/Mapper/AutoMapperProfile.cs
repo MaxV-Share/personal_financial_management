@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using PersonalFinancialManagement.Models.Dtos.Currencies;
 using PersonalFinancialManagement.Models.Dtos.Currencies.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
 using PersonalFinancialManagement.Models.Entities;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
 
 namespace App.Models.Mapper
 {
@@ -20,7 +22,10 @@ namespace App.Models.Mapper
             CreateMap<Currency, CurrencyUpdateRequest>().ReverseMap();
             CreateMap<Currency, CurrencyViewModel>().ReverseMap();
 
-        }
+            CreateMap<PaymentAccountType, PaymentAccountTypeCreateRequest>().ReverseMap();
+            CreateMap<PaymentAccountType, PaymentAccountTypeUpdateRequest>().ReverseMap();
+            CreateMap<PaymentAccountType, PaymentAccountTypeViewModel>().ReverseMap();
 
+        }
     }
 }

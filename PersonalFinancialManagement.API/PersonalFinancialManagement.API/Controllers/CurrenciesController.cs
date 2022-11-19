@@ -15,17 +15,17 @@ namespace PersonalFinancialManagement.API.Controllers
     [Route("[controller]")]
     public class CurrenciesController : CrudController<ApplicationDbContext, Currency, CurrencyCreateRequest, CurrencyUpdateRequest, CurrencyViewModel, Guid>
     {
-        private readonly ICurrencyService _transactionCategoryTypeService;
+        private readonly ICurrencyService _currencyTypeService;
 
-        public CurrenciesController(ILogger<CurrenciesController> logger, ICurrencyService transactionCategoryTypeService) : base(logger, transactionCategoryTypeService)
+        public CurrenciesController(ILogger<CurrenciesController> logger, ICurrencyService currencyTypeService) : base(logger, currencyTypeService)
         {
-            _transactionCategoryTypeService = transactionCategoryTypeService;
+            _currencyTypeService = currencyTypeService;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<CurrencyViewModel>))]
         public override async Task<ActionResult<IBasePaging<CurrencyViewModel>>> GetPaging(FilterBodyRequest request)
         {
-            var result = await _transactionCategoryTypeService.GetPagingAsync(request);
+            var result = await _currencyTypeService.GetPagingAsync(request);
             return Ok(result);
         }
     }
