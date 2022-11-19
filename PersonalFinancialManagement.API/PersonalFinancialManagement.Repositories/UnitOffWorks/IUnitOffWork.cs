@@ -8,7 +8,7 @@ using PersonalFinancialManagement.Common.Models;
 
 namespace PersonalFinancialManagement.Repositories.UnitOffWorks
 {
-    public interface IUnitOffWork //: IDisposable
+    public interface IUnitOffWork<TContext> //: IDisposable
     {
         Task<int> SaveChangesAsync();
         int SaveChanges();

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PersonalFinancialManagement.Models.DbContexts;
+using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Models.Entities.Identities;
 
 namespace PersonalFinancialManagement.Models.DbContexts
@@ -13,9 +14,11 @@ namespace PersonalFinancialManagement.Models.DbContexts
         {
             _configuration = configuration;
         }
+        public virtual DbSet<TransactionCategoryType> TransactionCategoryTypes { set; get; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<TransactionCategoryType>().HasQueryFilter(p => p.Deleted == null);
 
             builder.Entity<User>()
                 .HasMany(e => e.UserRoles)

@@ -1,6 +1,8 @@
 ﻿using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalFinancialManagement.Common.Extensions;
 using PersonalFinancialManagement.Common.Interceptors;
+using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.Services.Extenstions
 {
@@ -10,6 +12,8 @@ namespace PersonalFinancialManagement.Services.Extenstions
         {
             services.AddSingleton<IProxyGenerator, ProxyGenerator>();
             services.AddScoped<IAsyncInterceptor, MonitoringInterceptor>();
+            services.AddProxiedScoped<ITransactionCategoryTypeService, TransactionCategoryTypeService>();
+
             //services.AddProxiedScoped<IAuthenticationService, AuthenticationService>();
             //services.AddProxiedScoped<IBillDetailService, BillDetailService>();
             //services.AddProxiedScoped<IBillService, BillService>();

@@ -21,16 +21,17 @@ namespace PersonalFinancialManagement.Services.Base
     /// <typeparam name="TUpdateRequest"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public abstract class BaseService<TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey> : IBaseService<TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey>
-        where TEntity : BaseEntity<TKey>, new()
+    public abstract class BaseService<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey> : IBaseService<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey>
+        where TEntity : BaseEntity<TKey?>, new()
         where TCreateRequest : BaseCreateRequest, new()
         where TUpdateRequest : BaseUpdateRequest<TKey>, new()
         where TViewModel : BaseViewModel<TKey>, new()
+        where TContext : DbContext
     {
         protected readonly IMapper _mapper;
-        protected readonly IUnitOffWork _unitOffWork;
+        protected readonly IUnitOffWork<TContext> _unitOffWork;
         protected readonly ILogger _logger;
-        protected BaseService(IMapper mapper, IUnitOffWork unitOffWork, ILogger logger)
+        protected BaseService(IMapper mapper, IUnitOffWork<TContext> unitOffWork, ILogger logger)
         {
             _mapper = mapper;
             _unitOffWork = unitOffWork;
@@ -41,7 +42,7 @@ namespace PersonalFinancialManagement.Services.Base
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<int> DeleteHardAsync(TKey id)
+        public async Task<int?> DeleteHardAsync(TKey id)
         {
             await _unitOffWork.Repository<TEntity, TKey>().DeleteHardAsync(id);
             return await _unitOffWork.SaveChangesAsync();
@@ -51,7 +52,7 @@ namespace PersonalFinancialManagement.Services.Base
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<int> DeleteSoftAsync(TKey id)
+        public async Task<int?> DeleteSoftAsync(TKey id)
         {
             return await _unitOffWork.Repository<TEntity, TKey>().DeleteSoftAsync(id);
         }
@@ -59,20 +60,19 @@ namespace PersonalFinancialManagement.Services.Base
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<TViewModel>> GetAllDTOAsync()
+        public virtual async Task<IEnumerable<TViewModel>?> GetAllDTOAsync()
         {
-            await Task.Delay(3000);
             var query = _unitOffWork.Repository<TEntity, TKey>();
             var result = await _mapper.ProjectTo<TViewModel>(query.GetNoTrackingEntities()).ToListAsync();
             return result;
         }
-        public virtual async Task<TViewModel> GetByIdAsync(TKey id)
+        public virtual async Task<TViewModel?> GetByIdAsync(TKey id)
         {
             var entity = await _unitOffWork.Repository<TEntity, TKey>().GetByIdNoTrackingAsync(id);
             var result = _mapper.Map<TViewModel>(entity);
             return result;
         }
-        public virtual async Task<int> UpdateAsync(TKey id, TUpdateRequest request)
+        public virtual async Task<int?> UpdateAsync(TKey id, TUpdateRequest request)
         {
             if (id is null && !id.Equals(request.Id))
                 throw new KeyNotFoundException();
@@ -92,7 +92,7 @@ namespace PersonalFinancialManagement.Services.Base
         /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="NullReferenceException"></exception>
-        public virtual async Task<TViewModel> CreateAsync(TCreateRequest request) => await _unitOffWork.DoWorkWithTransaction(async () =>
+        public virtual async Task<TViewModel?> CreateAsync(TCreateRequest request) => await _unitOffWork.DoWorkWithTransaction(async () =>
         {
             var entityNew = new TEntity();
             _mapper.Map(request, entityNew);
@@ -112,7 +112,7 @@ namespace PersonalFinancialManagement.Services.Base
         /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="NullReferenceException"></exception>
-        public virtual async Task<IEnumerable<TViewModel>> CreateAsync(IEnumerable<TCreateRequest> request) => await _unitOffWork.DoWorkWithTransaction(async () =>
+        public virtual async Task<IEnumerable<TViewModel>?> CreateAsync(IEnumerable<TCreateRequest> request) => await _unitOffWork.DoWorkWithTransaction(async () =>
         {
             var entitiesNew = new List<TEntity>();
             _mapper.Map(request, entitiesNew);

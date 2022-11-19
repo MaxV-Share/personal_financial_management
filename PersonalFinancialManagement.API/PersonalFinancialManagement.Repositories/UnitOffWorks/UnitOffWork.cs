@@ -15,16 +15,14 @@ using PersonalFinancialManagement.Common.Models;
 
 namespace PersonalFinancialManagement.Repositories.UnitOffWorks
 {
-    public class UnitOffWork : IUnitOffWork
+    public class UnitOffWork<TContext> : IUnitOffWork<TContext> where TContext: DbContext
     {
-        private readonly ApplicationDbContext _dbContext;
-        private bool _disposed = false;
+        private readonly TContext _dbContext;
         private readonly IServiceProvider _serviceProvider;
         private Dictionary<Type, object> _repositories;
-        private IDbContextTransaction _tx { get; set; }
         private UserManager<User> _userManager;
 
-        public UnitOffWork(ApplicationDbContext context, IServiceProvider serviceProvider)
+        public UnitOffWork(TContext context, IServiceProvider serviceProvider)
         {
             _dbContext = context;
             _serviceProvider = serviceProvider;

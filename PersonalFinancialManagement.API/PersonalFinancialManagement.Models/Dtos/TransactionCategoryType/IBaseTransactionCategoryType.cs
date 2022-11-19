@@ -1,13 +1,12 @@
-﻿using PersonalFinancialManagement.Common.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonalFinancialManagement.Models.Entities
+namespace PersonalFinancialManagement.Models.Dtos.TransactionCategoryType
 {
-    public class TransactionCategoryType : BaseEntity<Guid>
+    public interface IBaseTransactionCategoryType
     {
         public string? Code { get; set; }
         public string? Name { get; set; }

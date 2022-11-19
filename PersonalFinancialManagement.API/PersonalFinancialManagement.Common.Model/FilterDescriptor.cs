@@ -1,5 +1,4 @@
 ﻿using PersonalFinancialManagement.Common.Models.Enums;
-using PersonalFinancialManagement.Common.Models;
 
 namespace PersonalFinancialManagement.Common.Models
 {

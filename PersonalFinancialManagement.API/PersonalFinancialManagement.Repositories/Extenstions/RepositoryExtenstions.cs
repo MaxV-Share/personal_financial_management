@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using PersonalFinancialManagement.Repositories.BaseRepository;
+using PersonalFinancialManagement.Common.Extensions;
+using PersonalFinancialManagement.Models.Entities;
 
 namespace PersonalFinancialManagement.Repositories.Extenstions
 {
@@ -8,7 +10,7 @@ namespace PersonalFinancialManagement.Repositories.Extenstions
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            //services.AddProxiedScoped<IBaseRepository<BillDetail, int>, BaseRepository<BillDetail, int>>();
+            services.AddProxiedScoped<IBaseRepository<TransactionCategoryType, Guid>, BaseRepository<TransactionCategoryType, Guid>>();
         }
     }
 }
