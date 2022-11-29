@@ -5,10 +5,11 @@ import {
   IFilterBodyRequest,
   IPagination,
 } from "src/models/Bases";
+import { IStatus } from "src/models/Common/IStatus";
 import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
 
 export interface TransactionState {
-  isLoading: boolean;
+  status: IStatus;
   transactionPerDateList: IBaseLoading & ITransactionPerDateModelList;
   filterTransactionRequest: IFilterBodyRequest;
   langFilterRequest: IFilterBodyRequest;
@@ -20,9 +21,9 @@ const initialPagination: IPagination = {
   totalRows: 0,
 };
 const initialState: TransactionState = {
-  isLoading: false,
+  status: IStatus.None,
   transactionPerDateList: {
-    isLoading: false,
+    status: IStatus.None,
     data: [],
     pagination: initialPagination,
   },
@@ -41,15 +42,15 @@ const transactionSlice = createSlice({
   initialState,
   reducers: {
     fetchTransactions(state, action: PayloadAction<IFilterBodyRequest>) {
-      state.isLoading = true;
-      state.transactionPerDateList.isLoading = true;
+      state.status = IStatus.Pending;
+      state.transactionPerDateList.status = IStatus.Pending;
     },
     fetchTransactionsSuccess(
       state,
       action: PayloadAction<ITransactionPerDateModelList>
     ) {
-      state.isLoading = true;
-      state.transactionPerDateList.isLoading = false;
+      state.status = IStatus.Success;
+      state.transactionPerDateList.status = IStatus.Success;
       state.transactionPerDateList.data = action.payload.data;
       state.transactionPerDateList.pagination = action.payload.pagination;
     },
@@ -67,7 +68,7 @@ export const selectTransactionList = createSelector(
   [
     (state: RootState) => state.transaction.transactionPerDateList,
     (state: RootState) => state.transaction.transactionPerDateList.data,
-    (state: RootState) => state.transaction.transactionPerDateList.isLoading,
+    (state: RootState) => state.transaction.transactionPerDateList.status,
     (state: RootState) => state.transaction.transactionPerDateList.pagination,
   ],
   (transactionPerDateList) => {
@@ -75,7 +76,7 @@ export const selectTransactionList = createSelector(
   }
 );
 export const selectTransactionsLoading = (state: RootState) =>
-  state.transaction.isLoading;
+  state.transaction.status;
 export const selectTransactionsPagination = (state: RootState) =>
   state.transaction.transactionPerDateList.pagination;
 export const selectFilterTransactionRequest = (state: RootState) =>

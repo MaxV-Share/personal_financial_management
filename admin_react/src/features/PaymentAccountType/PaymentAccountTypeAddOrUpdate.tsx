@@ -1,21 +1,21 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  Tooltip,
-  Typography
-} from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { InputField } from "src/components/FormFields/InputField";
-import { SelectField } from "src/components/FormFields/SelectField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
+import { IStatus } from "src/models/Common/IStatus";
+import { IPaymentAccountTypeCreateOrUpdateModel } from "src/models/PaymentAccountType/Requests/IPaymentAccountTypeCreateOrUpdateModel";
 import * as yup from "yup";
-export interface IPaymentAccountTypeAddOrUpdateProps { }
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  paymentAccountTypeActions,
+  selectPaymentAccountTypeCreateOrUpdateData,
+  selectPaymentAccountTypeCreateOrUpdateStatus,
+} from "./paymentAccountTypeSlice";
+export interface IPaymentAccountTypeAddOrUpdateProps {}
 export type IPaymentAccountTypeAddOrUpdateParams = {
   id?: string;
 };
@@ -23,7 +23,7 @@ const schema = yup.object().shape({
   data: yup.object().shape({
     code: yup.string().required("Please enter code."),
     name: yup.string().required("Please enter name."),
-    icon: yup.string().required("Please enter icon."),
+    // icon: yup.string().required("Please enter icon."),
   }),
 });
 
@@ -32,22 +32,62 @@ export default function PaymentAccountTypeAddOrUpdate(
 ) {
   const { id } = useParams<IPaymentAccountTypeAddOrUpdateParams>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(selectPaymentAccountTypeCreateOrUpdateStatus);
+  const data = useAppSelector(selectPaymentAccountTypeCreateOrUpdateData);
+  // xử lý status add or update page
+  useEffect(() => {
+    switch (status) {
+      case IStatus.Success:
+        navigate(-1);
+        dispatch(paymentAccountTypeActions.resetPaymentAccountTypeStatus);
+        break;
+      case IStatus.Error:
+        navigate(`/admin/payment-account-type/add`);
+        break;
+
+      default:
+        break;
+    }
+  }, [status, dispatch]);
+
+  // get payment account type by id
+  useEffect(() => {
+    if (id != null) {
+      dispatch(paymentAccountTypeActions.fetchPaymentAccountType(id));
+    }
+  }, [dispatch]);
+
+  // reset form data khi sau khi fetchPaymentAccountType
+  useEffect(() => {
+    reset({ data: data });
+  }, [data]);
+
   const {
     control,
     handleSubmit,
     register,
     reset,
     formState: { isSubmitting, errors },
-  } = useForm<IBaseAddOrUpdateBodyRequest<any>, object>({
+  } = useForm<
+    IBaseAddOrUpdateBodyRequest<IPaymentAccountTypeCreateOrUpdateModel>,
+    object
+  >({
     defaultValues: {
       data: {
         code: "",
+        name: "",
+        id: "",
       },
     },
     resolver: yupResolver(schema),
   });
-  const onSubmit = (object) => {
-    console.log(object);
+  const onSubmit = async (
+    object: IBaseAddOrUpdateBodyRequest<IPaymentAccountTypeCreateOrUpdateModel>
+  ) => {
+    await dispatch(
+      paymentAccountTypeActions.savePaymentAccountType(object.data)
+    );
   };
   return (
     <>
@@ -59,19 +99,11 @@ export default function PaymentAccountTypeAddOrUpdate(
           mb={3}
           style={{ textAlign: "center" }}
         >
-          <Tooltip arrow placement="top" title="Go back">
-            <IconButton
-              color="primary"
-              sx={{ p: 1, mr: 1 }}
-              size={"small"}
-              onClick={() => navigate(-1)}
-            >
-              <ArrowBackTwoToneIcon />
-            </IconButton>
-          </Tooltip>
           <Box justifyContent="center">
             <Typography variant="h3" component="h3" gutterBottom>
-              PaymentAccountTypeAddOrUpdate {id}
+              {id == null
+                ? `Create PaymentAccountType`
+                : `Update PaymentAccountType ${data?.name}`}
             </Typography>
           </Box>
         </Box>
@@ -80,20 +112,20 @@ export default function PaymentAccountTypeAddOrUpdate(
             id={`data.code`}
             name={`data.code`}
             control={control}
-            label={`Category code`}
+            label={`PaymentAccountType code`}
           />
           <InputField
             id={`data.name`}
             name={`data.name`}
             control={control}
-            label={`Currency name`}
+            label={`PaymentAccountType name`}
           />
-          <SelectField
+          {/* <SelectField
             name={`data.icon`}
             control={control}
             label={`Label`}
             options={[{ value: 1, label: "1" }]}
-          />
+          /> */}
           <Box
             sx={{
               display: "flex",

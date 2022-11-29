@@ -8,11 +8,12 @@ import {
   IPagination,
 } from "src/models/Bases";
 import { IKeyValue } from "src/models/Common";
+import { IStatus } from "src/models/Common/IStatus";
 import { ITransactionCategoryModel } from "src/models/TransactionCategory/ITransactionCategoryModel";
 import { ITransactionCategoryTable } from "src/models/TransactionCategory/ITransactionCategoryTable";
 
 export interface TransactionCategoryState {
-  isLoading: boolean;
+  status: IStatus;
   table: IBaseLoading & ITransactionCategoryTable;
   filterTransactionCategoryRequest: IFilterBodyRequest;
   langFilterRequest: IFilterBodyRequest;
@@ -24,9 +25,9 @@ const initialPagination: IPagination = {
   totalRows: 0,
 };
 const initialState: TransactionCategoryState = {
-  isLoading: false,
+  status: IStatus.None,
   table: {
-    isLoading: false,
+    status: IStatus.None,
     data: [],
     pagination: initialPagination,
   },
@@ -48,7 +49,7 @@ const transactionCategorySlice = createSlice({
       state,
       action: PayloadAction<IFilterBodyRequest>
     ) {
-      state.isLoading = true;
+      state.status = IStatus.Pending;
     },
     fetchTransactionCategoriesSuccess(
       state,
@@ -56,7 +57,7 @@ const transactionCategorySlice = createSlice({
     ) {
       state.table.data = action.payload.data;
       state.table.pagination = action.payload.pagination;
-      state.table.isLoading = false;
+      state.table.status = IStatus.Success;
     },
     resetFilter(state) {
       state.filterTransactionCategoryRequest = {
@@ -74,7 +75,7 @@ const transactionCategorySlice = createSlice({
           action.payload.key,
           action.payload.value
         );
-        state.table.isLoading = true;
+        state.table.status = IStatus.Pending;
       }
     },
   },
@@ -91,7 +92,7 @@ export const selectTransactionCategoryTable = createSelector(
   [
     (state: RootState) => state.transactionCategory.table,
     (state: RootState) => state.transactionCategory.table.data,
-    (state: RootState) => state.transactionCategory.table.isLoading,
+    (state: RootState) => state.transactionCategory.table.status,
     (state: RootState) => state.transactionCategory.table.pagination,
   ],
   (table) => {
@@ -99,7 +100,7 @@ export const selectTransactionCategoryTable = createSelector(
   }
 );
 export const selectTransactionCategoryTableLoading = (state: RootState) =>
-  state.transactionCategory.isLoading;
+  state.transactionCategory.status;
 export const selectTransactionCategoryTablePagination = (state: RootState) =>
   state.transactionCategory.table.pagination;
 export const selectFilterTransactionCategoryRequest = (state: RootState) =>

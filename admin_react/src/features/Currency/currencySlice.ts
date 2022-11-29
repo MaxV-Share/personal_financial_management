@@ -1,14 +1,15 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { get, set } from 'lodash';
-import { RootState } from 'src/app/store';
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { get, set } from "lodash";
+import { RootState } from "src/app/store";
 import {
   IBaseLoading,
   IBasePaging,
   IFilterBodyRequest,
-  IPagination
-} from 'src/models/Bases';
-import { IKeyValue } from 'src/models/Common';
-import { ICurrencyModel } from 'src/models/Currency';
+  IPagination,
+} from "src/models/Bases";
+import { IKeyValue } from "src/models/Common";
+import { IStatus } from "src/models/Common/IStatus";
+import { ICurrencyModel } from "src/models/Currency";
 
 export interface ICurrencyTable {
   data: ICurrencyModel[];
@@ -16,7 +17,7 @@ export interface ICurrencyTable {
 }
 
 export interface CurrencyState {
-  isLoading: boolean;
+  status: IStatus;
   table: IBaseLoading & ICurrencyTable;
   filterCurrencyRequest: IFilterBodyRequest;
   langFilterRequest: IFilterBodyRequest;
@@ -25,31 +26,31 @@ const initialPagination: IPagination = {
   pageIndex: 1,
   pageSize: 5,
   pagesCount: 0,
-  totalRows: 0
+  totalRows: 0,
 };
 const initialState: CurrencyState = {
-  isLoading: false,
+  status: IStatus.None,
   table: {
-    isLoading: false,
+    status: IStatus.None,
     data: [],
-    pagination: initialPagination
+    pagination: initialPagination,
   },
   filterCurrencyRequest: {
-    langId: 'EN',
-    pagination: initialPagination
+    langId: "EN",
+    pagination: initialPagination,
   },
   langFilterRequest: {
-    langId: '',
-    pagination: initialPagination
-  }
+    langId: "",
+    pagination: initialPagination,
+  },
 };
 
 const currencySlice = createSlice({
-  name: 'currency',
+  name: "currency",
   initialState,
   reducers: {
     fetchCurrencies(state, action: PayloadAction<IFilterBodyRequest>) {
-      state.isLoading = true;
+      state.status = IStatus.Pending;
     },
     fetchCurrenciesSuccess(
       state,
@@ -57,12 +58,12 @@ const currencySlice = createSlice({
     ) {
       state.table.data = action.payload.data;
       state.table.pagination = action.payload.pagination;
-      state.table.isLoading = false;
+      state.table.status = IStatus.Success;
     },
     resetFilter(state) {
       state.filterCurrencyRequest = {
-        langId: 'EN',
-        pagination: initialPagination
+        langId: "EN",
+        pagination: initialPagination,
       };
     },
     setFilter(state, action: PayloadAction<IKeyValue>) {
@@ -75,10 +76,10 @@ const currencySlice = createSlice({
           action.payload.key,
           action.payload.value
         );
-        state.table.isLoading = true;
+        state.table.status = IStatus.Pending;
       }
-    }
-  }
+    },
+  },
 });
 // Actions
 export const currencyActions = currencySlice.actions;
@@ -92,15 +93,15 @@ export const selectCurrencyTable = createSelector(
   [
     (state: RootState) => state.currency.table,
     (state: RootState) => state.currency.table.data,
-    (state: RootState) => state.currency.table.isLoading,
-    (state: RootState) => state.currency.table.pagination
+    (state: RootState) => state.currency.table.status,
+    (state: RootState) => state.currency.table.pagination,
   ],
   (table) => {
     return table;
   }
 );
 export const selectCurrencyTableLoading = (state: RootState) =>
-  state.currency.isLoading;
+  state.currency.status;
 export const selectCurrencyTablePagination = (state: RootState) =>
   state.currency.table.pagination;
 export const selectFilterCurrencyRequest = (state: RootState) =>

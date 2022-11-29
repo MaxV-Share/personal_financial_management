@@ -5,6 +5,7 @@ import {
   configureStore,
   ThunkAction,
 } from "@reduxjs/toolkit";
+import { createBrowserHistory } from "history";
 import currencyReducer from "src/features/Currency/currencySlice";
 import paymentAccountReducer from "src/features/PaymentAccount/paymentAccountSlice";
 import transactionCategoryReducer from "src/features/TransactionCategory/transactionCategorySlice";
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   paymentAccountType: paymentAccountTypeReducer,
   transaction: transactionReducer,
 });
+export const history = createBrowserHistory();
 
 const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({

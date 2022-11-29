@@ -13,7 +13,11 @@ import * as React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
-import { selectPaymentAccountTypeTable } from "../paymentAccountTypeSlice";
+import {
+  paymentAccountTypeActions,
+  selectFilterPaymentAccountTypeRequest,
+  selectPaymentAccountTypeTable,
+} from "../paymentAccountTypeSlice";
 
 interface Column {
   id: "id" | "name" | "code";
@@ -55,27 +59,53 @@ export interface IPaymentAccountTypeTableProps {}
 export default function PaymentAccountTypeTable(
   props: IPaymentAccountTypeTableProps
 ) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const navigate = useNavigate();
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    dispatch(
+      paymentAccountTypeActions.setFilter({
+        key: "pagination.pageIndex",
+        value: newPage,
+      })
+    );
   };
   const tablePaymentAccountTypes = useAppSelector(
     selectPaymentAccountTypeTable
   );
+  const filterPaymentAccountTypeRequest = useAppSelector(
+    selectFilterPaymentAccountTypeRequest
+  );
   useEffect(() => {
-    console.log("tablePaymentAccountTypes", tablePaymentAccountTypes);
+    // console.log("tablePaymentAccountTypes", tablePaymentAccountTypes);
   }, [dispatch, tablePaymentAccountTypes]);
+  useEffect(() => {
+    dispatch(
+      paymentAccountTypeActions.fetchPaymentAccountTypes(
+        filterPaymentAccountTypeRequest
+      )
+    );
+  }, [dispatch, filterPaymentAccountTypeRequest]);
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+    dispatch(
+      paymentAccountTypeActions.setFilter({
+        key: "pagination.pageSize",
+        value: event.target.value,
+      })
+    );
+    dispatch(
+      paymentAccountTypeActions.setFilter({
+        key: "pagination.pageIndex",
+        value: 0,
+      })
+    );
   };
-  const theme = useTheme();
-  const navigate = useNavigate();
+  const handleDelete = (id: string) => {
+    dispatch(paymentAccountTypeActions.deletePaymentAccountType(id));
+  };
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -141,6 +171,7 @@ export default function PaymentAccountTypeTable(
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleDelete(row.id)}
                       >
                         <DeleteTwoToneIcon fontSize="small" />
                       </IconButton>

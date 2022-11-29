@@ -8,6 +8,7 @@ import {
   IPagination,
 } from "src/models/Bases";
 import { IKeyValue } from "src/models/Common";
+import { IStatus } from "src/models/Common/IStatus";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
 import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsByPaymentAccountRequest";
 import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
@@ -18,7 +19,7 @@ export interface IPaymentAccountTableModel extends IBaseLoading {
 }
 
 export interface PaymentAccountState {
-  isLoading: boolean;
+  status: IStatus;
   table: IPaymentAccountTableModel;
   paymentAccountTransactions: ITransactionPerDateModelList & IBaseLoading;
   filterPaymentAccountRequest: IFilterBodyRequest;
@@ -32,9 +33,9 @@ const initialPagination: IPagination = {
   totalRows: 0,
 };
 const initialState: PaymentAccountState = {
-  isLoading: false,
+  status: IStatus.None,
   table: {
-    isLoading: false,
+    status: IStatus.None,
     data: [],
     pagination: initialPagination,
   },
@@ -47,7 +48,7 @@ const initialState: PaymentAccountState = {
     pagination: initialPagination,
   },
   paymentAccountTransactions: {
-    isLoading: false,
+    status: IStatus.None,
     data: [],
     pagination: initialPagination,
   },
@@ -62,7 +63,7 @@ const paymentAccountSlice = createSlice({
   initialState,
   reducers: {
     fetchPaymentAccounts(state, action: PayloadAction<IFilterBodyRequest>) {
-      state.isLoading = true;
+      state.status = IStatus.Pending;
     },
     fetchPaymentAccountsSuccess(
       state,
@@ -70,13 +71,13 @@ const paymentAccountSlice = createSlice({
     ) {
       state.table.data = action.payload.data;
       state.table.pagination = action.payload.pagination;
-      state.table.isLoading = false;
+      state.table.status = IStatus.Success;
     },
     fetchTransactionsByPaymentAccount(
       state,
       action: PayloadAction<IFetchTransactionsByPaymentAccountRequest>
     ) {
-      state.paymentAccountTransactions.isLoading = true;
+      state.paymentAccountTransactions.status = IStatus.Pending;
       state.fetchTransactionsRequest = action.payload;
     },
     fetchTransactionsByPaymentAccountSuccess(
@@ -84,7 +85,7 @@ const paymentAccountSlice = createSlice({
       action: PayloadAction<ITransactionPerDateModelList>
     ) {
       state.paymentAccountTransactions = action.payload;
-      state.paymentAccountTransactions.isLoading = false;
+      state.paymentAccountTransactions.status = IStatus.Success;
     },
     resetFilter(state) {
       state.filterPaymentAccountRequest = {
@@ -102,7 +103,7 @@ const paymentAccountSlice = createSlice({
           action.payload.key,
           action.payload.value
         );
-        state.table.isLoading = true;
+        state.table.status = IStatus.Pending;
       }
     },
   },
@@ -119,7 +120,7 @@ export const selectPaymentAccountTable = createSelector(
   [
     (state: RootState) => state.paymentAccount.table,
     (state: RootState) => state.paymentAccount.table.data,
-    // (state: RootState) => state.paymentAccount.table.isLoading,
+    // (state: RootState) => state.paymentAccount.table.status,
     (state: RootState) => state.paymentAccount.table.pagination,
   ],
   (table) => {
@@ -127,7 +128,7 @@ export const selectPaymentAccountTable = createSelector(
   }
 );
 export const selectPaymentAccountTableLoading = (state: RootState) =>
-  state.paymentAccount.isLoading;
+  state.paymentAccount.status;
 export const selectPaymentAccountTablePagination = (state: RootState) =>
   state.paymentAccount.table.pagination;
 export const selectFilterPaymentAccountRequest = (state: RootState) =>

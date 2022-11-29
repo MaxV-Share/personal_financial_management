@@ -1,4 +1,6 @@
+import { IStatus } from "../Common/IStatus";
+
 export interface IBaseLoading {
-  isLoading?: boolean,
+  status?: IStatus;
   // data: TData,
 }
