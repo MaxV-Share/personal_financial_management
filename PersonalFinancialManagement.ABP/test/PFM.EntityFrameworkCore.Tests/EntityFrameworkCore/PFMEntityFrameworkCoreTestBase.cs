@@ -1,6 +1,4 @@
-﻿using Volo.Abp;
-
-namespace PFM.EntityFrameworkCore;
+﻿namespace PFM.EntityFrameworkCore;
 
 public abstract class PFMEntityFrameworkCoreTestBase : PFMTestBase<PFMEntityFrameworkCoreTestModule>
 {

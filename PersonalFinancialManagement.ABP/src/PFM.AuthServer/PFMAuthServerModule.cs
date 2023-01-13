@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
 using Localization.Resources.AbpUi;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
@@ -13,11 +10,12 @@ using PFM.EntityFrameworkCore;
 using PFM.Localization;
 using PFM.MultiTenancy;
 using StackExchange.Redis;
+using System;
+using System.IO;
+using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
-using Volo.Abp.AspNetCore.Mvc.UI;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
@@ -32,7 +30,6 @@ using Volo.Abp.DistributedLocking;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation.Urls;
-using Volo.Abp.UI;
 using Volo.Abp.VirtualFileSystem;
 
 namespace PFM;
@@ -111,8 +108,8 @@ public class PFMAuthServerModule : AbpModule
 
         Configure<AbpAuditingOptions>(options =>
         {
-                //options.IsEnabledForGetRequests = true;
-                options.ApplicationName = "AuthServer";
+            //options.IsEnabledForGetRequests = true;
+            options.ApplicationName = "AuthServer";
         });
 
         if (hostingEnvironment.IsDevelopment())
@@ -149,7 +146,7 @@ public class PFMAuthServerModule : AbpModule
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "PFM-Protection-Keys");
         }
-        
+
         context.Services.AddSingleton<IDistributedLockProvider>(sp =>
         {
             var connection = ConnectionMultiplexer
@@ -200,7 +197,7 @@ public class PFMAuthServerModule : AbpModule
         app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
-       
+
         if (MultiTenancyConsts.IsEnabled)
         {
             app.UseMultiTenancy();

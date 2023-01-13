@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using OpenIddict.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Data;
@@ -244,7 +244,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             Check.NotNullOrEmpty(grantTypes, nameof(grantTypes));
             Check.NotNullOrEmpty(scopes, nameof(scopes));
 
-            if (new [] { OpenIddictConstants.GrantTypes.AuthorizationCode, OpenIddictConstants.GrantTypes.Implicit }.All(grantTypes.Contains))
+            if (new[] { OpenIddictConstants.GrantTypes.AuthorizationCode, OpenIddictConstants.GrantTypes.Implicit }.All(grantTypes.Contains))
             {
                 application.Permissions.Add(OpenIddictConstants.Permissions.ResponseTypes.CodeIdToken);
 
@@ -321,7 +321,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
                 }
             }
 
-            var buildInScopes = new []
+            var buildInScopes = new[]
             {
                 OpenIddictConstants.Permissions.Scopes.Address,
                 OpenIddictConstants.Permissions.Scopes.Email,

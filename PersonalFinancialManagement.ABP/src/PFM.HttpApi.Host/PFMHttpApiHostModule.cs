@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Medallion.Threading;
 using Medallion.Threading.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,10 +8,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using PFM.EntityFrameworkCore;
 using PFM.MultiTenancy;
 using StackExchange.Redis;
-using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
@@ -163,7 +163,7 @@ public class PFMHttpApiHostModule : AbpModule
             dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "PFM-Protection-Keys");
         }
     }
-    
+
     private void ConfigureDistributedLocking(
         ServiceConfigurationContext context,
         IConfiguration configuration)

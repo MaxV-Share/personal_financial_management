@@ -1,10 +1,10 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PFM.Data;
 using Serilog;
+using System.Threading;
+using System.Threading.Tasks;
 using Volo.Abp;
 
 namespace PFM.DbMigrator;
@@ -24,9 +24,9 @@ public class DbMigratorHostedService : IHostedService
     {
         using (var application = await AbpApplicationFactory.CreateAsync<PFMDbMigratorModule>(options =>
         {
-           options.Services.ReplaceConfiguration(_configuration);
-           options.UseAutofac();
-           options.Services.AddLogging(c => c.AddSerilog());
+            options.Services.ReplaceConfiguration(_configuration);
+            options.UseAutofac();
+            options.Services.AddLogging(c => c.AddSerilog());
         }))
         {
             await application.InitializeAsync();
