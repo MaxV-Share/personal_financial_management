@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Transactions;
-using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Entities.Identities;
 
 namespace PersonalFinancialManagement.Models.DbContexts

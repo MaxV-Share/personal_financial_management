@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace PersonalFinancialManagement.API.Controllers.Base
 {
@@ -8,7 +7,7 @@ namespace PersonalFinancialManagement.API.Controllers.Base
     public abstract class ApiController : ControllerBase
     {
         public readonly ILogger _logger;
-        public ApiController(ILogger logger)
+        protected ApiController(ILogger logger)
         {
             _logger = logger;
         }

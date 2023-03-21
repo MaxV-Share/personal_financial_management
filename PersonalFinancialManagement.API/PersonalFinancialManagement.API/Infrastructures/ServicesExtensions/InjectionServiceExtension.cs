@@ -1,7 +1,5 @@
 ﻿using App.Models.Mapper;
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using PersonalFinancialManagement.Models.Entities.Identities;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Models.DbContexts;

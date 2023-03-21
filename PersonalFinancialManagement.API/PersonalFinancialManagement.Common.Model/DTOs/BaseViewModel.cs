@@ -1,7 +1,4 @@
-﻿using System;
-using PersonalFinancialManagement.Common.Models.DTOs;
-
-namespace PersonalFinancialManagement.Common.Models.DTOs
+﻿namespace PersonalFinancialManagement.Common.Models.DTOs
 {
     public abstract class BaseViewModel<TKey> : BaseDTO
     {

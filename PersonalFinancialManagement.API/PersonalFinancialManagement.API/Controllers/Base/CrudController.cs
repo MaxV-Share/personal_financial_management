@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
-using System;
-using PersonalFinancialManagement.API.Controllers.Base;
+﻿using Microsoft.AspNetCore.Mvc;
 using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Services.Base;
 using Microsoft.EntityFrameworkCore;
 using PersonalFinancialManagement.Common.Models;
-using MongoDB.Driver.Core.Operations;
 
 namespace PersonalFinancialManagement.API.Controllers.Base
 {
@@ -26,7 +20,7 @@ namespace PersonalFinancialManagement.API.Controllers.Base
             _baseService = baseService;
         }
         [HttpPost]
-        public virtual async Task<ActionResult> Post([FromForm] TCreateRequest request)
+        public virtual async Task<ActionResult> Post([FromForm] TCreateRequest? request)
         {
             if (null == request)
                 return BadRequest();
@@ -39,7 +33,7 @@ namespace PersonalFinancialManagement.API.Controllers.Base
         [HttpPut("{id}")]
         public virtual async Task<ActionResult> Put(TKey id, [FromForm] TUpdateRequest request)
         {
-            if (!id.Equals(request.Id))
+            if (!id!.Equals(request.Id))
                 return BadRequest();
             var result = await _baseService.UpdateAsync(id, request);
             if (result > 0)

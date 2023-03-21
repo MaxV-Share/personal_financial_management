@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using PersonalFinancialManagement.Repositories.BaseRepository;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Common.Models;
 

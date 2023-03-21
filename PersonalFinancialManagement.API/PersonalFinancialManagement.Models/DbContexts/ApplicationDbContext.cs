@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Models.Entities.Identities;
 

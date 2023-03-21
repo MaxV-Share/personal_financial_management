@@ -1,12 +1,6 @@
 ﻿
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using PersonalFinancialManagement.Services;
 using PersonalFinancialManagement.Services.Base;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Models.Entities;
@@ -49,13 +43,13 @@ namespace PersonalFinancialManagement.Services
             return result;
 
         }
-        public override async Task<CurrencyViewModel> GetByIdAsync(Guid id)
+        public override async Task<CurrencyViewModel?> GetByIdAsync(Guid id)
         {
-            var Currency = await _unitOffWork.Repository<Currency, Guid>().GetByIdNoTrackingAsync(id);
-            var result = _mapper.Map<CurrencyViewModel>(Currency);
+            var currency = await _unitOffWork.Repository<Currency, Guid>().GetByIdNoTrackingAsync(id);
+            var result = _mapper.Map<CurrencyViewModel>(currency);
             return result;
         }
-        public async Task<IBasePaging<CurrencyViewModel>> GetPagingAsync(IFilterBodyRequest request)
+        public async Task<IBasePaging<CurrencyViewModel>?> GetPagingAsync(IFilterBodyRequest? request)
         {
             var query = _mapper.ProjectTo<CurrencyViewModel>(_unitOffWork.Repository<Currency, Guid>().GetNoTrackingEntities());
 

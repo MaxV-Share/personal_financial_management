@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using PersonalFinancialManagement.Repositories.BaseRepository;
 using PersonalFinancialManagement.Common.Extensions;
 using PersonalFinancialManagement.Models.Entities;

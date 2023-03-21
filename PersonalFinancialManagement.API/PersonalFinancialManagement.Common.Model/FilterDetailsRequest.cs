@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PersonalFinancialManagement.Common.Models.Enums;
+﻿using PersonalFinancialManagement.Common.Models.Enums;
 
 namespace PersonalFinancialManagement.Common.Models
 {

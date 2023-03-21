@@ -1,14 +1,8 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using PersonalFinancialManagement.Repositories.BaseRepository;
-using PersonalFinancialManagement.Repositories.UnitOffWorks;
-using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Entities.Identities;
 using System.Data.SqlClient;
 using PersonalFinancialManagement.Common.Models;
@@ -19,8 +13,8 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
     {
         private readonly TContext _dbContext;
         private readonly IServiceProvider _serviceProvider;
-        private Dictionary<Type, object> _repositories;
-        private UserManager<User> _userManager;
+        private Dictionary<Type, object?>? _repositories;
+        private UserManager<User>? _userManager;
 
         public UnitOffWork(TContext context, IServiceProvider serviceProvider)
         {
@@ -71,6 +65,23 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
                 try
                 {
                     action.Invoke();
+                    await trans.CommitAsync();
+                }
+                catch
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public async Task DoWorkWithTransaction(Task<Action> action)
+        {
+            using (var trans = await _dbContext.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    (await action).Invoke();
                     await trans.CommitAsync();
                 }
                 catch
@@ -132,31 +143,14 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
         public IBaseRepository<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : BaseEntity<TKey>
         {
 
-            if (_repositories == null)
-            {
-                _repositories = new Dictionary<Type, object>();
-            }
+            _repositories ??= new Dictionary<Type, object?>();
 
             var type = typeof(TEntity);
             if (!_repositories.ContainsKey(type))
-            {
                 _repositories[type] = _serviceProvider.GetService<IBaseRepository<TEntity, TKey>>();
-            }
-
-
             return (IBaseRepository<TEntity, TKey>)_repositories[type];
         }
 
-        public UserManager<User> UserManager
-        {
-            get
-            {
-                if (_userManager == null)
-                {
-                    _userManager = _serviceProvider.GetService<UserManager<User>>();
-                }
-                return _userManager;
-            }
-        }
+        public UserManager<User>? UserManager => _userManager ??= _serviceProvider.GetService<UserManager<User>>();
     }
 }

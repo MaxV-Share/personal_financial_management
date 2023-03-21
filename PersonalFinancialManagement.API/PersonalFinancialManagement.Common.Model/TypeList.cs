@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace PersonalFinancialManagement.Common.Models
+﻿namespace PersonalFinancialManagement.Common.Models
 {
     public static class TypeList
     {

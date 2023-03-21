@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PersonalFinancialManagement.Common
+﻿namespace PersonalFinancialManagement.Common
 {
     public static class RandomHelper
     {

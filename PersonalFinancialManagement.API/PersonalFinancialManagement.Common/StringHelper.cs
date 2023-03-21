@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace PersonalFinancialManagement.Common
 {
@@ -30,7 +27,7 @@ namespace PersonalFinancialManagement.Common
         /// <param name="defaultValue"></param>
         /// <param name="trim"></param>
         /// <returns></returns>
-        public static string Nullify(this string value, string defaultValue = "", bool trim = true)
+        public static string Nullify(this string? value, string defaultValue = "", bool trim = true)
         {
             if (value == null)
             {

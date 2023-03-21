@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Linq.Expressions;
-using PersonalFinancialManagement.Services.Base;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Common.Models;

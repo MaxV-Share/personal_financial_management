@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using PersonalFinancialManagement.EFCore;
 using PersonalFinancialManagement.Common.Extensions;
 using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Common.Models.Enums;
@@ -15,14 +9,14 @@ namespace PersonalFinancialManagement.EFCore
 {
     public static class QueryableExtensions
     {
-        public static IQueryable<T> Filter<T>(this IQueryable<T> source, FilterRequest filter) where T : class
+        public static IQueryable<T> Filter<T>(this IQueryable<T> source, FilterRequest? filter) where T : class
         {
             if (filter == null || filter.Details.IsNullOrEmpty())
             {
                 return source;
             }
             var fields = typeof(T).GetProperties();
-            var filters = filter.Details.Where(d => fields.Any(f => string.Equals(d.AttributeName, f.Name, StringComparison.OrdinalIgnoreCase))).Select(e => new FilterDescriptor()
+            var filters = filter.Details!.Where(d => fields.Any(f => string.Equals(d.AttributeName, f.Name, StringComparison.OrdinalIgnoreCase))).Select(e => new FilterDescriptor()
             {
                 Field = e.AttributeName,
                 Values = e.FilterType == FilterType.In ? e.Value.Split("|") : new string[] { e.Value },
@@ -37,7 +31,7 @@ namespace PersonalFinancialManagement.EFCore
         /// </summary>
         /// <typeparam name = "T" ></ typeparam >
         /// <param name="source">The queryable.</param> 
-        /// <returns 
+        /// <returns> 
         /// <c>true</c> if the specified queryable is ordered; otherwise, <c>false</c>. 
         /// </returns> 
         /// <exception cref="ArgumentNullException">queryable</exception> O references 
@@ -53,7 +47,7 @@ namespace PersonalFinancialManagement.EFCore
         /// </summary> WII <typeparam name="T"></typeparam> 
         /// <param name="source">The source.</param> WII <param name="filter">The filter.</param 
         /// <param name="parameterName">Name of the parameter.</param> 
-        /// <returns X/returns 2 references 
+        /// <returns></returns> 2 references 
         public static IQueryable<T> Where<T>(this IQueryable<T> source, FilterDescriptor filter, string parameterName = "x")
         where T : class
         {
@@ -72,7 +66,7 @@ namespace PersonalFinancialManagement.EFCore
         /// <typeparam name="T"></typeparam> 
         /// <param name="source">The source.</param> W <param name="filters">The filters.</param> 
         /// <param name="parameterName">Name of the parameter.</param> 
-        /// <returns X/returns 4 references 
+        /// <returns></returns> 4 references 
         public static IQueryable<T> Where<T>(this IQueryable<T> source, IEnumerable<FilterDescriptor> filters, string parameterName = "x")
         where T : class
         {
@@ -94,8 +88,8 @@ namespace PersonalFinancialManagement.EFCore
         /// <param name="source">The source.</param> 
         /// <param name="sort">The sort.</param>
         /// <param name = "replaceOrder" >if set to<c>true</c> [replace the current order in source].</param> 
-        /// <returns X/returns O references 
-        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, SortDescriptor sort, bool replaceOrder = true)
+        /// <returns></returns> O references 
+        public static IQueryable<T> OrderBy<T>(this IQueryable<T>? source, SortDescriptor? sort, bool replaceOrder = true)
         where T : class
         {
             if (source == null || sort == null)
@@ -111,8 +105,8 @@ namespace PersonalFinancialManagement.EFCore
         /// <typeparam name="T"></typeparam> 
         /// <param name="source">The source.</param> MI <param name="sorts">The sorts.</param>
         /// <param name = "replaceOrder" >if set to<c>true</c> [replace the current order in source].</param)
-        /// <returns X/returns> 5 references 
-        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, IEnumerable<SortDescriptor> sorts, bool replaceOrder = true)
+        /// <returns></returns> 5 references 
+        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, IEnumerable<SortDescriptor>? sorts, bool replaceOrder = true)
         where T : class
         {
             if (source.IsNullOrEmpty() || sorts.IsNullOrEmpty())
@@ -137,7 +131,7 @@ namespace PersonalFinancialManagement.EFCore
         /// <param name="parameter">The parameter.</param> 
         /// <param name="direction">The direction.</param>
         /// <param name = "replaceOrder" >if set to<c>true</c> [replace the current order in source].</param> 
-        /// <returns X/returns 2 references 
+        /// <returns></returns> 2 references 
         private static IQueryable<T> OrderBy<T>(this IQueryable<T> source, MemberExpression property, ParameterExpression parameter, SortDirection direction, bool replaceOrder = true)
         where T : class
         {
@@ -221,7 +215,7 @@ namespace PersonalFinancialManagement.EFCore
 
         /// <summary> 
         /// Orders data in the given source. 
-        /// </summary> 777 <typeparam name="T"X</typeparam> 
+        /// </summary> 777 <typeparam name="T"></typeparam> 
         /// <typeparam name="TProperty">The type of the property.</typeparam> 
         /// <param name="source">The source.</param> W <param name="property">The property.</param> 
         /// <param name="parameter">The parameter.</param> III <param name="direction">The direction.</param>
@@ -230,7 +224,7 @@ namespace PersonalFinancialManagement.EFCore
         private static IOrderedQueryable<T> OrderBy<T, TProperty>(this IQueryable<T> source, MemberExpression property, ParameterExpression parameter, SortDirection direction, bool replaceOrder = true)
         {
             var expression = Expression.Lambda<Func<T, TProperty>>(property, parameter);
-            if (replaceOrder || !source.Expression.Type.IsAssignableFrom(typeof(IOrderedQueryable<T>)) || !(source is IOrderedQueryable<T> orderedQueryable))
+            if (replaceOrder || !source.Expression.Type.IsAssignableFrom(typeof(IOrderedQueryable<T>)) || source is not IOrderedQueryable<T> orderedQueryable)
                 return direction == SortDirection.Asc ? source.OrderBy(expression) : source.OrderByDescending(expression);
             return direction == SortDirection.Asc ? orderedQueryable.ThenBy(expression) : orderedQueryable.ThenByDescending(expression);
         }
@@ -312,7 +306,7 @@ namespace PersonalFinancialManagement.EFCore
                 queryable = queryable.Filter(request.Filter);
 
             if (!request.Orders.IsNullOrEmpty())
-                queryable = queryable.OrderBy(request.Orders, true);
+                queryable = queryable.OrderBy(request.Orders);
 
             if (request.Pagination == null || request.Pagination.PageIndex < 1)
             {
@@ -339,9 +333,9 @@ namespace PersonalFinancialManagement.EFCore
             if (selector == null)
                 throw new ArgumentNullException(nameof(selector));
 
-            var ViewModelQuery = queryable.Select(selector);
+            var viewModelQuery = queryable.Select(selector);
 
-            var result = await ViewModelQuery.ToPagingAsync(request);
+            var result = await viewModelQuery.ToPagingAsync(request);
 
             return result;
         }

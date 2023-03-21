@@ -3,16 +3,13 @@ using PersonalFinancialManagement.API.Controllers.Base;
 using PersonalFinancialManagement.Common.Models;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Entities;
-using PersonalFinancialManagement.Services;
 using PersonalFinancialManagement.Services.Interfaces;
 using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
 
 namespace PersonalFinancialManagement.API.Controllers
-{ 
-    [ApiController]
-    [Route("[controller]")]
+{
     public class TransactionCategoryTypesController : CrudController<ApplicationDbContext, TransactionCategoryType, TransactionCategoryTypeCreateRequest, TransactionCategoryTypeUpdateRequest, TransactionCategoryTypeViewModel, Guid>
     {
         private readonly ITransactionCategoryTypeService _transactionCategoryTypeService;

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PersonalFinancialManagement.Models.Entities.Identities;
 
 namespace PersonalFinancialManagement.Models.Entities.Identities
 {

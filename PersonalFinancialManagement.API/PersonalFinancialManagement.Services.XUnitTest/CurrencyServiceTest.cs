@@ -1,21 +1,11 @@
 ﻿
 using App.Models.Mapper;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PersonalFinancialManagement.Models.DbContexts;
-using PersonalFinancialManagement.Models.Entities;
-using PersonalFinancialManagement.Repositories.BaseRepository;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Services;
-using PersonalFinancialManagement.Services.XUnitTest.SetupMock;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace App.Services.XUnitTest
 {

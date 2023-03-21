@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PersonalFinancialManagement.Common.Extensions
+﻿namespace PersonalFinancialManagement.Common.Extensions
 {
     public static class CollectionExtensions
     {
@@ -14,9 +8,9 @@ namespace PersonalFinancialManagement.Common.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T>? source)
         {
-            if (typeof(T) is string)
+            if (source is IEnumerable<string>)
             {
                 return string.IsNullOrWhiteSpace(source as string);
             }

@@ -1,12 +1,6 @@
 ﻿
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using PersonalFinancialManagement.Services;
 using PersonalFinancialManagement.Services.Base;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Models.Entities;
@@ -27,13 +21,14 @@ namespace PersonalFinancialManagement.Services
         public TransactionCategoryTypeService(IMapper mapper, IUnitOffWork<ApplicationDbContext> unitOffWork, ILogger<TransactionCategoryTypeService> logger) : base(mapper, unitOffWork, logger)
         {
         }
-        public override async Task<TransactionCategoryTypeViewModel?> CreateAsync(TransactionCategoryTypeCreateRequest request)
+        public override async Task<TransactionCategoryTypeViewModel?> CreateAsync(TransactionCategoryTypeCreateRequest? request)
         {
             if (request == null)
                 return null;
 
             TransactionCategoryTypeViewModel? result = null;
-            await _unitOffWork.DoWorkWithTransaction(async () =>
+
+            async void Action()
             {
                 var entity = _mapper.Map<TransactionCategoryType>(request);
 
@@ -44,25 +39,27 @@ namespace PersonalFinancialManagement.Services
                 }
 
                 result = _mapper.Map<TransactionCategoryTypeViewModel>(entity);
-            });
+            }
+
+            await _unitOffWork.DoWorkWithTransaction(Action);
 
             return result;
 
         }
-        public override async Task<TransactionCategoryTypeViewModel> GetByIdAsync(Guid id)
+        public override async Task<TransactionCategoryTypeViewModel?> GetByIdAsync(Guid id)
         {
-            var TransactionCategoryType = await _unitOffWork.Repository<TransactionCategoryType, Guid>().GetByIdNoTrackingAsync(id);
-            var result = _mapper.Map<TransactionCategoryTypeViewModel>(TransactionCategoryType);
+            var transactionCategoryType = await _unitOffWork.Repository<TransactionCategoryType, Guid>().GetByIdNoTrackingAsync(id);
+            var result = _mapper.Map<TransactionCategoryTypeViewModel>(transactionCategoryType);
             return result;
         }
-        public async Task<IBasePaging<TransactionCategoryTypeViewModel>> GetPagingAsync(IFilterBodyRequest request)
+        public async Task<IBasePaging<TransactionCategoryTypeViewModel>?> GetPagingAsync(IFilterBodyRequest request)
         {
             var query = _mapper.ProjectTo<TransactionCategoryTypeViewModel>(_unitOffWork.Repository<TransactionCategoryType, Guid>().GetNoTrackingEntities());
 
 
             if (!request.SearchValue.IsNullOrEmpty())
             {
-                query = query.Where(e => e.Name.Contains(request.SearchValue));
+                query = query.Where(e => e.Name!.Contains(request.SearchValue ?? ""));
             }
 
             return await query.ToPagingAsync(request);

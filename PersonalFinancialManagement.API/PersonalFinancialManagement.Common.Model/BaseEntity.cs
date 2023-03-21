@@ -1,8 +1,5 @@
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PersonalFinancialManagement.Common.Models;
 
 namespace PersonalFinancialManagement.Common.Models
 {

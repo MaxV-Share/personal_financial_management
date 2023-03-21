@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PersonalFinancialManagement.Common.Models;
-
-namespace PersonalFinancialManagement.Common.Models
+﻿namespace PersonalFinancialManagement.Common.Models
 {
 #pragma warning disable CS8766 // Nullability of reference types in return type doesn't match implicitly implemented member (possibly because of nullability attributes).
     public class FilterBodyRequest : BodyRequest, IFilterBodyRequest
@@ -18,7 +13,7 @@ namespace PersonalFinancialManagement.Common.Models
     {
         public string? LangId { get; set; }
         public string? SearchValue { get; set; }
-        public FilterRequest Filter { get; set; }
+        public FilterRequest? Filter { get; set; }
         public IEnumerable<SortDescriptor>? Orders { get; set; }
         public Pagination? Pagination { get; set; }
     }

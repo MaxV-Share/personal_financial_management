@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using PersonalFinancialManagement.EFCore;
+using Castle.Core.Internal;
 using PersonalFinancialManagement.Common.Utilities;
 using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.Common.Models.Enums;
@@ -26,7 +26,7 @@ namespace PersonalFinancialManagement.EFCore
         /// <param name="filterDescriptor">The filter descriptor.</param>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <returns></returns>
-        public static Expression<Func<TModel, bool>> Build<TModel>(FilterDescriptor filterDescriptor, string parameterName = "x")
+        public static Expression<Func<TModel, bool>> Build<TModel>(FilterDescriptor? filterDescriptor, string parameterName = "x")
             where TModel : class
         {
             var criteria = GetCriteria(filterDescriptor);
@@ -49,12 +49,12 @@ namespace PersonalFinancialManagement.EFCore
         /// <param name="filterDescriptors">The filter descriptors.</param>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <returns></returns>
-        public static Expression<Func<TModel, bool>> Build<TModel>(IEnumerable<FilterDescriptor> filterDescriptors, string parameterName = "x")
+        public static Expression<Func<TModel, bool>> Build<TModel>(IEnumerable<FilterDescriptor>? filterDescriptors, string parameterName = "x")
             where TModel : class
         {
             var parameter = Expression.Parameter(typeof(TModel), parameterName);
 
-            Expression expression = null;
+            Expression? expression = null;
             if (filterDescriptors != null && filterDescriptors.Any())
             {
                 foreach (var filterDescriptor in filterDescriptors)
@@ -187,7 +187,7 @@ namespace PersonalFinancialManagement.EFCore
 
                 case FilterType.In:
                     var inValues = filterDecriptor.Value as string[];
-                    if (!member.Type.GetInterfaces().Any(t => t == typeof(IList)))
+                    if (member.Type.GetInterfaces().All(t => t != typeof(IList)))
                     {
                         value = ExpressionUtils.CreateConstantExpression(inValues, valueType);
                         return ExpressionUtils.IsIn(member, value);
@@ -205,7 +205,7 @@ namespace PersonalFinancialManagement.EFCore
                     return inExpression;
 
                 case FilterType.NotIn:
-                    var notInValues = filterDecriptor.Value as string[]; if (!member.Type.GetInterfaces().Any(t => t == typeof(IList)))
+                    var notInValues = filterDecriptor.Value as string[]; if (member.Type.GetInterfaces().All(t => t != typeof(IList)))
                     {
                         value = ExpressionUtils.CreateConstantExpression(notInValues, valueType); return ExpressionUtils.IsNotIn(member, value);
                     }
@@ -278,18 +278,9 @@ namespace PersonalFinancialManagement.EFCore
             }
 
             var values = new List<string>();
-            if (filter.Values != null && filter.Values.Length > 0)
+            if (filter.Values is { Length: > 0 })
             {
-                foreach (var item in filter.Values)
-                {
-                    var value = item.Nullify();
-                    if (value == null)
-                    {
-                        continue;
-                    }
-
-                    values.Add(value);
-                }
+                values.AddRange(filter.Values.Select(item => item.Nullify()).Where(value => !value.IsNullOrEmpty()));
             }
 
             filter.Values = values.ToArray();
@@ -379,6 +370,10 @@ namespace PersonalFinancialManagement.EFCore
                         Operator = filter.Operator,
                         Value = filter.Values
                     };
+                case FilterType.NotBetween:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             throw new ArgumentException();
