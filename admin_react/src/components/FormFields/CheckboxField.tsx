@@ -11,7 +11,7 @@ export interface CheckboxFieldProps {
   control: Control<any>;
   label?: string;
   disabled?: boolean;
-  options: RadioOption[];
+  // options: RadioOption[];
   defaultChecked: boolean;
 }
 
@@ -20,7 +20,7 @@ export function CheckboxField({
   control,
   label,
   disabled,
-  options,
+  // options,
   defaultChecked,
 }: CheckboxFieldProps) {
   const {

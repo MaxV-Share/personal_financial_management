@@ -70,6 +70,7 @@ const paymentAccountTypeSlice = createSlice({
       state.table.pagination = action.payload.pagination;
       state.table.status = IStatus.Success;
     },
+
     fetchPaymentAccountType(state, action: PayloadAction<string>) {
       state.paymentAccountTypeCreateOrUpdate.status = IStatus.Pending;
     },
@@ -84,6 +85,7 @@ const paymentAccountTypeSlice = createSlice({
       state.paymentAccountTypeCreateOrUpdate.status = IStatus.Error;
       state.paymentAccountTypeCreateOrUpdate.data = null;
     },
+
     savePaymentAccountType(
       state,
       action: PayloadAction<IPaymentAccountTypeCreateOrUpdateModel>
@@ -149,20 +151,24 @@ export const selectPaymentAccountTypeTable = createSelector(
     return table;
   }
 );
+
 export const selectPaymentAccountTypeStatus = (state: RootState) =>
   state.paymentAccountType.status;
+
 export const selectPaymentAccountTypeTablePagination = (state: RootState) =>
   state.paymentAccountType.table.pagination;
+
 export const selectFilterPaymentAccountTypeRequest = (state: RootState) =>
   state.paymentAccountType.filterPaymentAccountTypeRequest;
+
 export const selectPaymentAccountTypeCreateOrUpdateStatus = (
   state: RootState
 ) => state.paymentAccountType.paymentAccountTypeCreateOrUpdate.status;
+
 export const selectPaymentAccountTypeCreateOrUpdateData = createSelector(
   (state: RootState) =>
     state.paymentAccountType.paymentAccountTypeCreateOrUpdate.data,
   (data) => {
-    console.log("selectPaymentAccountTypeCreateOrUpdateData", data);
     return data;
   }
 );

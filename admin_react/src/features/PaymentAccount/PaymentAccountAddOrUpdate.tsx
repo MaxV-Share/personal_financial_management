@@ -1,13 +1,20 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Container, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { InputField } from "src/components/FormFields/InputField";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
-import { IPaymentAccountCreateOrUpdateRequestModel } from "src/models/PaymentAccount";
+import { IStatus } from "src/models/Common/IStatus";
+import { IPaymentAccountCreateOrUpdateModel } from "src/models/PaymentAccount";
 import * as yup from "yup";
+import {
+  paymentAccountActions,
+  selectPaymentAccountCreateOrUpdateData,
+  selectPaymentAccountCreateOrUpdateStatus,
+} from "./paymentAccountSlice";
 export interface IPaymentAccountAddOrUpdateProps {}
 export type IPaymentAccountAddOrUpdateParams = {
   id?: string;
@@ -25,6 +32,9 @@ export default function PaymentAccountAddOrUpdate(
 ) {
   const { id } = useParams<IPaymentAccountAddOrUpdateParams>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(selectPaymentAccountCreateOrUpdateStatus);
+  const data = useAppSelector(selectPaymentAccountCreateOrUpdateData);
   const {
     control,
     handleSubmit,
@@ -33,7 +43,7 @@ export default function PaymentAccountAddOrUpdate(
     formState: { isSubmitting, errors },
   } = useForm<
     IBaseAddOrUpdateBodyRequest<
-      IPaymentAccountCreateOrUpdateRequestModel & { country: any }
+      IPaymentAccountCreateOrUpdateModel & { country: any }
     >,
     object
   >({
@@ -46,9 +56,63 @@ export default function PaymentAccountAddOrUpdate(
     },
     resolver: yupResolver(schema),
   });
-  const onSubmit = (object) => {
-    console.log("PaymentAccountAddOrUpdate", object);
-    toast.success("Save PaymentAccountAddOrUpdate successfully!");
+  // get payment account by id
+  useEffect(() => {
+    if (id != null) {
+      dispatch(paymentAccountActions.fetchPaymentAccount(id));
+    } else {
+      reset({
+        data: {
+          name: "",
+          initialMoney: 0,
+          isReport: true,
+        },
+      });
+    }
+  }, [dispatch]);
+
+  useEffect(
+    () => () => {
+      dispatch(paymentAccountActions.resetPaymentAccountData());
+    },
+    []
+  );
+
+  useEffect(() => {
+    console.log("success", status);
+    switch (status) {
+      case IStatus.Success:
+        dispatch(paymentAccountActions.resetPaymentAccountStatus());
+        if (id != null) navigate(`/admin/payment-account`);
+        break;
+      case IStatus.Error:
+        // navigate(`/admin/payment-account/add`);
+        break;
+
+      default:
+        break;
+    }
+  }, [status, dispatch]);
+
+  // reset form data khi sau khi fetchPaymentAccount
+  useEffect(() => {
+    if (data == null) {
+      reset({
+        data: {
+          name: "",
+          initialMoney: 0,
+          isReport: true,
+        },
+      });
+      return;
+    }
+    reset({ data: data });
+    console.info("data", data);
+  }, [data]);
+  const onSubmit = (
+    object: IBaseAddOrUpdateBodyRequest<IPaymentAccountCreateOrUpdateModel>
+  ) => {
+    dispatch(paymentAccountActions.savePaymentAccount(object.data));
   };
   return (
     <>
@@ -79,19 +143,21 @@ export default function PaymentAccountAddOrUpdate(
             name={`data.initialMoney`}
             control={control}
             label={`Initial Money`}
-            type="number"
+            defaultValue={1}
+            // type="number"
           />
           <InputField
             id={`data.name`}
             name={`data.name`}
             control={control}
-            label={`Currency name`}
+            label={`PaymentAccount name`}
           />
-          {/* <InputField
-            id={`data.isReport`}
+          {/* <CheckboxField
+            // id={`data.isReport`}
             name={`data.isReport`}
             control={control}
             label={`isReport`}
+            defaultChecked={false}
           /> */}
           <Box
             sx={{

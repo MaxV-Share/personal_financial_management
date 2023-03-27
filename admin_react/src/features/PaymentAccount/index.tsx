@@ -1,12 +1,23 @@
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import { Button, Container, Grid, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import PaymentAccountList from "./Components/PaymentAccountList";
+import {
+  paymentAccountActions,
+  selectFilterPaymentAccountRequest,
+} from "./paymentAccountSlice";
 
 export interface IPaymentAccountProps {}
 
 export default function PaymentAccount(props: IPaymentAccountProps) {
+  const filter = useAppSelector(selectFilterPaymentAccountRequest);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(paymentAccountActions.fetchPaymentAccounts(filter));
+  }, [dispatch, filter]);
   const navigate = useNavigate();
   return (
     <>

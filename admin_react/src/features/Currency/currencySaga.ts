@@ -12,28 +12,6 @@ function* fetchCurrencies(action: PayloadAction<IFilterBodyRequest>) {
       currencyApi.getAll,
       action.payload
     );
-    // const res: IBasePaging<ICurrencyModel> = {
-    //   data: [
-    //     {
-    //       id: 'id',
-    //       name: 'name',
-    //       icon: 'symbol',
-    //       code: 'code'
-    //     },
-    //     {
-    //       id: 'id2',
-    //       name: 'name2',
-    //       icon: 'symbol2',
-    //       code: 'code2'
-    //     }
-    //   ],
-    //   pagination: {
-    //     pageIndex: 1,
-    //     pagesCount: 10,
-    //     pageSize: 10,
-    //     totalRows: 100
-    //   }
-    // };
     yield put(currencyActions.fetchCurrenciesSuccess(res));
   } catch (error) {
     console.error("error", error);

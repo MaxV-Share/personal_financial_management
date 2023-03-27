@@ -37,7 +37,6 @@ export default function PaymentAccountTypeAddOrUpdate(
   const data = useAppSelector(selectPaymentAccountTypeCreateOrUpdateData);
   // xử lý status add or update page
   useEffect(() => {
-    console.log("status", status);
     switch (status) {
       case IStatus.Success:
         console.log("success");

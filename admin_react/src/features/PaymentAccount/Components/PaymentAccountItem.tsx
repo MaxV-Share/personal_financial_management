@@ -14,9 +14,11 @@ import {
 import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/system";
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { NavLink } from "react-router-dom";
 import { IPaymentAccountModel } from "src/models/PaymentAccount";
+import { paymentAccountActions } from "../paymentAccountSlice";
 
 export interface IPaymentAccountItemProps {
   data: IPaymentAccountModel;
@@ -27,6 +29,7 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
   const { data } = props;
   let vndLocale = Intl.NumberFormat("vi-VN");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const onHandleClick = () => {
     navigate(`${data.id}`);
@@ -41,6 +44,11 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+  const handleDelete = (id: string): void => {
+    dispatch(paymentAccountActions.deletePaymentAccount(id));
+  };
+
   return (
     <>
       <Card
@@ -120,13 +128,13 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
             }}
           >
             <Typography variant="h3" gutterBottom noWrap>
-              {vndLocale.format(data.currentBalance)}
+              {vndLocale.format(data.currentBalance ?? 0)}
             </Typography>
             <Typography variant="subtitle2" noWrap>
-              Số dư khả dụng: {vndLocale.format(data.availableBalance)}
+              Số dư khả dụng: {vndLocale.format(data.availableBalance ?? 0)}
             </Typography>
             <Typography variant="subtitle2" noWrap>
-              Hạn mức: {vndLocale.format(data.creditLimit)}
+              Hạn mức: {vndLocale.format(data.creditLimit ?? 0)}
             </Typography>
           </Box>
         </CardContent>
@@ -154,6 +162,7 @@ export default function PaymentAccountItem(props: IPaymentAccountItemProps) {
               }}
               color="inherit"
               size="medium"
+              onClick={() => handleDelete(data.id)}
             >
               <DeleteTwoToneIcon fontSize="medium" />
             </IconButton>

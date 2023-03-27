@@ -77,9 +77,11 @@ export default function PaymentAccountTypeTable(
   const filterPaymentAccountTypeRequest = useAppSelector(
     selectFilterPaymentAccountTypeRequest
   );
+
   useEffect(() => {
     // console.log("tablePaymentAccountTypes", tablePaymentAccountTypes);
   }, [dispatch, tablePaymentAccountTypes]);
+
   useEffect(() => {
     dispatch(
       paymentAccountTypeActions.fetchPaymentAccountTypes(
@@ -87,6 +89,7 @@ export default function PaymentAccountTypeTable(
       )
     );
   }, [dispatch, filterPaymentAccountTypeRequest]);
+
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

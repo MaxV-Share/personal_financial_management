@@ -87,7 +87,6 @@ function* fetchPaymentAccountType(action: PayloadAction<string>) {
 
 function* deletePaymentAccountType(action: PayloadAction<string>) {
   try {
-    console.log(`deletePaymentAccountType`);
     // call api delete payment account type
     const result = yield call(paymentAccountApi.delete, action.payload);
     yield put(paymentAccountTypeActions.deletePaymentAccountTypeSuccess({}));
