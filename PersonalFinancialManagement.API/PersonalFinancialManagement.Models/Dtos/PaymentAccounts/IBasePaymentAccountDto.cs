@@ -3,7 +3,7 @@
     public interface IBasePaymentAccountDto
     {
         public string? Name { get; set; }
-        public string? InitialMoney { get; set; }
+        public decimal? InitialMoney { get; set; }
         public string? Description { get; set; }
         public bool? IsReport { get; set; }
         public string? Icon { get; set; }

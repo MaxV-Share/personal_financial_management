@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using PersonalFinancialManagement.Models.Entities.Identities;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Models.DbContexts;
-using PersonalFinancialManagement.Repositories.Extenstions;
-using PersonalFinancialManagement.Services.Extenstions;
+using PersonalFinancialManagement.Services.Extensions;
+using PersonalFinancialManagement.Repositories.Extensions;
 
 namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
 {

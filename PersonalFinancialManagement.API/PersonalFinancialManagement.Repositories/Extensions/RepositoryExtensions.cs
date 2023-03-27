@@ -3,9 +3,9 @@ using PersonalFinancialManagement.Repositories.BaseRepository;
 using PersonalFinancialManagement.Common.Extensions;
 using PersonalFinancialManagement.Models.Entities;
 
-namespace PersonalFinancialManagement.Repositories.Extenstions
+namespace PersonalFinancialManagement.Repositories.Extensions
 {
-    public static class RepositoryExtenstions
+    public static class RepositoryExtensions
     {
         public static void AddRepositories(this IServiceCollection services)
         {

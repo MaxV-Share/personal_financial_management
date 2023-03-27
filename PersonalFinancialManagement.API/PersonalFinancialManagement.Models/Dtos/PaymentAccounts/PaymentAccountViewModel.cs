@@ -5,7 +5,7 @@ namespace PersonalFinancialManagement.Models.Dtos.PaymentAccounts
     public class PaymentAccountViewModel : BaseViewModel<Guid>, IBasePaymentAccountDto
     {
         public string? Name { get; set; }
-        public string? InitialMoney { get; set; }
+        public decimal? InitialMoney { get; set; } = 0;
         public string? Description { get; set; }
         public bool? IsReport { get; set; }
         public string? Icon { get; set; }

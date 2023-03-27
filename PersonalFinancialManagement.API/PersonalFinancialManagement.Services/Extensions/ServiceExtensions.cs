@@ -4,7 +4,7 @@ using PersonalFinancialManagement.Common.Extensions;
 using PersonalFinancialManagement.Common.Interceptors;
 using PersonalFinancialManagement.Services.Interfaces;
 
-namespace PersonalFinancialManagement.Services.Extenstions
+namespace PersonalFinancialManagement.Services.Extensions
 {
     public static class ServiceExtensions
     {
@@ -15,6 +15,7 @@ namespace PersonalFinancialManagement.Services.Extenstions
             services.AddProxiedScoped<ITransactionCategoryTypeService, TransactionCategoryTypeService>();
             services.AddProxiedScoped<ICurrencyService, CurrencyService>();
             services.AddProxiedScoped<IPaymentAccountTypeService, PaymentAccountTypeService>();
+            services.AddProxiedScoped<IPaymentAccountService, PaymentAccountService>();
 
             //services.AddProxiedScoped<IAuthenticationService, AuthenticationService>();
             //services.AddProxiedScoped<IBillDetailService, BillDetailService>();

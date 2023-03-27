@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using PersonalFinancialManagement.Models.Dtos.Currencies;
 using PersonalFinancialManagement.Models.Dtos.Currencies.Requests;
+using PersonalFinancialManagement.Models.Dtos.PaymentAccounts;
+using PersonalFinancialManagement.Models.Dtos.PaymentAccounts.Requests;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
@@ -25,6 +27,11 @@ namespace App.Models.Mapper
             CreateMap<PaymentAccountType, PaymentAccountTypeCreateRequest>().ReverseMap();
             CreateMap<PaymentAccountType, PaymentAccountTypeUpdateRequest>().ReverseMap();
             CreateMap<PaymentAccountType, PaymentAccountTypeViewModel>().ReverseMap();
+            
+            
+            CreateMap<PaymentAccount, PaymentAccountCreateRequest>().ReverseMap();
+            CreateMap<PaymentAccount, PaymentAccountUpdateRequest>().ReverseMap();
+            CreateMap<PaymentAccount, PaymentAccountViewModel>().ReverseMap();
 
         }
     }

@@ -16,6 +16,7 @@ namespace PersonalFinancialManagement.Models.DbContexts
         public virtual DbSet<TransactionCategoryType> TransactionCategoryTypes { set; get; }
         public virtual DbSet<Currency> Currencies { set; get; }
         public virtual DbSet<PaymentAccountType> PaymentAccountTypes { set; get; }
+        public virtual DbSet<PaymentAccount> PaymentAccounts { set; get; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -23,6 +24,7 @@ namespace PersonalFinancialManagement.Models.DbContexts
             builder.Entity<TransactionCategoryType>().HasQueryFilter(p => p.Deleted == null);
             builder.Entity<Currency>().HasQueryFilter(p => p.Deleted == null);
             builder.Entity<PaymentAccountType>().HasQueryFilter(p => p.Deleted == null);
+            builder.Entity<PaymentAccount>().HasQueryFilter(p => p.Deleted == null);
 
             builder.Entity<User>()
                 .HasMany(e => e.UserRoles)
