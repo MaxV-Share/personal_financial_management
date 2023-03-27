@@ -37,10 +37,12 @@ export default function PaymentAccountTypeAddOrUpdate(
   const data = useAppSelector(selectPaymentAccountTypeCreateOrUpdateData);
   // xử lý status add or update page
   useEffect(() => {
+    console.log("status", status);
     switch (status) {
       case IStatus.Success:
-        navigate(-1);
-        dispatch(paymentAccountTypeActions.resetPaymentAccountTypeStatus);
+        console.log("success");
+        dispatch(paymentAccountTypeActions.resetPaymentAccountTypeStatus());
+        if (id != null) navigate(`/admin/payment-account-type`);
         break;
       case IStatus.Error:
         navigate(`/admin/payment-account-type/add`);
@@ -82,12 +84,10 @@ export default function PaymentAccountTypeAddOrUpdate(
     },
     resolver: yupResolver(schema),
   });
-  const onSubmit = async (
+  const onSubmit = (
     object: IBaseAddOrUpdateBodyRequest<IPaymentAccountTypeCreateOrUpdateModel>
   ) => {
-    await dispatch(
-      paymentAccountTypeActions.savePaymentAccountType(object.data)
-    );
+    dispatch(paymentAccountTypeActions.savePaymentAccountType(object.data));
   };
   return (
     <>

@@ -28,17 +28,10 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
     }
     public static class GeneralServiceExtension
     {
-        public static void AddGeneralConfigurations(this IServiceCollection services, IConfiguration configuration)
+        public static void AddGeneralConfigurations(this WebApplicationBuilder builder, string policyName, CorsOptions corsOption)
         {
-            //services.AddSwaggerGen();
-            var corsSection = configuration.GetSection("CorsOptions");
-            if (corsSection == null)
-            {
-                throw new ArgumentNullException(nameof(corsSection));
-            }
-            var corsOption = corsSection.Get<CorsOptions>();
-            var policyName = corsOption.PolicyName.Nullify("AppCorsPolicy");
-            services.AddCors(c =>
+            //builder.Services.AddSwaggerGen();
+            builder.Services.AddCors(c =>
             {
                 c.AddPolicy(policyName, options =>
                 {
@@ -72,23 +65,23 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
                 });
             });
 
-            services.Configure<ConnectionString>(configuration.GetSection("ConnectionStrings"));
-            var connectionStrings = configuration.GetSection("ConnectionStrings").Get<ConnectionString>();
+            builder.Services.Configure<ConnectionString>(builder.Configuration.GetSection("ConnectionStrings"));
+            var connectionStrings = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionString>();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.EnableDetailedErrors(true);
 
                 options.UseSqlServer(connectionStrings.MigrationConnection);
                 options.UseSnakeCaseNamingConvention();
             });
-            services.AddIdentity<User, Role>().AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddDistributedMemoryCache();
+            builder.Services.AddDistributedMemoryCache();
 
-            services.Configure<JwtOptions>(configuration.GetSection("JWT"));
-            var jwtOptions = configuration.GetSection("JWT").Get<JwtOptions>();
-            services.AddAuthentication(o =>
+            builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
+            var jwtOptions = builder.Configuration.GetSection("JWT").Get<JwtOptions>();
+            builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -107,12 +100,12 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret))
                 };
             });
-            services.AddSwaggerGenNewtonsoftSupport();
-            services.AddControllers()
+            builder.Services.AddSwaggerGenNewtonsoftSupport();
+            builder.Services.AddControllers()
                 .AddNewtonsoftJson()
                 .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "App Api", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

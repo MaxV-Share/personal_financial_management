@@ -49,14 +49,14 @@ namespace PersonalFinancialManagement.Services
             var result = _mapper.Map<CurrencyViewModel>(currency);
             return result;
         }
-        public async Task<IBasePaging<CurrencyViewModel>?> GetPagingAsync(IFilterBodyRequest? request)
+        public async Task<IBasePaging<CurrencyViewModel>?> GetPagingAsync(IFilterBodyRequest request)
         {
             var query = _mapper.ProjectTo<CurrencyViewModel>(_unitOffWork.Repository<Currency, Guid>().GetNoTrackingEntities());
 
 
             if (!request.SearchValue.IsNullOrEmpty())
             {
-                query = query.Where(e => e.Name.Contains(request.SearchValue));
+                query = query.Where(e => e.Name!.Contains(request.SearchValue ?? ""));
             }
 
             return await query.ToPagingAsync(request);

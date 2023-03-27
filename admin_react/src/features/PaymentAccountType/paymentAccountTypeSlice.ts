@@ -91,6 +91,7 @@ const paymentAccountTypeSlice = createSlice({
       state.paymentAccountTypeCreateOrUpdate.status = IStatus.Pending;
     },
     savePaymentAccountTypeSuccess(state, action: PayloadAction<any>) {
+      console.log("savePaymentAccountTypeSuccess");
       state.paymentAccountTypeCreateOrUpdate.status = IStatus.Success;
     },
     savePaymentAccountTypeError(state, action: PayloadAction<any>) {
@@ -160,5 +161,8 @@ export const selectPaymentAccountTypeCreateOrUpdateStatus = (
 export const selectPaymentAccountTypeCreateOrUpdateData = createSelector(
   (state: RootState) =>
     state.paymentAccountType.paymentAccountTypeCreateOrUpdate.data,
-  (data) => data
+  (data) => {
+    console.log("selectPaymentAccountTypeCreateOrUpdateData", data);
+    return data;
+  }
 );

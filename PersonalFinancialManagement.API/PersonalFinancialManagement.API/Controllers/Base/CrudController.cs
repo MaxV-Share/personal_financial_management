@@ -36,17 +36,22 @@ namespace PersonalFinancialManagement.API.Controllers.Base
             if (!id!.Equals(request.Id))
                 return BadRequest();
             var result = await _baseService.UpdateAsync(id, request);
-            if (result > 0)
-                return NoContent();
-            return StatusCode(500);
+            return result > 0 ? NoContent() : StatusCode(500);
         }
         [HttpDelete("{id}")]
         public virtual async Task<ActionResult> Delete(TKey id)
         {
-            var result = await _baseService.DeleteSoftAsync(id);
-            if (result > 0)
-                return Ok();
-            return StatusCode(500);
+            try
+            {
+                var result = await _baseService.DeleteSoftAsync(id);
+                if (result > 0)
+                    return Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest();
+            }
+            return NoContent();
         }
         [HttpPost("filter")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

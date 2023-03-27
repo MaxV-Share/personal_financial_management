@@ -1,30 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using PersonalFinancialManagement.API.Infrastructures.ServicesExtensions;
+using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.Models.DbContexts;
+using PersonalFinancialManagement.Models.Dtos;
 using Serilog;
 
 async Task CreateDbIfNotExistsAsync(IHost host)
 {
-    using (var scope = host.Services.CreateScope())
+    using var scope = host.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
     {
-        var services = scope.ServiceProvider;
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        try
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        await context.Database.MigrateAsync();
+        var dbInitializer = services.GetService<DBInitializer>();
+        if (dbInitializer == null)
         {
-            var context = services.GetRequiredService<ApplicationDbContext>();
-            await context.Database.MigrateAsync();
-            var dbInitializer = services.GetService<DBInitializer>();
-            if (dbInitializer == null)
-            {
-                logger.LogError("dbInitializer is null");
-                return;
-            }
-            await dbInitializer.Seed();
+            logger.LogError("dbInitializer is null");
+            return;
         }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "An error occurred creating the DB.");
-        }
+        await dbInitializer.Seed();
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred creating the DB.");
     }
 }
 var configuration = new ConfigurationBuilder()
@@ -41,7 +41,14 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddGeneralConfigurations(builder.Configuration);
+var corsSection = configuration.GetSection("CorsOptions");
+if (corsSection == null)
+{
+    throw new ArgumentNullException(nameof(corsSection));
+}
+var corsOption = corsSection.Get<CorsOptions>();
+var policyName = corsOption!.PolicyName.Nullify("AppCorsPolicy");
+builder.AddGeneralConfigurations(policyName, corsOption);
 builder.Services.AddInjectedServices();
 
 var app = builder.Build();
@@ -54,6 +61,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(policyName);
 
 app.UseAuthorization();
 

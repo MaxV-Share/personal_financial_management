@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { selectCurrencyTable } from "../currencySlice";
 
 interface Column {
-  id: "id" | "name" | "code";
+  id: "id" | "name" | "code" | "icon";
   label: string;
   minWidth?: number;
   align?: "right";
@@ -27,6 +27,7 @@ const columns: Column[] = [
   { id: "id", label: "Id" },
   { id: "name", label: "Name" },
   { id: "code", label: "ISO\u00a0Code" },
+  { id: "icon", label: "Icon" },
 ];
 
 interface Data {

@@ -4,7 +4,10 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { IBasePaging, IFilterBodyRequest } from "src/models/Bases";
 import { IPaymentAccountTypeModel } from "src/models/PaymentAccountType";
 import { IPaymentAccountTypeCreateOrUpdateModel } from "src/models/PaymentAccountType/Requests/IPaymentAccountTypeCreateOrUpdateModel";
-import paymentAccountApi from "../../apis/paymentAccountTypeApi";
+import {
+  default as paymentAccountApi,
+  default as paymentAccountTypeApi,
+} from "../../apis/paymentAccountTypeApi";
 import { paymentAccountTypeActions } from "./paymentAccountTypeSlice";
 const mockIPaymentAccountTypeModel: IBasePaging<IPaymentAccountTypeModel> = {
   data: [
@@ -29,11 +32,11 @@ const mockIPaymentAccountTypeModel: IBasePaging<IPaymentAccountTypeModel> = {
 
 function* fetchPaymentAccountTypes(action: PayloadAction<IFilterBodyRequest>) {
   try {
-    // const res: IBasePaging<IPaymentAccountTypeModel> = yield call(
-    //   paymentAccountTypeApi.getAll,
-    //   action.payload
-    // );
-    const res = mockIPaymentAccountTypeModel;
+    const res: IBasePaging<IPaymentAccountTypeModel> = yield call(
+      paymentAccountTypeApi.getAll,
+      action.payload
+    );
+    // const res = mockIPaymentAccountTypeModel;
     yield put(paymentAccountTypeActions.fetchPaymentAccountTypesSuccess(res));
   } catch (error) {
     console.error("error", error);
@@ -43,23 +46,23 @@ function* savePaymentAccountType(
   action: PayloadAction<IPaymentAccountTypeCreateOrUpdateModel>
 ) {
   try {
-    // if (action.payload.id == null) {
-    //   yield call(
-    //     paymentAccountTypeApi.createPaymentAccountType,
-    //     action.payload as IPaymentAccountTypeAddOrUpdateModel
-    //   );
-    // } else {
-    //   yield call(
-    //     paymentAccountTypeApi.updatePaymentAccountType,
-    //     action.payload as IPaymentAccountTypeAddOrUpdateModel
-    //   );
-    // }
-    put(paymentAccountTypeActions.savePaymentAccountTypeSuccess({}));
-    put(paymentAccountTypeActions.fetchPaymentAccountTypes({}));
+    if (action.payload.id == null) {
+      yield call(
+        paymentAccountTypeApi.create,
+        action.payload as IPaymentAccountTypeCreateOrUpdateModel
+      );
+    } else {
+      yield call(
+        paymentAccountTypeApi.update,
+        action.payload as IPaymentAccountTypeCreateOrUpdateModel
+      );
+    }
+    yield put(paymentAccountTypeActions.savePaymentAccountTypeSuccess({}));
+    yield put(paymentAccountTypeActions.fetchPaymentAccountTypes({}));
     toast.success(`Save PaymentAccountError Successful!`);
     // history.go(-1);
   } catch (error) {
-    put(paymentAccountTypeActions.savePaymentAccountTypeError(error));
+    yield put(paymentAccountTypeActions.savePaymentAccountTypeError(error));
     toast.error(`Save PaymentAccountError Error!`);
   }
 }

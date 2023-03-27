@@ -10,17 +10,20 @@ import {
 import { IKeyValue } from "src/models/Common";
 import { IStatus } from "src/models/Common/IStatus";
 import { ICurrencyModel } from "src/models/Currency";
+import { ICurrencyCreateOrUpdateRequest } from "src/models/Currency/Request/ICurrencyCreateOrUpdateRequest";
 
 export interface ICurrencyTable {
   data: ICurrencyModel[];
   pagination: IPagination;
 }
+export interface ICurrencyCreateOrUpdate {}
 
 export interface CurrencyState {
   status: IStatus;
   table: IBaseLoading & ICurrencyTable;
   filterCurrencyRequest: IFilterBodyRequest;
   langFilterRequest: IFilterBodyRequest;
+  createOrUpdate?: ICurrencyCreateOrUpdate;
 }
 const initialPagination: IPagination = {
   pageIndex: 1,
@@ -60,6 +63,12 @@ const currencySlice = createSlice({
       state.table.pagination = action.payload.pagination;
       state.table.status = IStatus.Success;
     },
+    createCurrency(
+      state,
+      action: PayloadAction<ICurrencyCreateOrUpdateRequest>
+    ) {},
+    createCurrencySuccess(state) {},
+    createCurrencyError(state) {},
     resetFilter(state) {
       state.filterCurrencyRequest = {
         langId: "EN",
