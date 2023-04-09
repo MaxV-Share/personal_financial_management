@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PersonalFinancialManagement.Services.Excels\PersonalFinancialManagement.Services.Excels.csproj" />
     <ProjectReference Include="..\PersonalFinancialManagement.Services\PersonalFinancialManagement.Services.csproj" />
   </ItemGroup>
   

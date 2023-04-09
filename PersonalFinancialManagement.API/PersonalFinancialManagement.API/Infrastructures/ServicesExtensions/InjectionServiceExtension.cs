@@ -14,7 +14,7 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
         {
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddRepositories();
-            services.AddTransient<DBInitializer>();
+            services.AddTransient<DbInitializer>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped(typeof(IUnitOffWork<>), typeof(UnitOffWork<>));
             services.AddServices();

@@ -3,6 +3,7 @@ using PersonalFinancialManagement.API.Infrastructures.ServicesExtensions;
 using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
+using PersonalFinancialManagement.Services.Excels.Extensions;
 using Serilog;
 
 async Task CreateDbIfNotExistsAsync(IHost host)
@@ -14,7 +15,7 @@ async Task CreateDbIfNotExistsAsync(IHost host)
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         await context.Database.MigrateAsync();
-        var dbInitializer = services.GetService<DBInitializer>();
+        var dbInitializer = services.GetService<DbInitializer>();
         if (dbInitializer == null)
         {
             logger.LogError("dbInitializer is null");
@@ -49,7 +50,11 @@ if (corsSection == null)
 var corsOption = corsSection.Get<CorsOptions>();
 var policyName = corsOption!.PolicyName.Nullify("AppCorsPolicy");
 builder.AddGeneralConfigurations(policyName, corsOption);
+builder.Services.AddConfigurationSettings(builder.Configuration);
 builder.Services.AddInjectedServices();
+builder.Services.ConfigureMongoDbClient();
+builder.Services.AddInfrastructureServices();
+builder.Services.ConfigureHealthChecks();
 
 var app = builder.Build();
 

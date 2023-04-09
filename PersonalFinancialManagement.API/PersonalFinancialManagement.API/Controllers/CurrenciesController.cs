@@ -12,7 +12,7 @@ namespace PersonalFinancialManagement.API.Controllers
 {
     public class CurrenciesController : CrudController<ApplicationDbContext, Currency, CurrencyCreateRequest, CurrencyUpdateRequest, CurrencyViewModel, Guid>
     {
-        private readonly ICurrencyService _currencyTypeService;
+        protected readonly ICurrencyService _currencyTypeService;
 
         public CurrenciesController(ILogger<CurrenciesController> logger, ICurrencyService currencyTypeService) : base(logger, currencyTypeService)
         {
