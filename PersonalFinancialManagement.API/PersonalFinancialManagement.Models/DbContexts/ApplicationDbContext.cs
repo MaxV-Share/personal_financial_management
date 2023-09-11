@@ -45,11 +45,13 @@ namespace PersonalFinancialManagement.Models.DbContexts
 
             builder.Entity<UserClaim>()
                 .HasOne(e => e.User)
-                .WithMany(e => e.UserClaims).HasForeignKey(e => e.UserId);
+                .WithMany(e => e.UserClaims)
+                .HasForeignKey(e => e.UserId);
 
             builder.Entity<RoleClaim>()
                 .HasOne(e => e.Role)
-                .WithMany(e => e.RoleClaims).HasForeignKey(e => e.RoleId);
+                .WithMany(e => e.RoleClaims)
+                .HasForeignKey(e => e.RoleId);
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

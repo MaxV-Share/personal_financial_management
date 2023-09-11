@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+    #mssqldb: sql server
+    pfm_mssqldb:
+        container_name: pfm_mssqldb
+        environment:
+            SA_PASSWORD: "Admin@123"
+            ACCEPT_EULA: "Y"
+        restart: always
+        volumes:
+            - sqlserver_data:/var/lib/sqlserver/data
+        ports:
+            - "127.0.0.1:1438:1433"
+
+    #pfm_mongodb: mongo
+    pfm_mongodb:
+        container_name: pfm_mongodb
+        restart: always
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: example
+        ports:
+            - "27018:27017"
+        volumes:
+            - mongo_data:/data/db
+    #redisdb: redis
+    pfm_redisdb:
+        container_name: pfm_redisdb
+        restart: always
+        ports:
+            - "6379:6379"
+
+  #microservices api sections
+    pfm.api:
+        container_name: pfm.api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - "ConnectionStrings:DefaultConnection=Server=pfm_mssqldb,1433;Database=personal_financial_management;User Id=sa;Password=Admin@123;TrustServerCertificate=True"
+            - "ConnectionStrings:MigrationConnection=Server=pfm_mssqldb,1433;Database=personal_financial_management;User Id=sa;Password=Admin@123;TrustServerCertificate=True"
+            - "MongoDbSettings:ConnectionString=mongodb://localhost:27017"
+        depends_on: 
+            - pfm_mssqldb
+        ports:
+            - "6002:80"
+        restart: always

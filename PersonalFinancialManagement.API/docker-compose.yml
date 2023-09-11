@@ -8,6 +8,15 @@ services:
   pfm_mongodb:
     image: mongo
     
+  pfm_redisdb:
+    image: redis:alpine
+  #microservices api section
+  pfm.api:
+    image: ${DOCKER_REGISTRY-}pfm-api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: PersonalFinancialManagement.API/Dockerfile
+    
 #network section
 networks:
   default:
