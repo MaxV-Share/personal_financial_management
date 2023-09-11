@@ -21,42 +21,36 @@ namespace PersonalFinancialManagement.Services
         public PaymentAccountTypeService(IMapper mapper, IUnitOffWork<ApplicationDbContext> unitOffWork, ILogger<PaymentAccountTypeService> logger) : base(mapper, unitOffWork, logger)
         {
         }
-        public override async Task<PaymentAccountTypeViewModel?> CreateAsync(PaymentAccountTypeCreateRequest request)
+        public override async Task<PaymentAccountTypeViewModel?> CreateAsync(PaymentAccountTypeCreateRequest? request)
         {
-            if (request == null)
-                return null;
-
             PaymentAccountTypeViewModel? result = null;
             await _unitOffWork.DoWorkWithTransaction(async () =>
             {
                 var entity = _mapper.Map<PaymentAccountType>(request);
 
                 var countAffect = await _unitOffWork.Repository<PaymentAccountType, Guid>().CreateAsync(entity);
-                if (countAffect == 0)
-                {
-                    result = null;
-                }
+                if (countAffect != 0)
+                    result = _mapper.Map<PaymentAccountTypeViewModel>(entity);
 
-                result = _mapper.Map<PaymentAccountTypeViewModel>(entity);
             });
 
             return result;
 
         }
-        public override async Task<PaymentAccountTypeViewModel> GetByIdAsync(Guid id)
+        public override async Task<PaymentAccountTypeViewModel?> GetByIdAsync(Guid id)
         {
-            var PaymentAccountType = await _unitOffWork.Repository<PaymentAccountType, Guid>().GetByIdNoTrackingAsync(id);
-            var result = _mapper.Map<PaymentAccountTypeViewModel>(PaymentAccountType);
+            var paymentAccountType = await _unitOffWork.Repository<PaymentAccountType, Guid>().GetByIdNoTrackingAsync(id);
+            var result = _mapper.Map<PaymentAccountTypeViewModel>(paymentAccountType);
             return result;
         }
-        public async Task<IBasePaging<PaymentAccountTypeViewModel>> GetPagingAsync(IFilterBodyRequest request)
+        public async Task<IBasePaging<PaymentAccountTypeViewModel>?> GetPagingAsync(IFilterBodyRequest request)
         {
             var query = _mapper.ProjectTo<PaymentAccountTypeViewModel>(_unitOffWork.Repository<PaymentAccountType, Guid>().GetNoTrackingEntities());
 
 
             if (!request.SearchValue.IsNullOrEmpty())
             {
-                query = query.Where(e => e.Name.Contains(request.SearchValue));
+                query = query.Where(e => e.Name!.Contains(request.SearchValue!));
             }
 
             return await query.ToPagingAsync(request);

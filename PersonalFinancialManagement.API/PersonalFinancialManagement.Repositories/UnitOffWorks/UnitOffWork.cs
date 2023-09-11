@@ -60,18 +60,16 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
 
         public async Task DoWorkWithTransaction(Action action)
         {
-            using (var trans = await _dbContext.Database.BeginTransactionAsync())
+            await using var trans = await _dbContext.Database.BeginTransactionAsync();
+            try
             {
-                try
-                {
-                    action.Invoke();
-                    await trans.CommitAsync();
-                }
-                catch
-                {
-                    trans.Rollback();
-                    throw;
-                }
+                action.Invoke();
+                await trans.CommitAsync();
+            }
+            catch
+            {
+                await trans.RollbackAsync();
+                throw;
             }
         }
 
