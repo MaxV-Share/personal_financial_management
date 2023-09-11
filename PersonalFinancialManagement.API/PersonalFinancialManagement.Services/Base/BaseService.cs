@@ -90,8 +90,7 @@ namespace PersonalFinancialManagement.Services.Base
         {
             var entityNew = new TEntity();
             _mapper.Map(request, entityNew);
-            await _unitOffWork.Repository<TEntity, TKey>().CreateAsync(entityNew);
-            var effectedCount = await _unitOffWork.SaveChangesAsync();
+            var effectedCount = await _unitOffWork.Repository<TEntity, TKey>().CreateAsync(entityNew);
             if (effectedCount <= 0)
             {
                 throw new NullReferenceException();

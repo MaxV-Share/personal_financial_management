@@ -13,6 +13,7 @@ namespace PersonalFinancialManagement.Services.Extensions
             services.AddSingleton<IProxyGenerator, ProxyGenerator>();
             services.AddScoped<IAsyncInterceptor, MonitoringInterceptor>();
             services.AddProxiedScoped<ITransactionCategoryTypeService, TransactionCategoryTypeService>();
+            services.AddProxiedScoped<ITransactionCategoryService, TransactionCategoryService>();
             services.AddProxiedScoped<ICurrencyService, CurrencyService>();
             services.AddProxiedScoped<IPaymentAccountTypeService, PaymentAccountTypeService>();
             services.AddProxiedScoped<IPaymentAccountService, PaymentAccountService>();

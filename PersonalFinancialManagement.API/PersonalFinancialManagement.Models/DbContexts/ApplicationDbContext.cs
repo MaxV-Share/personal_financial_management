@@ -14,6 +14,7 @@ namespace PersonalFinancialManagement.Models.DbContexts
             _configuration = configuration;
         }
         public virtual DbSet<TransactionCategoryType> TransactionCategoryTypes { set; get; }
+        public virtual DbSet<TransactionCategory> TransactionCategories { set; get; }
         public virtual DbSet<Currency> Currencies { set; get; }
         public virtual DbSet<PaymentAccountType> PaymentAccountTypes { set; get; }
         public virtual DbSet<PaymentAccount> PaymentAccounts { set; get; }
@@ -22,6 +23,7 @@ namespace PersonalFinancialManagement.Models.DbContexts
             base.OnModelCreating(builder);
 
             builder.Entity<TransactionCategoryType>().HasQueryFilter(p => p.Deleted == null);
+            builder.Entity<TransactionCategory>().HasQueryFilter(p => p.Deleted == null);
             builder.Entity<Currency>().HasQueryFilter(p => p.Deleted == null);
             builder.Entity<PaymentAccountType>().HasQueryFilter(p => p.Deleted == null);
             builder.Entity<PaymentAccount>().HasQueryFilter(p => p.Deleted == null);
