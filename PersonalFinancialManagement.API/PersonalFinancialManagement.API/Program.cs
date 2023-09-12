@@ -69,6 +69,12 @@ app.UseHealthChecks("/ping");
 
 app.UseHttpsRedirection();
 
+app.UseRouting().UseEndpoints(endpoints =>
+{
+    endpoints.Map("/", context => Task.Run((() =>
+        context.Response.Redirect("/swagger/index.html"))));
+});
+
 app.UseCors(policyName);
 
 app.UseAuthorization();
