@@ -5,6 +5,7 @@ using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
 using PersonalFinancialManagement.Services.Excels.Extensions;
 using Serilog;
+using Serilog.Sinks.Elasticsearch;
 
 async Task CreateDbIfNotExistsAsync(IHost host)
 {
@@ -21,6 +22,7 @@ async Task CreateDbIfNotExistsAsync(IHost host)
             logger.LogError("dbInitializer is null");
             return;
         }
+
         await dbInitializer.Seed();
     }
     catch (Exception ex)
@@ -28,13 +30,14 @@ async Task CreateDbIfNotExistsAsync(IHost host)
         logger.LogError(ex, "An error occurred creating the DB.");
     }
 }
+
 var configuration = new ConfigurationBuilder()
-                  .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                  .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json")
-                  .Build();
+    .AddJsonFile("appsettings.json", false, true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json")
+    .Build();
 Log.Logger = new LoggerConfiguration()
-                    .ReadFrom.Configuration(configuration)
-                    .CreateLogger();
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -43,10 +46,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddDbContext<ApplicationDbContext>();
 var corsSection = configuration.GetSection("CorsOptions");
-if (corsSection == null)
-{
-    throw new ArgumentNullException(nameof(corsSection));
-}
+if (corsSection == null) throw new ArgumentNullException(nameof(corsSection));
 var corsOption = corsSection.Get<CorsOptions>();
 var policyName = corsOption!.PolicyName.Nullify("AppCorsPolicy");
 builder.AddGeneralConfigurations(policyName, corsOption);
@@ -56,26 +56,44 @@ builder.Services.ConfigureMongoDbClient();
 builder.Services.AddInfrastructureServices();
 builder.Services.ConfigureHealthChecks();
 builder.Services.AddHealthChecks();
-
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+{
+    var prefixIndexFormat = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:PrefixIndexFormat");
+    var elasticUri = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Uri");
+    var username = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Username");
+    var password = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Password");
+    loggerConfiguration
+        .ReadFrom.Configuration(hostingContext.Configuration)
+        .WriteTo.Elasticsearch(
+            new ElasticsearchSinkOptions(new Uri(elasticUri))
+            {
+                IndexFormat = $"{prefixIndexFormat}-{DateTime.UtcNow:yyyy-MM}",
+                AutoRegisterTemplate = true,
+                NumberOfReplicas = 1,
+                NumberOfShards = 2,
+                ModifyConnectionSettings = x => x.BasicAuthentication(username, password),
+                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                TypeName = null
+            })
+        .Enrich.FromLogContext()
+        .Enrich.WithMachineName();
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-}
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHealthChecks("/ping");
 
 app.UseHttpsRedirection();
 
+app.UseCors(policyName);
+
 app.UseRouting().UseEndpoints(endpoints =>
 {
-    endpoints.Map("/", context => Task.Run((() =>
-        context.Response.Redirect("/swagger/index.html"))));
+    endpoints.Map("/", context => Task.Run(() =>
+        context.Response.Redirect("/swagger/index.html")));
 });
-
-app.UseCors(policyName);
 
 app.UseAuthorization();
 
