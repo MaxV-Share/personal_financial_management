@@ -5,6 +5,8 @@ using PersonalFinancialManagement.Models.Dtos.TransactionCategories;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories.Requests;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Services.Base;
+using PersonalFinancialManagement.Models.Dtos.Transactions;
+using PersonalFinancialManagement.Models.Dtos.Transactions.Requests;
 
 namespace PersonalFinancialManagement.Services.Interfaces;
 

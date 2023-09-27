@@ -10,6 +10,8 @@ using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
+using PersonalFinancialManagement.Models.Dtos.Transactions;
+using PersonalFinancialManagement.Models.Dtos.Transactions.Requests;
 
 namespace App.Models.Mapper
 {
@@ -25,6 +27,10 @@ namespace App.Models.Mapper
             CreateMap<TransactionCategoryType, TransactionCategoryTypeCreateRequest>().ReverseMap();
             CreateMap<TransactionCategoryType, TransactionCategoryTypeUpdateRequest>().ReverseMap();
             CreateMap<TransactionCategoryType, TransactionCategoryTypeViewModel>().ReverseMap();
+
+            CreateMap<Transaction, TransactionCreateRequest>().ReverseMap();
+            CreateMap<Transaction, TransactionUpdateRequest>().ReverseMap();
+            CreateMap<Transaction, TransactionViewModel>().ReverseMap();
 
             CreateMap<Currency, CurrencyCreateRequest>().ReverseMap();
             CreateMap<Currency, CurrencyUpdateRequest>().ReverseMap();

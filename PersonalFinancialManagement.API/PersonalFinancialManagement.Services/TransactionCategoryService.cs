@@ -6,6 +6,8 @@ using PersonalFinancialManagement.EFCore;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories.Requests;
+using PersonalFinancialManagement.Models.Dtos.Transactions;
+using PersonalFinancialManagement.Models.Dtos.Transactions.Requests;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Services.Base;

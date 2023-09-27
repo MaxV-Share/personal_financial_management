@@ -14,6 +14,7 @@ namespace PersonalFinancialManagement.Services.Extensions
             services.AddScoped<IAsyncInterceptor, MonitoringInterceptor>();
             services.AddProxiedScoped<ITransactionCategoryTypeService, TransactionCategoryTypeService>();
             services.AddProxiedScoped<ITransactionCategoryService, TransactionCategoryService>();
+            services.AddProxiedScoped<ITransactionService, TransactionService>();
             services.AddProxiedScoped<ICurrencyService, CurrencyService>();
             services.AddProxiedScoped<IPaymentAccountTypeService, PaymentAccountTypeService>();
             services.AddProxiedScoped<IPaymentAccountService, PaymentAccountService>();

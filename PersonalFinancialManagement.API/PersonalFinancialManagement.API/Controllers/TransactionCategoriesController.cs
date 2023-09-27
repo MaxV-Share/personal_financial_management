@@ -5,11 +5,8 @@ using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Services.Interfaces;
-using PersonalFinancialManagement.Services;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
@@ -17,12 +14,12 @@ public class TransactionCategoriesController : CrudController<ApplicationDbConte
 {
     private readonly ITransactionCategoryService _transactionCategoryService;
 
-    public TransactionCategoriesController(ILogger<TransactionCategoryTypesController> logger, ITransactionCategoryService transactionCategoryService) : base(logger, transactionCategoryService)
+    public TransactionCategoriesController(ILogger<TransactionCategoriesController> logger, ITransactionCategoryService transactionCategoryService) : base(logger, transactionCategoryService)
     {
         _transactionCategoryService = transactionCategoryService;
     }
 
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionCategoryTypeViewModel>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionCategoryViewModel>))]
     public override async Task<ActionResult<IBasePaging<TransactionCategoryViewModel>>> GetPaging(FilterBodyRequest request)
     {
         var result = await _transactionCategoryService.GetPagingAsync(request);

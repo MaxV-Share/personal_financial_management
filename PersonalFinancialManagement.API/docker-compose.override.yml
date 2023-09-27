@@ -39,9 +39,13 @@ services:
             - ASPNETCORE_URLS=http://+:80
             - "ConnectionStrings:DefaultConnection=Server=pfm_mssqldb,1433;Database=personal_financial_management;User Id=sa;Password=Admin@123;TrustServerCertificate=True"
             - "ConnectionStrings:MigrationConnection=Server=pfm_mssqldb,1433;Database=personal_financial_management;User Id=sa;Password=Admin@123;TrustServerCertificate=True"
-            - "MongoDbSettings:ConnectionString=mongodb://localhost:27017"
+            - "MongoDbSettings:ConnectionString=mongodb://pfm_mongodb:27018"
+            - "ElasticConfiguration:Uri=http://elasticsearch:9200"
+            - "Serilog:WriteTo:2:args:connectionstring=Server=pfm_mssqldb,1433;Database=personal_financial_management;User Id=sa;Password=Admin@123;TrustServerCertificate=True"
+            - "Serilog:WriteTo:3:args:nodeuris=http://elasticsearch:9200"
         depends_on: 
             - pfm_mssqldb
+            - kibana
         ports:
             - "6002:80"
         restart: always
