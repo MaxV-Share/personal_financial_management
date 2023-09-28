@@ -28,9 +28,15 @@ namespace App.Models.Mapper
             CreateMap<TransactionCategoryType, TransactionCategoryTypeUpdateRequest>().ReverseMap();
             CreateMap<TransactionCategoryType, TransactionCategoryTypeViewModel>().ReverseMap();
 
-            CreateMap<Transaction, TransactionCreateRequest>().ReverseMap();
-            CreateMap<Transaction, TransactionUpdateRequest>().ReverseMap();
-            CreateMap<Transaction, TransactionViewModel>().ReverseMap();
+            CreateMap<TransactionCreateRequest, Transaction>()
+                .ForMember(e => e.FromPaymentAccountId, opt => opt.Ignore())
+                .ForMember(e => e.ToPaymentAccountId, opt => opt.Ignore())
+                .ForMember(e => e.CategoryId, opt => opt.Ignore());
+            CreateMap<TransactionUpdateRequest, Transaction>()
+                .ForMember(e => e.FromPaymentAccountId, opt => opt.Ignore())
+                .ForMember(e => e.ToPaymentAccountId, opt => opt.Ignore())
+                .ForMember(e => e.CategoryId, opt => opt.Ignore());
+            CreateMap<Transaction, TransactionViewModel>();
 
             CreateMap<Currency, CurrencyCreateRequest>().ReverseMap();
             CreateMap<Currency, CurrencyUpdateRequest>().ReverseMap();
