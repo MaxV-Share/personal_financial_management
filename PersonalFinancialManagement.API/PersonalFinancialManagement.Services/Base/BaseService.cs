@@ -66,7 +66,7 @@ namespace PersonalFinancialManagement.Services.Base
             var result = _mapper.Map<TViewModel>(entity);
             return result;
         }
-        public virtual async Task<int?> UpdateAsync(TKey id, TUpdateRequest request)
+        public virtual async Task<TViewModel?> UpdateAsync(TKey id, TUpdateRequest request)
         {
             if (id is null && !id.Equals(request.Id))
                 throw new KeyNotFoundException();
@@ -77,7 +77,12 @@ namespace PersonalFinancialManagement.Services.Base
                 throw new NullReferenceException();
             }
             entity = _mapper.Map(request, entity);
-            var result = await _unitOffWork.Repository<TEntity, TKey>().UpdateAsync(entity);
+            var effectedCount = await _unitOffWork.Repository<TEntity, TKey>().UpdateAsync(entity);
+            if (effectedCount <= 0)
+            {
+                throw new NullReferenceException();
+            }
+            var result = _mapper.Map<TViewModel>(entity);
             return result;
         }
         /// <summary>

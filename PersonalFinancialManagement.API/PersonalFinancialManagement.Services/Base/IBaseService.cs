@@ -15,7 +15,7 @@ namespace PersonalFinancialManagement.Services.Base
         Task<TViewModel?> GetByIdAsync(TKey id);
         Task<int?> DeleteHardAsync(TKey id);
         Task<int?> DeleteSoftAsync(TKey id);
-        public Task<int?> UpdateAsync(TKey id, TUpdateRequest request);
+        Task<TViewModel?> UpdateAsync(TKey id, TUpdateRequest request);
         Task<TViewModel?> CreateAsync(TCreateRequest request);
         Task<IEnumerable<TViewModel>?> CreateAsync(IEnumerable<TCreateRequest> request);
     }

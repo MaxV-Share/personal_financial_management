@@ -12,7 +12,7 @@ namespace PersonalFinancialManagement.API.Controllers.Base
         where TCreateRequest : BaseCreateRequest, new()
         where TUpdateRequest : BaseUpdateRequest<TKey>, new()
         where TViewModel : BaseViewModel<TKey>, new()
-        where TContext: DbContext
+        where TContext : DbContext
     {
         private readonly IBaseService<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey> _baseService;
         protected CrudController(ILogger logger, IBaseService<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey> baseService) : base(logger)
@@ -35,8 +35,15 @@ namespace PersonalFinancialManagement.API.Controllers.Base
         {
             if (!id!.Equals(request.Id))
                 return BadRequest();
-            var result = await _baseService.UpdateAsync(id, request);
-            return result > 0 ? NoContent() : StatusCode(500);
+            try
+            {
+                return Ok(await _baseService.UpdateAsync(id, request));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return StatusCode(500);
+            }
         }
         [HttpDelete("{id}")]
         public virtual async Task<ActionResult> Delete(TKey id)
