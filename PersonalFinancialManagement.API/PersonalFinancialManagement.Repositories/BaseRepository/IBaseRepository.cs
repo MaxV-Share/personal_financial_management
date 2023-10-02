@@ -64,14 +64,14 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
         /// <param name="id"></param>
         /// <param name="includes"></param>
         /// <returns></returns>
-        Task<TEntity> GetByIdAsync(TKey id, params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity?> GetByIdAsync(TKey id, params Expression<Func<TEntity, object>>[] includes);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <param name="includes"></param>
         /// <returns></returns>
-        Task<TEntity> GetByIdNoTrackingAsync(TKey id, params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity?> GetByIdNoTrackingAsync(TKey id, params Expression<Func<TEntity, object>>[] includes);
         /// <summary>
         /// 
         /// </summary>

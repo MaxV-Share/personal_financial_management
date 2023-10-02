@@ -8,7 +8,6 @@ using System.Text.Json.Serialization;
 using PersonalFinancialManagement.Models.Entities.Identities;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
-using PersonalFinancialManagement.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
@@ -70,9 +69,9 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.EnableDetailedErrors(true);
+                options.EnableDetailedErrors();
 
-                options.UseSqlServer(connectionStrings.MigrationConnection);
+                options.UseSqlServer(connectionStrings!.MigrationConnection);
                 options.UseSnakeCaseNamingConvention();
             });
             builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<ApplicationDbContext>();
@@ -91,13 +90,13 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
             {
                 o.SaveToken = true;
                 o.RequireHttpsMetadata = false;
-                o.TokenValidationParameters = new TokenValidationParameters()
+                o.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidAudience = jwtOptions?.ValidAudience,
                     ValidIssuer = jwtOptions?.ValidIssuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions!.Secret))
                 };
             });
             builder.Services.AddSwaggerGenNewtonsoftSupport();
@@ -116,7 +115,7 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -136,7 +135,7 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
                 c.SchemaFilter<EnumSchemaFilter>();
             });
         }
-        private static bool IsAllowedAll(this string[] values)
+        private static bool IsAllowedAll(this string[]? values)
         {
             return values == null || values.Length == 0 || values.Contains("*");
         }

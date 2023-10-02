@@ -18,7 +18,7 @@ namespace PersonalFinancialManagement.Services.Excels
         {
             _repository = repository;
         }
-        public async Task ReadXLS(string filePath)
+        public Task ReadXLS(string filePath)
         {
             var existingFile = new FileInfo("C:\\Users\\thevi\\Downloads\\Misa_Test.xlsx");
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -33,6 +33,7 @@ namespace PersonalFinancialManagement.Services.Excels
             });
             sw.Stop();
             _repository.CreateAsync(rawDatas);
+            return Task.CompletedTask;
         }
 
         public MisaRawDataEntry ReadOneSheet(ExcelWorksheet worksheet)

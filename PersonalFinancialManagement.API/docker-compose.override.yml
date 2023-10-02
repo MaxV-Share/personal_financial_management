@@ -17,13 +17,13 @@ services:
     pfm_mongodb:
         container_name: pfm_mongodb
         restart: always
-        environment:
-            ME_CONFIG_MONGODB_ADMINUSERNAME: root
-            ME_CONFIG_MONGODB_ADMINPASSWORD: example
         ports:
             - "27018:27017"
         volumes:
             - mongo_data:/data/db
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: 'admin'
+          MONGO_INITDB_ROOT_PASSWORD: 'admin' 
     #redisdb: redis
     pfm_redisdb:
         container_name: pfm_redisdb
@@ -43,12 +43,14 @@ services:
             - "ElasticConfiguration:Uri=http://elasticsearch:9200"
             - "Serilog:WriteTo:2:args:connectionstring=Server=pfm_mssqldb,1433;Database=personal_financial_management;User Id=sa;Password=Admin@123;TrustServerCertificate=True"
             - "Serilog:WriteTo:3:args:nodeuris=http://elasticsearch:9200"
+            - "Serilog:WriteTo:4:args:databaseUrl=mongodb://admin:admin@127.0.0.1:27018/PFMLogs"
         depends_on: 
             - pfm_mssqldb
             - kibana
         ports:
             - "6002:80"
         restart: always
+
     elasticsearch:
         container_name: elasticsearch
         environment:
@@ -61,8 +63,10 @@ services:
             - ELASTIC_PASSWORD=admin
         ports:
             - "9200:9200"
+        restart: always
         volumes:
             - elasticsearch_data:/usr/share/elasticsearch/data
+
     kibana:
         container_name: kibana
         environment:
@@ -78,3 +82,4 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
+        restart: always

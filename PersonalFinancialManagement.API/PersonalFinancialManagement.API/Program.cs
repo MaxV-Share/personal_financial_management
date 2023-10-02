@@ -5,6 +5,7 @@ using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
 using PersonalFinancialManagement.Services.Excels.Extensions;
 using Serilog;
+using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 
 async Task CreateDbIfNotExistsAsync(IHost host)
@@ -64,8 +65,9 @@ builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
     var password = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Password");
     loggerConfiguration
         .ReadFrom.Configuration(hostingContext.Configuration)
+        .Enrich.WithExceptionDetails()
         .WriteTo.Elasticsearch(
-            new ElasticsearchSinkOptions(new Uri(elasticUri))
+            new ElasticsearchSinkOptions(new Uri(elasticUri ?? ""))
             {
                 IndexFormat = $"{prefixIndexFormat}-{DateTime.UtcNow:yyyy-MM}",
                 AutoRegisterTemplate = true,
@@ -81,6 +83,7 @@ builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSerilogRequestLogging();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHealthChecks("/ping");
@@ -89,15 +92,16 @@ app.UseHttpsRedirection();
 
 app.UseCors(policyName);
 
-app.UseRouting().UseEndpoints(endpoints =>
-{
-    endpoints.Map("/", context => Task.Run(() =>
-        context.Response.Redirect("/swagger/index.html")));
-});
+app.UseAuthentication();
+
+app.UseRouting();
 
 app.UseAuthorization();
 
+app.Map("/", context => Task.Run(() => context.Response.Redirect("/swagger/index.html")));
+
 app.MapControllers();
+
 
 await CreateDbIfNotExistsAsync(app);
 
