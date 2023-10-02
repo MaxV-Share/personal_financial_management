@@ -12,18 +12,17 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
         #region props
 
         protected readonly ApplicationDbContext _context;
-        private DbSet<TEntity> EntitiesDbSet { get; set; }
+        private DbSet<TEntity>? EntitiesDbSet { get; set; }
         public readonly IHttpContextAccessor _httpContextAccessor;
 
         #endregion props
 
         #region ctor
 
-        public BaseRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, DbSet<TEntity> entitiesDbSet)
+        public BaseRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-            EntitiesDbSet = entitiesDbSet;
         }
 
         // ReSharper disable once EmptyDestructor
@@ -184,7 +183,15 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
 
         #region private
 
-        protected DbSet<TEntity> Entities => EntitiesDbSet;
+        protected DbSet<TEntity> Entities
+        {
+            get
+            {
+                if (EntitiesDbSet == null)
+                    EntitiesDbSet = _context.Set<TEntity>();
+                return EntitiesDbSet;
+            }
+        }
 
         protected string GetUserNameInHttpContext()
         {
