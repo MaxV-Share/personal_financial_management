@@ -10,6 +10,7 @@ namespace PersonalFinancialManagement.Common.Models
         {
             CreateAt = DateTime.Now;
             UpdateAt = CreateAt;
+            CreateBy = createBy;
             return this;
         }
         public virtual BaseEntity<TKey> SetValueUpdate(string updateBy)
