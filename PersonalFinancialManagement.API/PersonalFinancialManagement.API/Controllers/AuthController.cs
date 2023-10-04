@@ -124,18 +124,23 @@ public class AuthController : ApiController
     [HttpPost("login")]
     public async Task<ActionResult> Login(LoginViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var user = await _userManager.FindByNameAsync(model.UserName);
+        var userEmail = await _userManager.FindByEmailAsync(model.UserName);
+        if (user != null || userEmail != null)
         {
-            var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user != null)
-            {
-                var checkPassword = await _userManager.CheckPasswordAsync(user, model.Password);
-                if (checkPassword) return Ok(GenerateToken(user));
-            }
-            else
-            {
-                ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
-            }
+            var checkPassword = await _userManager.CheckPasswordAsync(user!, model.Password);
+            if (checkPassword)
+                return Ok(GenerateToken(user!));
+
+            var checkPasswordEmail = await _userManager.CheckPasswordAsync(userEmail!, model.Password);
+            if (checkPasswordEmail)
+                return Ok(GenerateToken(userEmail!));
+        }
+        else
+        {
+            ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
         }
 
         return BadRequest(ModelState);

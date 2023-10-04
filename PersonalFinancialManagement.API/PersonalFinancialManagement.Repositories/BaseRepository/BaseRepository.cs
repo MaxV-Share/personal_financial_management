@@ -100,7 +100,7 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
             var currentUserName = GetUserNameInHttpContext();
             entity.SetDefaultValue(currentUserName);
             await Entities.AddAsync(entity);
-            var countAffect = await _context.SaveChangesAsync();
+            var countAffect = _context.SaveChanges();
             return countAffect;
         }
 
@@ -195,8 +195,8 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
 
         protected string GetUserNameInHttpContext()
         {
-            var userName = _httpContextAccessor.HttpContext.User.FindFirst(claim => claim.Type == ClaimTypes.Name)?.Value;
-            if(userName == null)
+            var userName = _httpContextAccessor.HttpContext.User.FindFirst(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value ?? "";
+            if (userName == null)
                 throw new ArgumentNullException(nameof(userName));
             return userName;
         }

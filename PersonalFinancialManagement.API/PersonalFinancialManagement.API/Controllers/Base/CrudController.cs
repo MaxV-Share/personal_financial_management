@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Services.Base;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using PersonalFinancialManagement.Common.Models;
 
 namespace PersonalFinancialManagement.API.Controllers.Base
 {
-
+    [Authorize]
     public abstract class CrudController<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey> : ApiController
         where TEntity : BaseEntity<TKey>, new()
         where TCreateRequest : BaseCreateRequest, new()
