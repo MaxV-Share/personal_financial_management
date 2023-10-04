@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   pfm_mssqldb:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
 
   pfm_mongodb:
     image: mongo
