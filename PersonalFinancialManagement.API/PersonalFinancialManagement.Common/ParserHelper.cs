@@ -49,10 +49,9 @@ namespace PersonalFinancialManagement.Common
         /// </summary>
         public static string? TryParseToBase64<T>(this T data)
         {
-            string result = string.Empty;
             try
             {
-                result = TryParseToString(data);
+                var result = TryParseToString(data);
                 Base64Encode(result);
                 return result;
             }

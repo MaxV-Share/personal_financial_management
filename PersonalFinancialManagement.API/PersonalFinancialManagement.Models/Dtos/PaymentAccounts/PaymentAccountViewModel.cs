@@ -1,9 +1,11 @@
-﻿using PersonalFinancialManagement.Common.Models.DTOs;
+﻿using Newtonsoft.Json;
+using PersonalFinancialManagement.Common.Models.DTOs;
 
 namespace PersonalFinancialManagement.Models.Dtos.PaymentAccounts
 {
     public class PaymentAccountViewModel : BaseViewModel<Guid>, IBasePaymentAccountDto
     {
+        [JsonProperty(PropertyName = "test")]
         public string? Name { get; set; }
         public decimal? InitialMoney { get; set; } = 0;
         public string? Description { get; set; }

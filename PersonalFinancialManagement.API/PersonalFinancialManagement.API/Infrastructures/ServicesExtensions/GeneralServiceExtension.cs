@@ -16,13 +16,11 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
-            if (context.Type.IsEnum)
-            {
-                schema.Enum.Clear();
-                Enum.GetNames(context.Type)
-                    .ToList()
-                    .ForEach(name => schema.Enum.Add(new OpenApiString($"{Convert.ToInt64(Enum.Parse(context.Type, name))} = {name}")));
-            }
+            if (!context.Type.IsEnum) return;
+            schema.Enum.Clear();
+            Enum.GetNames(context.Type)
+                .ToList()
+                .ForEach(name => schema.Enum.Add(new OpenApiString($"{Convert.ToInt64(Enum.Parse(context.Type, name))} = {name}")));
         }
     }
     public static class GeneralServiceExtension
@@ -135,9 +133,9 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
                 c.SchemaFilter<EnumSchemaFilter>();
             });
         }
-        private static bool IsAllowedAll(this string[]? values)
+        private static bool IsAllowedAll(this IReadOnlyCollection<string>? values)
         {
-            return values == null || values.Length == 0 || values.Contains("*");
+            return values == null || values.Count == 0 || values.Contains("*");
         }
     }
 }

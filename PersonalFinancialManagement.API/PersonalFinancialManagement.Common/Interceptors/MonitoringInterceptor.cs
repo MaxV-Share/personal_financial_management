@@ -43,12 +43,7 @@ namespace PersonalFinancialManagement.Common.Interceptors
 
         private string ToStringInvocation(IInvocation invocation)
         {
-            var result = string.Empty;
-            if (invocation.MethodInvocationTarget != null)
-            {
-                return $"{invocation.MethodInvocationTarget.ReflectedType?.FullName}.{invocation.MethodInvocationTarget.Name}";
-            }
-            return result.ToString();
+            return invocation.MethodInvocationTarget != null ? $"{invocation.MethodInvocationTarget.ReflectedType?.FullName}.{invocation.MethodInvocationTarget.Name}" : string.Empty;
         }
     }
 }

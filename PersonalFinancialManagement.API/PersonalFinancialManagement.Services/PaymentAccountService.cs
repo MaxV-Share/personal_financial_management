@@ -12,6 +12,7 @@ using PersonalFinancialManagement.EFCore;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos.PaymentAccounts.Requests;
 using PersonalFinancialManagement.Models.Dtos.PaymentAccounts;
+using Microsoft.EntityFrameworkCore;
 
 namespace PersonalFinancialManagement.Services
 {
@@ -59,6 +60,7 @@ namespace PersonalFinancialManagement.Services
             {
                 query = query.Where(e => e.Name!.Contains(request.SearchValue ?? ""));
             }
+            var queryText = query.ToQueryString();
 
             return await query.ToPagingAsync(request);
         }

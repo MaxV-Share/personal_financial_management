@@ -29,7 +29,7 @@ public class TransactionsController : CrudController<ApplicationDbContext, Trans
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionViewModel>))]
     public override async Task<ActionResult> Post(TransactionCreateRequest? request)
     {
-        if (null == request || request.FromPaymentAccountId == null)
+        if (request?.FromPaymentAccountId == null)
             return BadRequest();
         var result = await _transactionService.CreateAsync(request);
 

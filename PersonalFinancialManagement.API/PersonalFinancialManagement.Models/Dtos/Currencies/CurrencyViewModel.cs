@@ -1,4 +1,6 @@
-﻿using PersonalFinancialManagement.Common.Models.DTOs;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using PersonalFinancialManagement.Common.Models.DTOs;
 
 namespace PersonalFinancialManagement.Models.Dtos.Currencies
 {

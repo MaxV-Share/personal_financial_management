@@ -16,8 +16,9 @@ namespace PersonalFinancialManagement.Common
         {
             sw.Stop();
 
-            TimeSpan ts = sw.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}:{3:00}", ts.TotalHours, ts.Minutes, ts.Seconds, ts.Milliseconds);
+            var ts = sw.Elapsed;
+            var elapsedTime =
+                $"{ts.TotalHours:00}:{ts.Minutes:00}:{ts.Seconds:00}:{ts.Milliseconds:00}";
 
             return elapsedTime;
         }

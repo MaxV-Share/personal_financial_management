@@ -93,7 +93,7 @@ public class TransactionService :
     public async Task<IBasePaging<TransactionViewModel>?> GetPagingAsync(IFilterBodyRequest request)
     {
         var query = _mapper.ProjectTo<TransactionViewModel>(_unitOffWork.Repository<Transaction, Guid>().GetNoTrackingEntities());
-
+        var queryText = query.ToString();
         return await query.ToPagingAsync(request);
     }
 }

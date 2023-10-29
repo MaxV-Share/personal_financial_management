@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PersonalFinancialManagement.Services.Base;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
@@ -54,10 +53,10 @@ namespace PersonalFinancialManagement.Services
             var query = _mapper.ProjectTo<CurrencyViewModel>(_unitOffWork.Repository<Currency, Guid>().GetNoTrackingEntities());
 
 
-            if (!request.SearchValue.IsNullOrEmpty())
-            {
-                query = query.Where(e => e.Name!.Contains(request.SearchValue ?? ""));
-            }
+                if (!request.SearchValue.IsNullOrEmpty())
+                {
+                    query = query.Where(e => e.Name!.Contains(request.SearchValue ?? ""));
+                }
 
             return await query.ToPagingAsync(request);
         }

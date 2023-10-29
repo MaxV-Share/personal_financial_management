@@ -19,15 +19,15 @@ namespace PersonalFinancialManagement.Common.Extensions
             });
         }
 
-        public static void AddProxiedScoped(this IServiceCollection services, Type TInterface, Type TImplementation)
+        public static void AddProxiedScoped(this IServiceCollection services, Type @interface, Type implementation)
         {
-            services.AddScoped(TImplementation);
-            services.AddScoped(TInterface, serviceProvider =>
+            services.AddScoped(implementation);
+            services.AddScoped(@interface, serviceProvider =>
             {
                 var proxyGenerator = serviceProvider.GetRequiredService<IProxyGenerator>();
-                var actual = serviceProvider.GetRequiredService(TImplementation);
+                var actual = serviceProvider.GetRequiredService(implementation);
                 var interceptors = serviceProvider.GetServices<IAsyncInterceptor>().ToArray();
-                return proxyGenerator.CreateInterfaceProxyWithTarget(TInterface, actual, interceptors);
+                return proxyGenerator.CreateInterfaceProxyWithTarget(@interface, actual, interceptors);
             });
         }
 
@@ -45,15 +45,15 @@ namespace PersonalFinancialManagement.Common.Extensions
             });
         }
 
-        public static void AddProxiedTransient(this IServiceCollection services, Type TInterface, Type TImplementation)
+        public static void AddProxiedTransient(this IServiceCollection services, Type @interface, Type implementation)
         {
-            services.AddTransient(TImplementation);
-            services.AddTransient(TInterface, serviceProvider =>
+            services.AddTransient(implementation);
+            services.AddTransient(@interface, serviceProvider =>
             {
                 var proxyGenerator = serviceProvider.GetRequiredService<IProxyGenerator>();
-                var actual = serviceProvider.GetRequiredService(TImplementation);
+                var actual = serviceProvider.GetRequiredService(implementation);
                 var interceptors = serviceProvider.GetServices<IAsyncInterceptor>().ToArray();
-                return proxyGenerator.CreateInterfaceProxyWithTarget(TInterface, actual, interceptors);
+                return proxyGenerator.CreateInterfaceProxyWithTarget(@interface, actual, interceptors);
             });
         }
 
@@ -71,15 +71,15 @@ namespace PersonalFinancialManagement.Common.Extensions
             });
         }
 
-        public static void AddProxiedSingleton(this IServiceCollection services, Type TInterface, Type TImplementation)
+        public static void AddProxiedSingleton(this IServiceCollection services, Type @interface, Type implementation)
         {
-            services.AddSingleton(TImplementation);
-            services.AddSingleton(TInterface, serviceProvider =>
+            services.AddSingleton(implementation);
+            services.AddSingleton(@interface, serviceProvider =>
             {
                 var proxyGenerator = serviceProvider.GetRequiredService<IProxyGenerator>();
-                var actual = serviceProvider.GetRequiredService(TImplementation);
+                var actual = serviceProvider.GetRequiredService(implementation);
                 var interceptors = serviceProvider.GetServices<IAsyncInterceptor>().ToArray();
-                return proxyGenerator.CreateInterfaceProxyWithTarget(TInterface, actual, interceptors);
+                return proxyGenerator.CreateInterfaceProxyWithTarget(@interface, actual, interceptors);
             });
         }
     }

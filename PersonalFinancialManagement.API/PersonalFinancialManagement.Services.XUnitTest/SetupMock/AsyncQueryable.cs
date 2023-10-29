@@ -33,7 +33,7 @@ namespace PersonalFinancialManagement.Services.XUnitTest.SetupMock
             public AsyncEnumerator(IEnumerator<TEntity> inner) => this.inner = inner;
             public void Dispose() => inner.Dispose();
             public TEntity Current => inner.Current;
-            public ValueTask<bool> MoveNextAsync() => new ValueTask<bool>(inner.MoveNext());
+            public ValueTask<bool> MoveNextAsync() => new(inner.MoveNext());
 #pragma warning disable CS1998 // Nothing to await
             public async ValueTask DisposeAsync() => inner.Dispose();
 #pragma warning restore CS1998

@@ -34,12 +34,15 @@ public class AuthController : ApiController
     [HttpPost("register")]
     public async Task<IActionResult> PostUser(RegisterViewModel request)
     {
+        if (request.ConfirmPassword != request.Password)
+            return BadRequest("Confirm password incorrect");
         var user = new User
         {
             Id = Guid.NewGuid().ToString(),
             Email = request.Email,
-            UserName = request.UserName,
-            PhoneNumber = request.PhoneNumber
+            UserName = request.UserName ?? request.Email,
+            PhoneNumber = request.PhoneNumber,
+            FullName = request.FullName
         };
         var result = await _userManager.CreateAsync(user, request.Password);
         if (result.Succeeded)

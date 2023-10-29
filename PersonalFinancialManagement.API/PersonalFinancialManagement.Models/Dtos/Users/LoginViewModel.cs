@@ -16,12 +16,16 @@ namespace PersonalFinancialManagement.Models.Dtos.Users
         [Required(ErrorMessage = "Bạn cần nhập tên.")]
         public required string FullName { set; get; }
 
-        [Required(ErrorMessage = "Bạn cần nhập tên đăng nhập.")]
-        public required string UserName { set; get; }
+        //[Required(ErrorMessage = "Bạn cần nhập tên đăng nhập.")]
+        public required string? UserName { set; get; }
 
         [Required(ErrorMessage = "Bạn cần nhập mật khẩu.")]
         [MinLength(6, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự")]
         public required string Password { set; get; }
+
+        [Required(ErrorMessage = "Bạn cần nhập mật khẩu.")]
+        [MinLength(6, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự")]
+        public required string ConfirmPassword { set; get; }
 
         [Required(ErrorMessage = "Bạn cần nhập email.")]
         [EmailAddress(ErrorMessage = "Địa chỉ email không đúng.")]
@@ -29,8 +33,8 @@ namespace PersonalFinancialManagement.Models.Dtos.Users
 
         public string? Address { set; get; }
 
-        [Required(ErrorMessage = "Bạn cần nhập số điện thoại.")]
-        public required string PhoneNumber { set; get; }
+        //[Required(ErrorMessage = "Bạn cần nhập số điện thoại.")]
+        public required string? PhoneNumber { set; get; }
 
     }
     public class UserViewModel

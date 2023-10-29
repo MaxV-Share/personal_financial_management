@@ -92,19 +92,17 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
 
         public async Task<T> DoWorkWithTransaction<T>(Func<Task<T>> action)
         {
-            using (var trans = await _dbContext.Database.BeginTransactionAsync())
+            await using var trans = await _dbContext.Database.BeginTransactionAsync();
+            try
             {
-                try
-                {
-                    var result = await action.Invoke();
-                    await trans.CommitAsync();
-                    return result;
-                }
-                catch
-                {
-                    trans.Rollback();
-                    throw;
-                }
+                var result = await action.Invoke();
+                await trans.CommitAsync();
+                return result;
+            }
+            catch
+            {
+                await trans.RollbackAsync();
+                throw;
             }
         }
 
@@ -146,9 +144,15 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
             var type = typeof(TEntity);
             if (!_repositories.ContainsKey(type))
                 _repositories[type] = _serviceProvider.GetService<IBaseRepository<TEntity, TKey>>();
-            return (IBaseRepository<TEntity, TKey>)_repositories[type];
+            return _repositories[type] as IBaseRepository<TEntity, TKey> ?? throw new InvalidOperationException();
         }
 
         public UserManager<User>? UserManager => _userManager ??= _serviceProvider.GetService<UserManager<User>>();
+
+        public string ToQueryString(IQueryable queryable)
+        {
+            var a = queryable.ToQueryString();
+            return "";
+        }
     }
 }

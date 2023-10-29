@@ -49,20 +49,20 @@ namespace PersonalFinancialManagement.Services.XUnitTest
         {
             var data = new List<Currency>
             {
-                new Currency()
+                new()
                 {
                     Code = "1",
                     Name = "Name"
                 },
-                new Currency()
+                new()
                 {
                     Code = "2",
                     Name = "Name2"
                 }
             }.AsAsyncQueryable();
-            var currencysRepository = new Mock<IBaseRepository<Currency, Guid>>();
-            currencysRepository.Setup(e => e.GetNoTrackingEntities()).Returns(data);
-            _unitOffWork.Setup(e => e.Repository<Currency, Guid>()).Returns(currencysRepository.Object);
+            var currenciesRepository = new Mock<IBaseRepository<Currency, Guid>>();
+            currenciesRepository.Setup(e => e.GetNoTrackingEntities()).Returns(data);
+            _unitOffWork.Setup(e => e.Repository<Currency, Guid>()).Returns(currenciesRepository.Object);
 
             var currencyService = new CurrencyService(_mapper, _unitOffWork.Object, _logger.Object);
             var result = await currencyService.GetByIdAsync(It.IsAny<Guid>());
