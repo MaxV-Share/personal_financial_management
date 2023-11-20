@@ -8,10 +8,12 @@ namespace PersonalFinancialManagement.Models.DbContexts
 {
     public class ApplicationDbContext : IdentityDbContext<User, Role, string, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
-        private readonly IConfiguration _configuration;
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration) : base(options)
+        public ApplicationDbContext()
         {
-            _configuration = configuration;
+
+        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
         }
         public virtual DbSet<TransactionCategoryType> TransactionCategoryTypes { set; get; }
         public virtual DbSet<TransactionCategory> TransactionCategories { set; get; }

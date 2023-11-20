@@ -5,7 +5,6 @@ namespace PersonalFinancialManagement.Models.Dtos.PaymentAccounts
 {
     public class PaymentAccountViewModel : BaseViewModel<Guid>, IBasePaymentAccountDto
     {
-        [JsonProperty(PropertyName = "test")]
         public string? Name { get; set; }
         public decimal? InitialMoney { get; set; } = 0;
         public string? Description { get; set; }

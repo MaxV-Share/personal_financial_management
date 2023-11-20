@@ -126,13 +126,10 @@ namespace PersonalFinancialManagement.Repositories.UnitOffWorks
 
         public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string query)
         {
-            IEnumerable<TResult> result;
-            using (var connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString))
-            {
-                connection.Open();
+            await using var connection = new SqlConnection(_dbContext.Database.GetDbConnection().ConnectionString);
+            connection.Open();
 
-                result = await connection.QueryAsync<TResult>(query);
-            }
+            var result = await connection.QueryAsync<TResult>(query);
             return result;
         }
 

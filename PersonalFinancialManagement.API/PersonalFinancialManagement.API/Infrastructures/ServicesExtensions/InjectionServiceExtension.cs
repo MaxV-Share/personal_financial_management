@@ -13,10 +13,10 @@ namespace PersonalFinancialManagement.API.Infrastructures.ServicesExtensions
         public static void AddInjectedServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(AutoMapperProfile));
-            services.AddRepositories();
             services.AddTransient<DbInitializer>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped(typeof(IUnitOffWork<>), typeof(UnitOffWork<>));
+            services.AddRepositories();
             services.AddServices();
         }
     }

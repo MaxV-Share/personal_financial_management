@@ -19,7 +19,6 @@ namespace App.Models.Mapper
     {
         public AutoMapperProfile()
         {
-
             CreateMap<TransactionCategory, TransactionCategoryCreateRequest>().ReverseMap();
             CreateMap<TransactionCategory, TransactionCategoryUpdateRequest>().ReverseMap();
             CreateMap<TransactionCategory, TransactionCategoryViewModel>().ReverseMap();
