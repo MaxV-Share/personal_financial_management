@@ -61,6 +61,7 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
             {
                 query = query.Include(include);
             }
+            query = query.Where(e => e.CreateBy == GetUserNameInHttpContext());
             return query;
         }
 
@@ -79,6 +80,7 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
             {
                 query = query.Include(include);
             }
+            query = query.Where(e => e.CreateBy == GetUserNameInHttpContext());
             var entity = query.SingleOrDefaultAsync(x => x.Id!.Equals(id));
             return entity;
         }
@@ -90,6 +92,7 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
             {
                 query = query.Include(include);
             }
+            query = query.Where(e => e.CreateBy == GetUserNameInHttpContext());
             var entity = query.SingleOrDefaultAsync(x => x.Id!.Equals(id));
             return entity;
         }
