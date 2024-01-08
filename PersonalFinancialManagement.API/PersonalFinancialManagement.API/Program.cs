@@ -1,3 +1,5 @@
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using PersonalFinancialManagement.API.Infrastructures.ServicesExtensions;
 using PersonalFinancialManagement.Common;
@@ -57,6 +59,7 @@ builder.Services.ConfigureMongoDbClient();
 builder.Services.AddInfrastructureServices();
 builder.Services.ConfigureHealthChecks();
 builder.Services.AddHealthChecks();
+builder.Services.AddHangfire(config => config.UseMemoryStorage()); builder.Services.AddHangfireServer();
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 {
     var prefixIndexFormat = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:PrefixIndexFormat");
@@ -102,6 +105,7 @@ app.Map("/", context => Task.Run(() => context.Response.Redirect("/swagger/index
 
 app.MapControllers();
 
+app.UseHangfireDashboard();
 
 await CreateDbIfNotExistsAsync(app);
 

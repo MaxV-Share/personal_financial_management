@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using App.Models.Mapper;
 using AutoMapper;
@@ -32,6 +33,7 @@ namespace PersonalFinancialManagement.Services.XUnitTest
             var mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
         }
+
         [Theory]
         [InlineData("00000000-0000-0000-0000-000000000000")]
         public async Task AuthenticationService_GetByIdAsync_IdNotZeroOrNull_ThrowException(string id)
@@ -68,86 +70,7 @@ namespace PersonalFinancialManagement.Services.XUnitTest
             var result = await currencyService.GetByIdAsync(It.IsAny<Guid>());
             Assert.NotNull(result);
         }
-        //[Theory]
-        //[InlineData(1)]
-        //public async Task AuthenticationService_GetByIdAsync_IdNotExist_Empty(string id)
-        //{
-        //    var data = new List<Currency>
-        //    {
-        //        new Currency()
-        //        {
-        //            Code = "1",
-        //            Name = "Name"
-        //        }
-        //    }.AsAsyncQueryable();
-        //    var currencysRepository = new Mock<IBaseRepository<Currency, Guid>>();
-        //    currencysRepository.Setup(e => e.GetNoTrackingEntities()).Returns(data);
-        //    _unitOffWork.Setup(e => e.Repository<Currency, Guid>()).Returns(currencysRepository.Object);
+        // create test for 
 
-        //    var currencyService = new CurrencyService(_mapper, _unitOffWork.Object, _logger.Object);
-        //    var result = await currencyService.GetByIdAsync(Guid.Parse(id));
-        //    Assert.NotNull(result);
-        //}
-        //[Fact]
-        //public async Task AuthenticationService_GetByIdAsync_IdZeroOrNull_Empty()
-        //{
-        //    var data = new List<Currency>
-        //    {
-        //        new Currency()
-        //        {
-        //            Code = "1",
-        //            Name = "Name"
-        //        }
-        //    }.AsAsyncQueryable();
-        //    var currencysRepository = new Mock<IBaseRepository<Currency, Guid>>();
-        //    currencysRepository.Setup(e => e.GetNoTrackingEntities()).Returns(data);
-        //    _unitOffWork.Setup(e => e.Repository<Currency, Guid>()).Returns(currencysRepository.Object);
-
-        //    var currencyService = new CurrencyService(_mapper, _unitOffWork.Object, _logger.Object);
-        //    var result = await currencyService.GetByIdAsync(It.IsAny<Guid>());
-        //    Assert.NotNull(result);
-        //}
-        //[Fact]
-        //public async Task AuthenticationService_GetByIdAsync_IdExist_Success()
-        //{
-        //    var data = new List<Currency>
-        //    {
-        //        new Currency()
-        //        {
-        //            Code = "1",
-        //            Name = "Name"
-        //        }
-        //    }.AsAsyncQueryable();
-        //    var currencysRepository = new Mock<IBaseRepository<Currency, Guid>>();
-        //    currencysRepository.Setup(e => e.GetNoTrackingEntities()).Returns(data);
-        //    _unitOffWork.Setup(e => e.Repository<Currency, Guid>()).Returns(currencysRepository.Object);
-
-        //    var currencyService = new CurrencyService(_mapper, _unitOffWork.Object, _logger.Object);
-        //    var result = await currencyService.GetByIdAsync(1, It.IsAny<string>());
-        //    Assert.NotEmpty(result);
-        //}
-        //[Fact]
-        //public async Task AuthenticationService_GetAllDTOAsync_NotEmpty()
-        //{
-        //    Builder<Currency>.
-        //        .CreateListOfSize(10)
-        //        .All()
-        //        .HaveLongTitles()
-        //        .Build();
-        //    var data = new List<Currency>
-        //    {
-        //        new Currency()
-        //        {
-        //            Code = "1",
-        //            Name = "Name"
-        //        }
-        //    }.AsAsyncQueryable();
-        //    var currencysRepository = new Mock<IBaseRepository<Currency, Guid>>();
-        //    currencysRepository.Setup(e => e.GetNoTrackingEntities()).Returns(data);
-        //    _unitOffWork.Setup(e => e.Repository<Currency, Guid>()).Returns(currencysRepository.Object);
-        //    var currencyService = new CurrencyService(_mapper, _unitOffWork.Object, _logger.Object);
-        //    var result = await currencyService.GetAllDTOAsync();
-        //    Assert.True(data.Count() == result.Count());
-        //}
     }
 }

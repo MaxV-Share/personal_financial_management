@@ -11,6 +11,7 @@ using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
 using PersonalFinancialManagement.Models.Dtos.Users;
 using PersonalFinancialManagement.Models.Entities.Identities;
+using PersonalFinancialManagement.Services.Mails;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
