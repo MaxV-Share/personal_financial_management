@@ -45,7 +45,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PersonalFinancialManagement.Services.Excels\PersonalFinancialManagement.Services.Excels.csproj" />
+    <ProjectReference Include="..\PersonalFinancialManagement.Services.Google\PersonalFinancialManagement.GoogleServices.csproj" />
     <ProjectReference Include="..\PersonalFinancialManagement.Services.Mails\PersonalFinancialManagement.Services.Mails.csproj" />
     <ProjectReference Include="..\PersonalFinancialManagement.Services\PersonalFinancialManagement.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="client_secret.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

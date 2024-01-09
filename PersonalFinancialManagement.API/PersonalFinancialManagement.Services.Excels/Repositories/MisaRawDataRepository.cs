@@ -1,18 +1,14 @@
-﻿using PersonalFinancialManagement.Services.Excels.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using PersonalFinancialManagement.Services.Excels.Configurations;
+using PersonalFinancialManagement.Services.Excels.Entities;
 
-namespace PersonalFinancialManagement.Services.Excels.Repositories
+namespace PersonalFinancialManagement.Services.Excels.Repositories;
+
+public class MisaRawDataRepository : MongoDbRepository<MisaRawDataEntry>, IMisaRawDataRepository
 {
-    public class MisaRawDataRepository : MongoDbRepository<MisaRawDataEntry>, IMisaRawDataRepository
+    public MisaRawDataRepository(IMongoClient client, IOptions<MongoDbSettings> settings) : base(
+        client, settings.Value)
     {
-        public MisaRawDataRepository(IMongoClient client, MongoDbSettings settings) : base(client, settings)
-        {
-        }
     }
 }

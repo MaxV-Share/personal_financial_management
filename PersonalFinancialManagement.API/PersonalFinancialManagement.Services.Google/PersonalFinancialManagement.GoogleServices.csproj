@@ -4,18 +4,15 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.64.0.3148" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PersonalFinancialManagement.Common.Model\PersonalFinancialManagement.Common.Models.csproj" />
+    <ProjectReference Include="..\PersonalFinancialManagement.Common\PersonalFinancialManagement.Common.csproj" />
   </ItemGroup>
 
 </Project>

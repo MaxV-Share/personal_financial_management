@@ -1,21 +1,23 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PersonalFinancialManagement.API.Controllers.Base;
-using PersonalFinancialManagement.Services.Mails;
+using PersonalFinancialManagement.GoogleServices.Interfaces;
 
-namespace PersonalFinancialManagement.API.Controllers
+namespace PersonalFinancialManagement.API.Controllers;
+
+public class JobsController : ApiController
 {
-    public class JobsController : ApiController
-    {
-        public JobsController(ILogger<JobsController> logger) : base(logger)
-        {
-        }
+    private readonly IDemoService _demoService;
 
-        [HttpGet("read-gmail")]
-        public Task<IActionResult> ReadGmail()
-        {
-            BackgroundJob.Enqueue<GmailServices>(x => x.Main());
-            return Task.FromResult<IActionResult>(Ok());
-        }
+    public JobsController(ILogger<JobsController> logger, IDemoService demoService) : base(logger)
+    {
+        _demoService = demoService;
+    }
+
+    [HttpGet("read-gmail")]
+    public async Task<IActionResult> ReadGmail()
+    {
+        await _demoService.Run();
+        //BackgroundJob.Enqueue<GmailServices>(x => x.Main());
+        return Ok();
     }
 }
