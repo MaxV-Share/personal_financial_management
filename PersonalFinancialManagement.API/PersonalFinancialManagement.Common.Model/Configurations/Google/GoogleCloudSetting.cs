@@ -2,5 +2,7 @@
 
 public class GoogleCloudSetting
 {
-    public GoogleSheetSetting GoogleSheetSetting { get; set; }
+    public GoogleSheetSetting GoogleSheetSetting { get; set; } = new();
+    public GmailAccountSetting GmailAccountSetting { get; set; } = new();
+    public string ApplicationName { get; set; } = "";
 }

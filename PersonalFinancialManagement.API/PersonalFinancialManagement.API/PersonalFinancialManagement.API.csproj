@@ -16,6 +16,7 @@
     <PackageReference Include="EFCore.NamingConventions" Version="7.0.0" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.8.7" />
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.8.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
@@ -40,7 +41,7 @@
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.35.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,5 +55,9 @@
     <Content Update="client_secret.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logs\" />
   </ItemGroup>
 </Project>

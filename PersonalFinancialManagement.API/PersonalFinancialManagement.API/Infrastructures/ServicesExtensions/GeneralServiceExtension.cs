@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json.Serialization;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -58,6 +59,9 @@ public static class GeneralServiceExtension
 
         var connectionStrings = builder.Configuration.GetSection("ConnectionStrings")
             .Get<ConnectionString>();
+
+        GlobalConfiguration.Configuration
+            .UseSqlServerStorage(connectionStrings!.DefaultConnection);
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {

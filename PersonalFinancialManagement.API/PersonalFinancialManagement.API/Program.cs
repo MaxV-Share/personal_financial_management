@@ -109,6 +109,7 @@ app.Map("/", context => Task.Run(() => context.Response.Redirect("/swagger/index
 
 app.MapControllers();
 
+app.UseHangfireServer();
 app.UseHangfireDashboard();
 
 await CreateDbIfNotExistsAsync(app);

@@ -11,6 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="..\PersonalFinancialManagement.EFCore\PersonalFinancialManagement.EFCore.csproj" />
     <ProjectReference Include="..\PersonalFinancialManagement.Repositories\PersonalFinancialManagement.Repositories.csproj" />
+    <ProjectReference Include="..\PersonalFinancialManagement.Services.Excels\PersonalFinancialManagement.Services.Excels.csproj" />
+    <ProjectReference Include="..\PersonalFinancialManagement.Services.Google\PersonalFinancialManagement.GoogleServices.csproj" />
     <ProjectReference Include="..\PersonalFinancialManagement.Services.Mails\PersonalFinancialManagement.Services.Mails.csproj" />
   </ItemGroup>
 

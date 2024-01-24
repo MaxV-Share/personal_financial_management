@@ -1,28 +1,33 @@
-﻿using Google.Apis.Gmail.v1;
+﻿using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using PersonalFinancialManagement.Common;
+using PersonalFinancialManagement.Common.Models.Configurations.Google;
 
 namespace PersonalFinancialManagement.Services.Mails;
 
 public class GmailServices
 {
-    private static string[] Scopes = { GmailService.Scope.GmailReadonly };
-    private static readonly string ApplicationName = "Gmail API .NET Quickstart";
+    private readonly GoogleCloudSetting _googleCloudSetting;
     private readonly ILogger<GmailServices> _logger;
 
-    public GmailServices(ILogger<GmailServices> logger)
+    public GmailServices(ILogger<GmailServices> logger,
+        IOptions<GoogleCloudSetting> googleCloudSetting)
     {
         _logger = logger;
+        _googleCloudSetting = googleCloudSetting.Value;
     }
 
     public async Task Main()
     {
         _logger.LogInformation($"GmailServices called at {DateTime.Now}");
         // Thay thế các thông tin sau bằng thông tin tài khoản Gmail của bạn
-        var email = "thevinh.it.kh.1997@gmail.com";
-        var password = "zqnn pshe xibq qend";
+        var email = _googleCloudSetting.GmailAccountSetting.Username;
+        var password = _googleCloudSetting.GmailAccountSetting.Password;
 
         using var client = new ImapClient();
 
@@ -37,18 +42,20 @@ public class GmailServices
 
         // Tìm các email mới
         var uids = await inbox.SearchAsync(SearchQuery.DeliveredAfter(new DateTime(2023, 12, 1))
-            .And(SearchQuery.FromContains("vpbankonline@vpb.com.vn")));
+            .And(SearchQuery.FromContains("i2bservices@vpb.com.vn")));
 
         foreach (var uid in uids)
         {
             var message = await inbox.GetMessageAsync(uid);
 
+            //var creditWalletGoogleModel = ReadCreditVpBank(message.HtmlBody);
+            _logger.LogInformation(message.TryParseToString());
             Console.WriteLine("Subject: {0}", message.Subject);
             Console.WriteLine("From: {0}", message.From);
-            Console.WriteLine("Body: {0}", message.TextBody);
+            Console.WriteLine("Body: {0}", message.HtmlBody);
 
             // Đánh dấu email đã đọc
-            await inbox.AddFlagsAsync(uid, MessageFlags.Draft, true);
+            //await inbox.AddFlagsAsync(uid, MessageFlags.Draft, true);
         }
 
         await client.DisconnectAsync(true);

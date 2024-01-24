@@ -11,20 +11,20 @@ using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
 using PersonalFinancialManagement.Models.Dtos.Users;
 using PersonalFinancialManagement.Models.Entities.Identities;
-using PersonalFinancialManagement.Services.Mails;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
 public class AuthController : ApiController
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly ApplicationDbContext _context;
     private readonly JwtOptions _jwtOptions;
+    private readonly RoleManager<Role> _roleManager;
+    private readonly UserManager<User> _userManager;
 
     public AuthController(UserManager<User> userManager,
         RoleManager<Role> roleManager,
-        ApplicationDbContext context, IOptions<JwtOptions> jwtOptions, ILogger<AuthController> logger) : base(logger)
+        ApplicationDbContext context, IOptions<JwtOptions> jwtOptions,
+        ILogger<AuthController> logger) : base(logger)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -69,7 +69,8 @@ public class AuthController : ApiController
         };
         return Ok(userVm);
     }
-    [HttpGet()]
+
+    [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetByUserName()
     {
@@ -110,18 +111,18 @@ public class AuthController : ApiController
     //}
 
     [HttpPut("{id}/change-password")]
-    public async Task<IActionResult> PutUserPassword(string id, [FromBody] UserPasswordChangeRequest request)
+    public async Task<IActionResult> PutUserPassword(string id,
+        [FromBody] UserPasswordChangeRequest request)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
             return NotFound($"Cannot found user with id: {id}");
 
-        var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+        var result =
+            await _userManager.ChangePasswordAsync(user, request.CurrentPassword,
+                request.NewPassword);
 
-        if (result.Succeeded)
-        {
-            return NoContent();
-        }
+        if (result.Succeeded) return NoContent();
         return BadRequest(result);
     }
 
@@ -138,7 +139,8 @@ public class AuthController : ApiController
             if (checkPassword)
                 return Ok(GenerateToken(user!));
 
-            var checkPasswordEmail = await _userManager.CheckPasswordAsync(userEmail!, model.Password);
+            var checkPasswordEmail =
+                await _userManager.CheckPasswordAsync(userEmail!, model.Password);
             if (checkPasswordEmail)
                 return Ok(GenerateToken(userEmail!));
         }
@@ -164,7 +166,7 @@ public class AuthController : ApiController
             expires: DateTime.Now.AddMinutes(15),
             signingCredentials: credentials);
 
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var result = new JwtSecurityTokenHandler().WriteToken(token);
+        return result;
     }
 }
