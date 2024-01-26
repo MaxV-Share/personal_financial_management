@@ -3,26 +3,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using PersonalFinancialManagement.Services.Excels.Configurations;
-using PersonalFinancialManagement.Services.Excels.Extensions;
 using PersonalFinancialManagement.Services.Excels.Repositories;
 
 namespace PersonalFinancialManagement.Services.Excels.Extensions;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddConfigurationSettings(this IServiceCollection services, 
+    private static string GetMongoDbConnectionString(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var databaseSettings = configuration.GetSection(nameof(MongoDbSettings))
-            .Get<MongoDbSettings>();
-        services.AddSingleton(databaseSettings);
-        
-        return services;
-    }
-    
-    private static string getMongoConnectionString(this IServiceCollection services)
-    {
-        var settings = services.GetOptions<MongoDbSettings>(nameof(MongoDbSettings));
+        var settings = configuration.GetOptions<MongoDbSettings>(nameof(MongoDbSettings));
         if (settings == null || string.IsNullOrEmpty(settings.ConnectionString))
             throw new ArgumentNullException("DatabaseSettings is not configured");
 
@@ -32,10 +22,11 @@ public static class ServiceExtensions
         return mongodbConnectionString;
     }
 
-    public static void ConfigureMongoDbClient(this IServiceCollection services)
+    public static void ConfigureMongoDbClient(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddSingleton<IMongoClient>(
-            new MongoClient(getMongoConnectionString(services)))
+                new MongoClient(services.GetMongoDbConnectionString(configuration)))
             .AddScoped(x => x.GetService<IMongoClient>()!.StartSession());
     }
 
@@ -45,13 +36,14 @@ public static class ServiceExtensions
         services.AddScoped<IExample, Example>();
         services.AddScoped<IMisaRawDataRepository, MisaRawDataRepository>();
     }
-    
-    public static void ConfigureHealthChecks(this IServiceCollection services)
+
+    public static void ConfigureHealthChecks(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        var databaseSettings = services.GetOptions<MongoDbSettings>(nameof(MongoDbSettings));
+        var databaseSettings = configuration.GetOptions<MongoDbSettings>(nameof(MongoDbSettings));
         services.AddHealthChecks()
-            .AddMongoDb(databaseSettings.ConnectionString,
-                name: "MongoDb Health",
-                failureStatus: HealthStatus.Degraded);
+            .AddMongoDb(databaseSettings!.ConnectionString,
+                "MongoDb Health",
+                HealthStatus.Degraded);
     }
 }

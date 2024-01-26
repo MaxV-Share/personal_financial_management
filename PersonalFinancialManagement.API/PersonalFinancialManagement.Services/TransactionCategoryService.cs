@@ -6,8 +6,6 @@ using PersonalFinancialManagement.EFCore;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategories.Requests;
-using PersonalFinancialManagement.Models.Dtos.Transactions;
-using PersonalFinancialManagement.Models.Dtos.Transactions.Requests;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Services.Base;
@@ -17,21 +15,26 @@ namespace PersonalFinancialManagement.Services;
 
 public class TransactionCategoryService :
     BaseService<ApplicationDbContext, TransactionCategory, TransactionCategoryCreateRequest,
-        TransactionCategoryUpdateRequest, TransactionCategoryViewModel, Guid>, ITransactionCategoryService
+        TransactionCategoryUpdateRequest, TransactionCategoryViewModel, Guid>,
+    ITransactionCategoryService
 {
-    public TransactionCategoryService(IMapper mapper, IUnitOffWork<ApplicationDbContext> unitOffWork,
+    public TransactionCategoryService(IMapper mapper,
+        IUnitOffWork<ApplicationDbContext> unitOffWork,
         ILogger<TransactionCategoryService> logger) : base(mapper, unitOffWork, logger)
     {
     }
 
-    public override Task<TransactionCategoryViewModel?> CreateAsync(TransactionCategoryCreateRequest request)
+    public override Task<TransactionCategoryViewModel?> CreateAsync(
+        TransactionCategoryCreateRequest request)
     {
         return base.CreateAsync(request);
     }
 
-    public async Task<IBasePaging<TransactionCategoryViewModel>?> GetPagingAsync(IFilterBodyRequest request)
+    public async Task<IBasePaging<TransactionCategoryViewModel>?> GetPagingAsync(
+        IFilterBodyRequest request)
     {
-        var query = _mapper.ProjectTo<TransactionCategoryViewModel>(_unitOffWork.Repository<TransactionCategory, Guid>()
+        var query = _mapper.ProjectTo<TransactionCategoryViewModel>(_unitOffWork
+            .Repository<TransactionCategory, Guid>()
             .GetNoTrackingEntities());
 
         return await query.ToPagingAsync(request);

@@ -17,7 +17,11 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository
 
         #endregion props
 
-        #region ctor
+        #region ctor        #region ctor
+        public BaseRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public BaseRepository(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PersonalFinancialManagement.Repositories.BaseRepository;
 using PersonalFinancialManagement.Models.Entities.Identities;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using PersonalFinancialManagement.Common.Models;
 
 namespace PersonalFinancialManagement.Repositories.UnitOffWorks

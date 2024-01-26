@@ -1,6 +1,10 @@
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
+using PersonalFinancialManagement.API.Infrastructures.Modules;
 using PersonalFinancialManagement.API.Infrastructures.ServicesExtensions;
 using PersonalFinancialManagement.Common;
+using PersonalFinancialManagement.GoogleServices.Extensions;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos;
 using PersonalFinancialManagement.Services.Excels.Extensions;
@@ -34,7 +38,8 @@ async Task CreateDbIfNotExistsAsync(IHost host)
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", false, true)
-    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json")
+    .AddJsonFile(
+        $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json")
     .Build();
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
@@ -46,20 +51,22 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddDbContext<ApplicationDbContext>();
-var corsSection = configuration.GetSection("CorsOptions");
-if (corsSection == null) throw new ArgumentNullException(nameof(corsSection));
-var corsOption = corsSection.Get<CorsOptions>();
+builder.AddConfigurationSettings();
+var corsOption = configuration.GetOptions<CorsOptions>("CorsOptions");
 var policyName = corsOption!.PolicyName.Nullify("AppCorsPolicy");
 builder.AddGeneralConfigurations(policyName, corsOption);
-builder.Services.AddConfigurationSettings(builder.Configuration);
 builder.Services.AddInjectedServices();
-builder.Services.ConfigureMongoDbClient();
+builder.Services.ConfigureMongoDbClient(builder.Configuration);
 builder.Services.AddInfrastructureServices();
-builder.Services.ConfigureHealthChecks();
+builder.Services.ConfigureHealthChecks(builder.Configuration);
+builder.Services.AddGoogleServicesServices();
 builder.Services.AddHealthChecks();
+builder.Services.AddHangfire(config => config.UseMemoryStorage());
+builder.Services.AddHangfireServer();
 builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 {
-    var prefixIndexFormat = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:PrefixIndexFormat");
+    var prefixIndexFormat =
+        hostingContext.Configuration.GetValue<string>("ElasticConfiguration:PrefixIndexFormat");
     var elasticUri = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Uri");
     var username = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Username");
     var password = hostingContext.Configuration.GetValue<string>("ElasticConfiguration:Password");
@@ -102,6 +109,8 @@ app.Map("/", context => Task.Run(() => context.Response.Redirect("/swagger/index
 
 app.MapControllers();
 
+app.UseHangfireServer();
+app.UseHangfireDashboard();
 
 await CreateDbIfNotExistsAsync(app);
 

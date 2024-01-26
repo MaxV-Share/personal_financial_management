@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalFinancialManagement.Services.Mails", "PersonalFinancialManagement.Services.Mails\PersonalFinancialManagement.Services.Mails.csproj", "{235832BB-4A95-45E7-8308-E8C875CD3E2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalFinancialManagement.GoogleServices", "PersonalFinancialManagement.Services.Google\PersonalFinancialManagement.GoogleServices.csproj", "{1368911A-CFE2-4B7A-9AD6-8896833F00F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +82,14 @@ Global
 		{11A192DF-D4D8-440D-B943-F988EB58AEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11A192DF-D4D8-440D-B943-F988EB58AEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11A192DF-D4D8-440D-B943-F988EB58AEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{235832BB-4A95-45E7-8308-E8C875CD3E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235832BB-4A95-45E7-8308-E8C875CD3E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{235832BB-4A95-45E7-8308-E8C875CD3E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235832BB-4A95-45E7-8308-E8C875CD3E2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1368911A-CFE2-4B7A-9AD6-8896833F00F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1368911A-CFE2-4B7A-9AD6-8896833F00F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1368911A-CFE2-4B7A-9AD6-8896833F00F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1368911A-CFE2-4B7A-9AD6-8896833F00F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
