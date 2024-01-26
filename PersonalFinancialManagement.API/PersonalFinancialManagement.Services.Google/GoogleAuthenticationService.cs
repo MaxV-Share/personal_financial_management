@@ -13,7 +13,9 @@ public class GoogleAuthenticationService
             ClientId = googleClientId,
             ClientSecret = googleClientSecret
         };
+        var cancel = new CancellationTokenSource();
+        cancel.CancelAfter(TimeSpan.FromMinutes(2));
         return await GoogleWebAuthorizationBroker.AuthorizeAsync(secrets, scopes, "user",
-            CancellationToken.None);
+            cancel.Token);
     }
 }

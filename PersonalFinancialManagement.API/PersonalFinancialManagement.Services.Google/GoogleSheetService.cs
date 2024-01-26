@@ -10,6 +10,7 @@ namespace PersonalFinancialManagement.GoogleServices;
 public class GoogleSheetService
 {
     private readonly GoogleCloudSetting _googleCloudSetting;
+    private readonly string[] _scopes = { SheetsService.Scope.Spreadsheets, "offline_access" };
     private UserCredential? _userCredential;
 
     public GoogleSheetService(IOptions<GoogleCloudSetting> googleCloudSetting)
@@ -21,10 +22,9 @@ public class GoogleSheetService
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        var scopes = new[] { SheetsService.Scope.Spreadsheets };
         _userCredential =
             await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, scopes);
+                clientId, clientSecret, _scopes);
         using var sheetsService = new SheetsService(new BaseClientService.Initializer
         {
             HttpClientInitializer = _userCredential,
@@ -44,15 +44,14 @@ public class GoogleSheetService
         return result;
     }
 
-    public async Task<IList<IList<object>>> GetRangeValue(string spreadsheetId,
+    public async Task<IList<IList<object>>?> GetRangeValue(string spreadsheetId,
         string sheetName, string range)
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        var scopes = new[] { SheetsService.Scope.Spreadsheets };
         _userCredential =
             await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, scopes);
+                clientId, clientSecret, _scopes);
         using var sheetsService = new SheetsService(new BaseClientService.Initializer
         {
             HttpClientInitializer = _userCredential,
@@ -79,10 +78,9 @@ public class GoogleSheetService
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        var scopes = new[] { SheetsService.Scope.Spreadsheets };
         _userCredential =
             await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, scopes);
+                clientId, clientSecret, _scopes);
         using var sheetsService = new SheetsService(new BaseClientService.Initializer
         {
             HttpClientInitializer = _userCredential,
@@ -101,10 +99,9 @@ public class GoogleSheetService
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        var scopes = new[] { SheetsService.Scope.Spreadsheets };
         _userCredential =
             await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, scopes);
+                clientId, clientSecret, _scopes);
         using var sheetsService = new SheetsService(new BaseClientService.Initializer
         {
             HttpClientInitializer = _userCredential,

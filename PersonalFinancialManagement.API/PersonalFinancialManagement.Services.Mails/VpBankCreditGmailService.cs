@@ -54,7 +54,7 @@ public class VpBankCreditGmailService : CreditGmailService, IVpBankCreditGmailSe
         var creditWalletGoogles = new List<CreditWalletGoogleModel>();
         if (oldUId != null)
             uIds = uIds.Where(e => !oldUId.Contains(e.ToString())).ToList();
-        if (uIds.Any()) return null;
+        if (!uIds.Any()) return null;
         foreach (var uid in uIds)
         {
             var message = await inbox.GetMessageAsync(uid);

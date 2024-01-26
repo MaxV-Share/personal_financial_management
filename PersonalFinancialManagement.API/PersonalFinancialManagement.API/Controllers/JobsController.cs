@@ -7,24 +7,34 @@ namespace PersonalFinancialManagement.API.Controllers;
 
 public class JobsController : ApiController
 {
-    public JobsController(ILogger<JobsController> logger) : base(logger)
+    private readonly VpBankCreditJob _vpBankCreditJob;
+
+    public JobsController(ILogger<JobsController> logger, VpBankCreditJob vpBankCreditJob) :
+        base(logger)
     {
+        _vpBankCreditJob = vpBankCreditJob;
     }
 
     [HttpGet("recurring-job-vpBank-credit")]
-    public Task<IActionResult> RecurringJobVpBankCredit()
+    public IActionResult RecurringJobVpBankCredit()
     {
         //await _demoService.Run();
         RecurringJob.AddOrUpdate<VpBankCreditJob>("VpBank-Credit-Job", e => e.Process(),
             "*/10 * * * *");
-        return Task.FromResult<IActionResult>(Ok());
+        return Ok();
     }
 
-    [HttpGet("run-job-vpBank-credit")]
-    public Task<IActionResult> RunJobVpBankCredit()
+    [HttpGet("run-background-job-vpBank-credit")]
+    public IActionResult RunJobVpBankCredit()
     {
-        //await _demoService.Run();
         BackgroundJob.Enqueue<VpBankCreditJob>(e => e.Process());
-        return Task.FromResult<IActionResult>(Ok());
+        return Ok();
+    }
+
+    [HttpGet("sync-vpBank-credit")]
+    public async Task<IActionResult> RunVpBankCredit()
+    {
+        await _vpBankCreditJob.Process();
+        return Ok();
     }
 }

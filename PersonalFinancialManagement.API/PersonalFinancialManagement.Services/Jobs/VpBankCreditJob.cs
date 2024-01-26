@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
 using PersonalFinancialManagement.Services.Mails.Interfaces;
 
@@ -24,14 +25,21 @@ public class VpBankCreditJob
         try
         {
             _logger.LogInformation("Start VpBankCreditJob Process");
+
             var oldData = await _vpBankCreditGoogleSheetService.GetOldDataInGoogleSheet();
+            _logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
+
             var creditWalletGoogles =
                 await _vpBankCreditGmailService.GetCreditWalletGoogles(oldData?.Item2,
                     oldData?.Item1);
-            if (creditWalletGoogles != null)
+            _logger.LogTrace(
+                $"{nameof(creditWalletGoogles)}: {creditWalletGoogles.TryParseToString()}");
+
+            if (creditWalletGoogles != null && creditWalletGoogles.Any())
                 await _vpBankCreditGoogleSheetService.ExecuteAsync(creditWalletGoogles);
+
             _logger.LogInformation(
-                $"End VpBankCreditJob Process with: {creditWalletGoogles.Count}");
+                $"End VpBankCreditJob Process with: {creditWalletGoogles!.Count}");
         }
         catch (Exception e)
         {
