@@ -1,12 +1,14 @@
-﻿namespace PersonalFinancialManagement.GoogleServices.Models;
+﻿using PersonalFinancialManagement.Common.Models.DTOs;
 
-public class CreditWalletGoogleModel
+namespace PersonalFinancialManagement.Models.Dtos.Google;
+
+public class RawTransactionCreateRequest : BaseCreateRequest, IBaseRawTransactionModel
 {
     public string No { get; set; } = "";
     public string MailId { get; set; } = "";
     public string TransactionId { get; set; } = "";
     public string Description { get; set; } = "";
-    public double Value { get; set; }
+    public double Amount { get; set; }
     public DateTime TransactionDate { get; set; }
     public string WalletId { get; set; } = "";
     public string ReferenceCode { get; set; } = "";
@@ -14,17 +16,17 @@ public class CreditWalletGoogleModel
 
     public List<object> ToGoogleSheetList()
     {
-        return new List<object>
-        {
+        return
+        [
             No,
             MailId,
             TransactionId,
             Description,
-            Value,
+            Amount,
             TransactionDate.ToString("yyyy-MM-dd HH:mm:ss"),
             WalletId,
             ReferenceCode,
             Balance
-        };
+        ];
     }
 }

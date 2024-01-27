@@ -14,17 +14,17 @@ using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.Services;
 
-public class TransactionCategoryTypeService :
-    BaseService<ApplicationDbContext, TransactionCategoryType, TransactionCategoryTypeCreateRequest,
-        TransactionCategoryTypeUpdateRequest, TransactionCategoryTypeViewModel, Guid>,
-    ITransactionCategoryTypeService
+public class TransactionCategoryTypeService(
+    IMapper mapper,
+    IUnitOffWork<ApplicationDbContext> unitOffWork,
+    ILogger<TransactionCategoryTypeService> logger)
+    :
+        BaseService<ApplicationDbContext, TransactionCategoryType,
+            TransactionCategoryTypeCreateRequest,
+            TransactionCategoryTypeUpdateRequest, TransactionCategoryTypeViewModel, Guid>(mapper,
+            unitOffWork, logger),
+        ITransactionCategoryTypeService
 {
-    public TransactionCategoryTypeService(IMapper mapper,
-        IUnitOffWork<ApplicationDbContext> unitOffWork,
-        ILogger<TransactionCategoryTypeService> logger) : base(mapper, unitOffWork, logger)
-    {
-    }
-
     public override async Task<TransactionCategoryTypeViewModel?> CreateAsync(
         TransactionCategoryTypeCreateRequest? request)
     {

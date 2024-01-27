@@ -1,7 +1,9 @@
-﻿namespace PersonalFinancialManagement.Services.Mails.Interfaces;
+﻿using PersonalFinancialManagement.Models.Dtos.Google;
+
+namespace PersonalFinancialManagement.Services.Mails.Interfaces;
 
 public interface IVpBankCreditGmailService
 {
-    Task<List<List<object>>?> GetCreditWalletGoogles(DateTime? fromDateTime = null,
+    Task<List<RawTransactionViewModel>> GetCreditWalletGoogles(DateTime? fromDateTime = null,
         List<string>? oldUId = null);
 }

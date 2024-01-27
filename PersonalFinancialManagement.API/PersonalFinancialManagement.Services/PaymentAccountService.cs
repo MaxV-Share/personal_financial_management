@@ -15,15 +15,15 @@ using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.Services;
 
-public class PaymentAccountService :
-    BaseService<ApplicationDbContext, PaymentAccount, PaymentAccountCreateRequest,
-        PaymentAccountUpdateRequest, PaymentAccountViewModel, Guid>, IPaymentAccountService
+public class PaymentAccountService(
+    IMapper mapper,
+    IUnitOffWork<ApplicationDbContext> unitOffWork,
+    ILogger<PaymentAccountService> logger)
+    :
+        BaseService<ApplicationDbContext, PaymentAccount, PaymentAccountCreateRequest,
+            PaymentAccountUpdateRequest, PaymentAccountViewModel,
+            Guid>(mapper, unitOffWork, logger), IPaymentAccountService
 {
-    public PaymentAccountService(IMapper mapper, IUnitOffWork<ApplicationDbContext> unitOffWork,
-        ILogger<PaymentAccountService> logger) : base(mapper, unitOffWork, logger)
-    {
-    }
-
     public override async Task<PaymentAccountViewModel?> CreateAsync(
         PaymentAccountCreateRequest? request)
     {

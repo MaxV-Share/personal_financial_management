@@ -5,16 +5,9 @@ using PersonalFinancialManagement.Services.Jobs;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
-public class JobsController : ApiController
+public class JobsController(ILogger<JobsController> logger, VpBankCreditJob vpBankCreditJob)
+    : ApiController(logger)
 {
-    private readonly VpBankCreditJob _vpBankCreditJob;
-
-    public JobsController(ILogger<JobsController> logger, VpBankCreditJob vpBankCreditJob) :
-        base(logger)
-    {
-        _vpBankCreditJob = vpBankCreditJob;
-    }
-
     [HttpGet("recurring-job-vpBank-credit")]
     public IActionResult RecurringJobVpBankCredit()
     {
@@ -34,7 +27,7 @@ public class JobsController : ApiController
     [HttpGet("sync-vpBank-credit")]
     public async Task<IActionResult> RunVpBankCredit()
     {
-        await _vpBankCreditJob.Process();
+        await vpBankCreditJob.Process();
         return Ok();
     }
 }

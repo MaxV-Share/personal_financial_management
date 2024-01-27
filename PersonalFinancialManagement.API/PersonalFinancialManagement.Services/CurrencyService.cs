@@ -14,15 +14,14 @@ using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.Services;
 
-public class CurrencyService :
-    BaseService<ApplicationDbContext, Currency, CurrencyCreateRequest, CurrencyUpdateRequest,
-        CurrencyViewModel, Guid>, ICurrencyService
+public class CurrencyService(
+    IMapper mapper,
+    IUnitOffWork<ApplicationDbContext> unitOffWork,
+    ILogger<CurrencyService> logger)
+    :
+        BaseService<ApplicationDbContext, Currency, CurrencyCreateRequest, CurrencyUpdateRequest,
+            CurrencyViewModel, Guid>(mapper, unitOffWork, logger), ICurrencyService
 {
-    public CurrencyService(IMapper mapper, IUnitOffWork<ApplicationDbContext> unitOffWork,
-        ILogger<CurrencyService> logger) : base(mapper, unitOffWork, logger)
-    {
-    }
-
     public override async Task<CurrencyViewModel?> CreateAsync(CurrencyCreateRequest? request)
     {
         // improve this method

@@ -14,16 +14,16 @@ using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.Services;
 
-public class PaymentAccountTypeService :
-    BaseService<ApplicationDbContext, PaymentAccountType, PaymentAccountTypeCreateRequest,
-        PaymentAccountTypeUpdateRequest, PaymentAccountTypeViewModel, Guid>,
-    IPaymentAccountTypeService
+public class PaymentAccountTypeService(
+    IMapper mapper,
+    IUnitOffWork<ApplicationDbContext> unitOffWork,
+    ILogger<PaymentAccountTypeService> logger)
+    :
+        BaseService<ApplicationDbContext, PaymentAccountType, PaymentAccountTypeCreateRequest,
+            PaymentAccountTypeUpdateRequest, PaymentAccountTypeViewModel, Guid>(mapper, unitOffWork,
+            logger),
+        IPaymentAccountTypeService
 {
-    public PaymentAccountTypeService(IMapper mapper, IUnitOffWork<ApplicationDbContext> unitOffWork,
-        ILogger<PaymentAccountTypeService> logger) : base(mapper, unitOffWork, logger)
-    {
-    }
-
     public override async Task<PaymentAccountTypeViewModel?> CreateAsync(
         PaymentAccountTypeCreateRequest? request)
     {

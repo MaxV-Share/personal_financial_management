@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PersonalFinancialManagement.Common\PersonalFinancialManagement.Common.csproj" />
+    <ProjectReference Include="..\PersonalFinancialManagement.Models\PersonalFinancialManagement.Models.csproj" />
   </ItemGroup>
 
 </Project>

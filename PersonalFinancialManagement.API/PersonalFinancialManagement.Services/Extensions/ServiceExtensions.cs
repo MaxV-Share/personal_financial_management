@@ -6,6 +6,7 @@ using PersonalFinancialManagement.GoogleServices;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
 using PersonalFinancialManagement.Services.Interfaces;
+using PersonalFinancialManagement.Services.Jobs;
 using PersonalFinancialManagement.Services.Mails;
 using PersonalFinancialManagement.Services.Mails.Interfaces;
 
@@ -24,9 +25,11 @@ public static class ServiceExtensions
         services.AddProxiedScoped<ICurrencyService, CurrencyService>();
         services.AddProxiedScoped<IPaymentAccountTypeService, PaymentAccountTypeService>();
         services.AddProxiedScoped<IPaymentAccountService, PaymentAccountService>();
+        services.AddProxiedScoped<IRawTransactionService, RawTransactionService>();
         services.AddScoped<IVpBankCreditGoogleSheetService, VpBankCreditGoogleSheetService>();
         services.AddScoped<IVpBankCreditGmailService, VpBankCreditGmailService>();
         services.AddScoped<GoogleSheetService, GoogleSheetService>();
+        services.AddScoped<VpBankCreditJob, VpBankCreditJob>();
 
         //services.AddProxiedScoped<IAuthenticationService, AuthenticationService>();
         //services.AddProxiedScoped<IBillDetailService, BillDetailService>();

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Models.Mapper;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Entities;
+using PersonalFinancialManagement.Models.Mapper;
 using PersonalFinancialManagement.Repositories.BaseRepository;
 using PersonalFinancialManagement.Repositories.UnitOffWorks;
 using PersonalFinancialManagement.Services.XUnitTest.SetupMock;

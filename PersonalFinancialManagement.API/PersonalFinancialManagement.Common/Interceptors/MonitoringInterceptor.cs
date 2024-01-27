@@ -5,17 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace PersonalFinancialManagement.Common.Interceptors;
 
-public class MonitoringInterceptor : AsyncTimingInterceptor
+public class MonitoringInterceptor(
+    ILogger<MonitoringInterceptor> logger,
+    IHttpContextAccessor httpContextAccessor)
+    : AsyncTimingInterceptor
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger _logger;
-
-    public MonitoringInterceptor(ILogger<MonitoringInterceptor> logger,
-        IHttpContextAccessor httpContextAccessor)
-    {
-        _logger = logger;
-        _httpContextAccessor = httpContextAccessor;
-    }
+    private readonly ILogger _logger = logger;
 
     protected override void CompletedTiming(IInvocation invocation, Stopwatch stopwatch)
     {
@@ -34,13 +29,16 @@ public class MonitoringInterceptor : AsyncTimingInterceptor
     private Tuple<string?, DateTime> InitRequest()
     {
         var startTime = DateTime.UtcNow;
-        var request = _httpContextAccessor.HttpContext;
+        var request = httpContextAccessor.HttpContext;
         try
         {
-            if (request.Items.TryGetValue("_RequestStartedAt", out var item))
-                startTime = (DateTime)item;
-            else
-                request.Items["_RequestStartedAt"] = startTime;
+            if (request != null)
+            {
+                if (request.Items.TryGetValue("_RequestStartedAt", out var item))
+                    startTime = (DateTime)item;
+                else
+                    request.Items["_RequestStartedAt"] = startTime;
+            }
         }
         catch
         {

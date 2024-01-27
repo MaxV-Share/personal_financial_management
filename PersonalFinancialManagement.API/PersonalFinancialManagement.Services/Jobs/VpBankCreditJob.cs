@@ -1,49 +1,58 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
+using PersonalFinancialManagement.Models.Dtos.Google;
+using PersonalFinancialManagement.Services.Interfaces;
 using PersonalFinancialManagement.Services.Mails.Interfaces;
 
 namespace PersonalFinancialManagement.Services.Jobs;
 
-public class VpBankCreditJob
+public class VpBankCreditJob(
+    IVpBankCreditGmailService vpBankCreditGmailService,
+    IVpBankCreditGoogleSheetService vpBankCreditGoogleSheetService,
+    IRawTransactionService rawTransactionService,
+    ILogger<VpBankCreditJob> logger,
+    IMapper mapper)
 {
-    private readonly ILogger<VpBankCreditJob> _logger;
-    private readonly IVpBankCreditGmailService _vpBankCreditGmailService;
-    private readonly IVpBankCreditGoogleSheetService _vpBankCreditGoogleSheetService;
-
-    public VpBankCreditJob(IVpBankCreditGmailService vpBankCreditGmailService,
-        IVpBankCreditGoogleSheetService vpBankCreditGoogleSheetService,
-        ILogger<VpBankCreditJob> logger)
-    {
-        _vpBankCreditGmailService = vpBankCreditGmailService;
-        _vpBankCreditGoogleSheetService = vpBankCreditGoogleSheetService;
-        _logger = logger;
-    }
-
     public async Task Process()
     {
         try
         {
-            _logger.LogInformation("Start VpBankCreditJob Process");
+            logger.LogInformation("Start VpBankCreditJob Process");
 
-            var oldData = await _vpBankCreditGoogleSheetService.GetOldDataInGoogleSheet();
-            _logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
+            var oldData = await vpBankCreditGoogleSheetService.GetOldDataInGoogleSheet();
+            logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
 
-            var creditWalletGoogles =
-                await _vpBankCreditGmailService.GetCreditWalletGoogles(oldData?.Item2,
+            var rawTransactions =
+                await vpBankCreditGmailService.GetCreditWalletGoogles(oldData?.Item2,
                     oldData?.Item1);
-            _logger.LogTrace(
-                $"{nameof(creditWalletGoogles)}: {creditWalletGoogles.TryParseToString()}");
+            logger.LogTrace($"{nameof(rawTransactions)}: {rawTransactions.TryParseToString()}");
 
-            if (creditWalletGoogles != null && creditWalletGoogles.Any())
-                await _vpBankCreditGoogleSheetService.ExecuteAsync(creditWalletGoogles);
+            var rawCreateRequestTransactions =
+                mapper.Map<List<RawTransactionCreateRequest>>(rawTransactions);
+            logger.LogTrace(
+                $"{nameof(rawCreateRequestTransactions)}: {rawCreateRequestTransactions.TryParseToString()}");
 
-            _logger.LogInformation(
-                $"End VpBankCreditJob Process with: {creditWalletGoogles!.Count}");
+            var resultCreate =
+                await rawTransactionService.CreateAsync(rawCreateRequestTransactions);
+            logger.LogTrace(
+                $"{nameof(resultCreate)}: {resultCreate.TryParseToString()}");
+
+            //var rawGoogleSheetTransactions = rawTransactions.OrderBy(e => e.TransactionDate)
+            //    .Select(e => e.ToGoogleSheetList()).ToList();
+            //logger.LogTrace(
+            //    $"{nameof(rawGoogleSheetTransactions)}: {rawGoogleSheetTransactions.TryParseToString()}");
+
+            //if (rawGoogleSheetTransactions?.Any() ?? false)
+            //    await vpBankCreditGoogleSheetService.ExecuteAsync(rawGoogleSheetTransactions);
+
+            //logger.LogInformation(
+            //    $"End VpBankCreditJob Process with: {rawGoogleSheetTransactions!.Count}");
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"End Exception VpBankCreditJob Process: {e.Message}");
+            logger.LogError(e, $"End Exception VpBankCreditJob Process: {e.Message}");
         }
     }
 }
