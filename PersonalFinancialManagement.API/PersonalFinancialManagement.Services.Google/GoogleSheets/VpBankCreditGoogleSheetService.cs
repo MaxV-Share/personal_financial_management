@@ -10,8 +10,11 @@ public class VpBankCreditGoogleSheetService : BasePFMSheetService, IVpBankCredit
     private const string SheetName = "VP Credit PFM";
     private readonly GoogleSheetService _googleSheetService;
 
-    public VpBankCreditGoogleSheetService(GoogleSheetService googleSheetService,
-        ILogger<VpBankCreditGoogleSheetService> logger) : base(logger)
+    public VpBankCreditGoogleSheetService(
+        GoogleSheetService googleSheetService,
+        ILogger<VpBankCreditGoogleSheetService> logger
+    )
+        : base(logger)
     {
         _googleSheetService = googleSheetService;
     }
@@ -19,50 +22,67 @@ public class VpBankCreditGoogleSheetService : BasePFMSheetService, IVpBankCredit
     public async Task ExecuteAsync(List<List<object>> creditWalletGoogles)
     {
         _logger.LogInformation("Start VpBankCreditGoogleSheetService ExecuteAsync");
-        var spreadsheet = await _googleSheetService.GetSheet(
-            SpreadsheetId,
-            SheetName);
+        var spreadsheet = await _googleSheetService.GetSheet(SpreadsheetId, SheetName);
         var headers = new List<object>
         {
-            "No", "MainId", "Transaction Id", "Description", "Value", "Transaction Date",
+            "No",
+            "MainId",
+            "Transaction Id",
+            "Description",
+            "Value",
+            "Transaction Date",
             "WalletId",
-            "Reference code", "Balance"
+            "Reference code",
+            "Balance"
         };
         foreach (var data in creditWalletGoogles)
-            await _googleSheetService.AppendRowBelowLastValue(SpreadsheetId,
+            await _googleSheetService.AppendRowBelowLastValue(
+                SpreadsheetId,
                 spreadsheet!.Properties.Title,
                 data,
-                headers);
+                headers
+            );
         _logger.LogInformation("End VpBankCreditGoogleSheetService ExecuteAsync");
     }
 
-    public async Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheet()
+    public async Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheetAsync()
     {
         _logger.LogInformation("Start GetOldDataInGoogleSheet");
         var spreadsheet = await _googleSheetService.GetRangeValue(
             SpreadsheetId,
-            SheetName, RangeMailId);
+            SheetName,
+            RangeMailId
+        );
 
         _logger.LogTrace($"{nameof(spreadsheet)}: {spreadsheet.TryParseToString()}");
 
-        if (spreadsheet == null || !spreadsheet.Any()) return default;
+        if (spreadsheet == null || !spreadsheet.Any())
+            return default;
 
         var rangeLastUpdate = await _googleSheetService.GetRangeValue(
             SpreadsheetId,
-            SheetName, $"F{spreadsheet.Count + 1}");
+            SheetName,
+            $"F{spreadsheet.Count + 1}"
+        );
 
         _logger.LogTrace($"{nameof(rangeLastUpdate)}: {rangeLastUpdate.TryParseToString()}");
 
-        if (rangeLastUpdate == null || !rangeLastUpdate.Any()) return default;
+        if (rangeLastUpdate == null || !rangeLastUpdate.Any())
+            return default;
 
         var lastDate = rangeLastUpdate[0][0];
-        var uIds = spreadsheet.SelectMany(e => e).Select(e => e.ToString() ?? string.Empty)
+        var uIds = spreadsheet
+            .SelectMany(e => e)
+            .Select(e => e.ToString() ?? string.Empty)
             .ToList();
 
         DateTime? lastUpdate = string.IsNullOrEmpty(lastDate.ToString())
             ? null
-            : DateTime.ParseExact(lastDate.ToString() ?? string.Empty, "yyyy-MM-dd HH:mm:ss",
-                CultureInfo.InvariantCulture);
+            : DateTime.ParseExact(
+                lastDate.ToString() ?? string.Empty,
+                "yyyy-MM-dd HH:mm:ss",
+                CultureInfo.InvariantCulture
+            );
 
         _logger.LogTrace($"{nameof(uIds)}: {uIds.TryParseToString()}");
         _logger.LogTrace($"{nameof(lastUpdate)}: {lastUpdate}");

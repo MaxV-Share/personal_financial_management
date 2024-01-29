@@ -3,5 +3,5 @@
 public interface IVpBankCreditGoogleSheetService
 {
     Task ExecuteAsync(List<List<object>> creditWalletGoogles);
-    Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheet();
+    Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheetAsync();
 }

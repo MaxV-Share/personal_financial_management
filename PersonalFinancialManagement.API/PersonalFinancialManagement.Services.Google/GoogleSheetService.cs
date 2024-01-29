@@ -10,8 +10,8 @@ namespace PersonalFinancialManagement.GoogleServices;
 public class GoogleSheetService
 {
     private readonly GoogleCloudSetting _googleCloudSetting;
-    private readonly string[] _scopes = { SheetsService.Scope.Spreadsheets, "offline_access" };
-    private UserCredential? _userCredential;
+    private readonly string[] _scopes = { SheetsService.Scope.Spreadsheets };
+    protected UserCredential? _userCredential;
 
     public GoogleSheetService(IOptions<GoogleCloudSetting> googleCloudSetting)
     {
@@ -22,16 +22,19 @@ public class GoogleSheetService
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        _userCredential =
-            await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, _scopes);
-        using var sheetsService = new SheetsService(new BaseClientService.Initializer
-        {
-            HttpClientInitializer = _userCredential,
-            ApplicationName = _googleCloudSetting.ApplicationName
-        });
-        return await sheetsService.Spreadsheets.Get(id)
-            .ExecuteAsync();
+        _userCredential = await GoogleAuthenticationService.LoginAsync(
+            clientId,
+            clientSecret,
+            _scopes
+        );
+        using var sheetsService = new SheetsService(
+            new BaseClientService.Initializer
+            {
+                HttpClientInitializer = _userCredential,
+                ApplicationName = _googleCloudSetting.ApplicationName
+            }
+        );
+        return await sheetsService.Spreadsheets.Get(id).ExecuteAsync();
     }
 
     public async Task<Sheet?> GetSheet(string documentName, string sheetName)
@@ -44,31 +47,43 @@ public class GoogleSheetService
         return result;
     }
 
-    public async Task<IList<IList<object>>?> GetRangeValue(string spreadsheetId,
-        string sheetName, string range)
+    public async Task<IList<IList<object>>?> GetRangeValue(
+        string spreadsheetId,
+        string sheetName,
+        string range
+    )
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        _userCredential =
-            await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, _scopes);
-        using var sheetsService = new SheetsService(new BaseClientService.Initializer
-        {
-            HttpClientInitializer = _userCredential,
-            ApplicationName = _googleCloudSetting.ApplicationName
-        });
+        _userCredential = await GoogleAuthenticationService.LoginAsync(
+            clientId,
+            clientSecret,
+            _scopes
+        );
+        using var sheetsService = new SheetsService(
+            new BaseClientService.Initializer
+            {
+                HttpClientInitializer = _userCredential,
+                ApplicationName = _googleCloudSetting.ApplicationName
+            }
+        );
         // Get the current data in the last column
         var request = sheetsService.Spreadsheets.Values.Get(spreadsheetId, $"{sheetName}!{range}");
         var response = await request.ExecuteAsync();
         return response.Values;
     }
 
-    public async Task AppendRowBelowLastValue(string spreadsheetId,
-        string sheetName, List<object> values, List<object> headers)
+    public async Task AppendRowBelowLastValue(
+        string spreadsheetId,
+        string sheetName,
+        List<object> values,
+        List<object> headers
+    )
     {
         var lastColumn = await GetLastRowIndex(spreadsheetId, sheetName);
         lastColumn++;
-        if (lastColumn == 1) await AppendRow(spreadsheetId, sheetName, headers, lastColumn);
+        if (lastColumn == 1)
+            await AppendRow(spreadsheetId, sheetName, headers, lastColumn);
 
         // Add a row to the spreadsheet below the last value
         await AppendRow(spreadsheetId, sheetName, values, lastColumn);
@@ -78,45 +93,66 @@ public class GoogleSheetService
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        _userCredential =
-            await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, _scopes);
-        using var sheetsService = new SheetsService(new BaseClientService.Initializer
-        {
-            HttpClientInitializer = _userCredential,
-            ApplicationName = _googleCloudSetting.ApplicationName
-        });
+        _userCredential = await GoogleAuthenticationService.LoginAsync(
+            clientId,
+            clientSecret,
+            _scopes
+        );
+        using var sheetsService = new SheetsService(
+            new BaseClientService.Initializer
+            {
+                HttpClientInitializer = _userCredential,
+                ApplicationName = _googleCloudSetting.ApplicationName
+            }
+        );
         // Get the current data in the last column
-        var getLastColumnRequest =
-            sheetsService.Spreadsheets.Values.Get(spreadsheetId, sheetName + "!B:B");
+        var getLastColumnRequest = sheetsService.Spreadsheets.Values.Get(
+            spreadsheetId,
+            sheetName + "!B:B"
+        );
         var lastColumnResponse = await getLastColumnRequest.ExecuteAsync();
         var lastColumn = lastColumnResponse.Values?.Count ?? 0;
         return lastColumn;
     }
 
-    public async Task AppendRow(string spreadsheetId,
-        string sheetName, List<object> values, int rowIndex)
+    public async Task AppendRow(
+        string spreadsheetId,
+        string sheetName,
+        List<object> values,
+        int rowIndex
+    )
     {
         var clientId = _googleCloudSetting.GoogleSheetSetting.ClientId;
         var clientSecret = _googleCloudSetting.GoogleSheetSetting.ClientSecret;
-        _userCredential =
-            await GoogleAuthenticationService.LoginAsync(
-                clientId, clientSecret, _scopes);
-        using var sheetsService = new SheetsService(new BaseClientService.Initializer
-        {
-            HttpClientInitializer = _userCredential,
-            ApplicationName = _googleCloudSetting.ApplicationName
-        });
+        _userCredential = await GoogleAuthenticationService.LoginAsync(
+            clientId,
+            clientSecret,
+            _scopes
+        );
+        using var sheetsService = new SheetsService(
+            new BaseClientService.Initializer
+            {
+                HttpClientInitializer = _userCredential,
+                ApplicationName = _googleCloudSetting.ApplicationName
+            }
+        );
         // Create a new row
-        var appendRequest = sheetsService.Spreadsheets.Values.Append(new ValueRange
-        {
-            Values = new List<IList<object>> { values }
-        }, spreadsheetId, sheetName + "!A" + rowIndex);
+        var appendRequest = sheetsService.Spreadsheets.Values.Append(
+            new ValueRange { Values = new List<IList<object>> { values } },
+            spreadsheetId,
+            sheetName + "!A" + rowIndex
+        );
         // Choose the input value type (RAW, USER_ENTERED, ...)
-        appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest
-            .ValueInputOptionEnum.USERENTERED;
-        appendRequest.InsertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest
-            .InsertDataOptionEnum.INSERTROWS;
+        appendRequest.ValueInputOption = SpreadsheetsResource
+            .ValuesResource
+            .AppendRequest
+            .ValueInputOptionEnum
+            .USERENTERED;
+        appendRequest.InsertDataOption = SpreadsheetsResource
+            .ValuesResource
+            .AppendRequest
+            .InsertDataOptionEnum
+            .INSERTROWS;
 
         // Execute the request
         var appendResponse = await appendRequest.ExecuteAsync();

@@ -13,31 +13,40 @@ public class VpBankCreditJob(
     IVpBankCreditGoogleSheetService vpBankCreditGoogleSheetService,
     IRawTransactionService rawTransactionService,
     ILogger<VpBankCreditJob> logger,
-    IMapper mapper)
+    IMapper mapper
+)
 {
     public async Task Process()
     {
         try
         {
             logger.LogInformation("Start VpBankCreditJob Process");
+            // get old data in DB
+            var oldMailInDB = await rawTransactionService.GetMailIdsAsync("VpBankCreditJob");
 
-            var oldData = await vpBankCreditGoogleSheetService.GetOldDataInGoogleSheet();
+            var lastSync = await rawTransactionService.GetLastSyncByWalletAsync("VpBankCreditJob");
+
+            // get old data in Google Sheet
+            var oldData = await vpBankCreditGoogleSheetService.GetOldDataInGoogleSheetAsync();
             logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
 
-            var rawTransactions =
-                await vpBankCreditGmailService.GetCreditWalletGoogles(oldData?.Item2,
-                    oldData?.Item1);
+            var rawTransactions = await vpBankCreditGmailService.GetCreditWalletGoogles(
+                oldData?.Item2,
+                oldData?.Item1
+            );
             logger.LogTrace($"{nameof(rawTransactions)}: {rawTransactions.TryParseToString()}");
 
-            var rawCreateRequestTransactions =
-                mapper.Map<List<RawTransactionCreateRequest>>(rawTransactions);
+            var rawCreateRequestTransactions = mapper.Map<List<RawTransactionCreateRequest>>(
+                rawTransactions
+            );
             logger.LogTrace(
-                $"{nameof(rawCreateRequestTransactions)}: {rawCreateRequestTransactions.TryParseToString()}");
+                $"{nameof(rawCreateRequestTransactions)}: {rawCreateRequestTransactions.TryParseToString()}"
+            );
 
-            var resultCreate =
-                await rawTransactionService.CreateAsync(rawCreateRequestTransactions);
-            logger.LogTrace(
-                $"{nameof(resultCreate)}: {resultCreate.TryParseToString()}");
+            var resultCreate = await rawTransactionService.CreateAsync(
+                rawCreateRequestTransactions
+            );
+            logger.LogTrace($"{nameof(resultCreate)}: {resultCreate.TryParseToString()}");
 
             //var rawGoogleSheetTransactions = rawTransactions.OrderBy(e => e.TransactionDate)
             //    .Select(e => e.ToGoogleSheetList()).ToList();
