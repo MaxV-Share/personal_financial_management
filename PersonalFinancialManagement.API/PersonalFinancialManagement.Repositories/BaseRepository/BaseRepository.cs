@@ -9,7 +9,8 @@ namespace PersonalFinancialManagement.Repositories.BaseRepository;
 
 public class BaseRepository<TEntity, TKey>(
     ApplicationDbContext context,
-    IHttpContextAccessor? httpContextAccessor)
+    IHttpContextAccessor? httpContextAccessor
+)
     : IBaseRepository<TEntity, TKey>
     where TEntity : BaseEntity<TKey>
 {
@@ -97,7 +98,7 @@ public class BaseRepository<TEntity, TKey>(
         var currentUserName = GetUserNameInHttpContext();
         entity.SetDefaultValue(currentUserName);
         await Entities.AddAsync(entity);
-        var countAffect = _context.SaveChanges();
+        var countAffect = await _context.SaveChangesAsync();
         return countAffect;
     }
 
@@ -108,7 +109,7 @@ public class BaseRepository<TEntity, TKey>(
         entities.ForEach(e => { e.SetDefaultValue(currentUserName); });
 
         await Entities.AddRangeAsync(entities);
-        var countAffect = _context.SaveChanges();
+        var countAffect = await _context.SaveChangesAsync();
         return countAffect;
     }
 

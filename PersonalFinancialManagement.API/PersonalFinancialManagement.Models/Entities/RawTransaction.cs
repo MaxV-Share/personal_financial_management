@@ -15,4 +15,5 @@ public class RawTransaction : BaseEntity<Guid>
     public string? ReferenceCode { get; set; }
     public double Balance { get; set; }
     public double RawString { get; set; }
+    public bool? GoogleDriveSynced { get; set; }
 }
