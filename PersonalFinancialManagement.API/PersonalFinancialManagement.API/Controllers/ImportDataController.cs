@@ -2,20 +2,17 @@
 using PersonalFinancialManagement.API.Controllers.Base;
 using PersonalFinancialManagement.Services.Excels;
 
-namespace PersonalFinancialManagement.API.Controllers
-{
-    public class ImportDataController : ApiController
-    {
-        private readonly IExample _example;
-        public ImportDataController(ILogger<ImportDataController> logger, IExample example) : base(logger)
-        {
-            _example = example;
-        }
+namespace PersonalFinancialManagement.API.Controllers;
 
-        [HttpDelete("test")]
-        public async Task Test()
-        {
-            await _example.ReadXLS("");
-        }
+public class ImportDataController(
+    ILogger<ImportDataController> logger,
+    IExample example
+)
+    : ApiController(logger)
+{
+    [HttpDelete("test")]
+    public async Task Test()
+    {
+        await example.ReadXLS("");
     }
 }

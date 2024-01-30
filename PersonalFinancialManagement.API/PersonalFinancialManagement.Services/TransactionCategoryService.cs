@@ -16,10 +16,11 @@ namespace PersonalFinancialManagement.Services;
 public class TransactionCategoryService(
     IMapper mapper,
     IUnitOffWork<ApplicationDbContext> unitOffWork,
-    ILogger<TransactionCategoryService> logger)
+    ILogger<TransactionCategoryService> logger
+)
     :
         BaseService<ApplicationDbContext, TransactionCategory, TransactionCategoryCreateRequest,
-            TransactionCategoryUpdateRequest, TransactionCategoryViewModel, Guid>(mapper,
+        TransactionCategoryUpdateRequest, TransactionCategoryViewModel, Guid>(mapper,
             unitOffWork, logger),
         ITransactionCategoryService
 {

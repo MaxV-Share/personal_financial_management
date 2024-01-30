@@ -5,24 +5,19 @@ using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
 
 namespace PersonalFinancialManagement.GoogleServices.GoogleSheets;
 
-public class VpBankCreditGoogleSheetService : BasePFMSheetService, IVpBankCreditGoogleSheetService
+public class VpBankCreditGoogleSheetService(
+    GoogleSheetService googleSheetService,
+    ILogger<VpBankCreditGoogleSheetService> logger
+)
+    : BasePFMSheetService(logger),
+        IVpBankCreditGoogleSheetService
 {
     private const string SheetName = "VP Credit PFM";
-    private readonly GoogleSheetService _googleSheetService;
-
-    public VpBankCreditGoogleSheetService(
-        GoogleSheetService googleSheetService,
-        ILogger<VpBankCreditGoogleSheetService> logger
-    )
-        : base(logger)
-    {
-        _googleSheetService = googleSheetService;
-    }
 
     public async Task ExecuteAsync(List<List<object>> creditWalletGoogles)
     {
         _logger.LogInformation("Start VpBankCreditGoogleSheetService ExecuteAsync");
-        var spreadsheet = await _googleSheetService.GetSheet(SpreadsheetId, SheetName);
+        var spreadsheet = await googleSheetService.GetSheet(SpreadsheetId, SheetName);
         var headers = new List<object>
         {
             "No",
@@ -36,7 +31,7 @@ public class VpBankCreditGoogleSheetService : BasePFMSheetService, IVpBankCredit
             "Balance"
         };
         foreach (var data in creditWalletGoogles)
-            await _googleSheetService.AppendRowBelowLastValue(
+            await googleSheetService.AppendRowBelowLastValue(
                 SpreadsheetId,
                 spreadsheet!.Properties.Title,
                 data,
@@ -48,7 +43,7 @@ public class VpBankCreditGoogleSheetService : BasePFMSheetService, IVpBankCredit
     public async Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheetAsync()
     {
         _logger.LogInformation("Start GetOldDataInGoogleSheet");
-        var spreadsheet = await _googleSheetService.GetRangeValue(
+        var spreadsheet = await googleSheetService.GetRangeValue(
             SpreadsheetId,
             SheetName,
             RangeMailId
@@ -59,7 +54,7 @@ public class VpBankCreditGoogleSheetService : BasePFMSheetService, IVpBankCredit
         if (spreadsheet == null || !spreadsheet.Any())
             return default;
 
-        var rangeLastUpdate = await _googleSheetService.GetRangeValue(
+        var rangeLastUpdate = await googleSheetService.GetRangeValue(
             SpreadsheetId,
             SheetName,
             $"F{spreadsheet.Count + 1}"

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Models.Entities.Identities;
 
@@ -8,12 +9,16 @@ namespace PersonalFinancialManagement.Models.DbContexts;
 public class ApplicationDbContext : IdentityDbContext<User, Role, string, UserClaim, UserRole,
     UserLogin, RoleClaim, UserToken>
 {
+    private readonly IConfiguration _configuration;
+
     public ApplicationDbContext()
     {
     }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+        IConfiguration configuration) : base(options)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<TransactionCategoryType> TransactionCategoryTypes { set; get; } = null!;

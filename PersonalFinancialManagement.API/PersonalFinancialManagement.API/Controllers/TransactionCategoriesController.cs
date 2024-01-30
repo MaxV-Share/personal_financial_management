@@ -10,19 +10,20 @@ using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
-public class TransactionCategoriesController : CrudController<ApplicationDbContext, TransactionCategory, TransactionCategoryCreateRequest, TransactionCategoryUpdateRequest, TransactionCategoryViewModel, Guid>
+public class TransactionCategoriesController(
+    ILogger<TransactionCategoriesController> logger,
+    ITransactionCategoryService transactionCategoryService
+)
+    : CrudController<ApplicationDbContext, TransactionCategory, TransactionCategoryCreateRequest,
+        TransactionCategoryUpdateRequest, TransactionCategoryViewModel, Guid>(logger,
+            transactionCategoryService)
 {
-    private readonly ITransactionCategoryService _transactionCategoryService;
-
-    public TransactionCategoriesController(ILogger<TransactionCategoriesController> logger, ITransactionCategoryService transactionCategoryService) : base(logger, transactionCategoryService)
+    [ProducesResponseType(StatusCodes.Status200OK,
+        Type = typeof(BasePaging<TransactionCategoryViewModel>))]
+    public override async Task<ActionResult<IBasePaging<TransactionCategoryViewModel>>> GetPaging(
+        FilterBodyRequest request)
     {
-        _transactionCategoryService = transactionCategoryService;
-    }
-
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionCategoryViewModel>))]
-    public override async Task<ActionResult<IBasePaging<TransactionCategoryViewModel>>> GetPaging(FilterBodyRequest request)
-    {
-        var result = await _transactionCategoryService.GetPagingAsync(request);
+        var result = await transactionCategoryService.GetPagingAsync(request);
         return Ok(result);
     }
 }

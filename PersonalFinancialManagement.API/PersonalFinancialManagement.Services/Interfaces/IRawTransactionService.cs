@@ -13,8 +13,8 @@ public interface IRawTransactionService
         RawTransactionUpdateRequest,
         RawTransactionViewModel,
         Guid
-    >
+        >
 {
-    Task<List<string>> GetMailIdsAsync(string walletId);
-    Task<DateTime> GetLastSyncByWalletAsync(string walletId);
+    Task<List<string>> GetMailIdsAsync(string walletType);
+    Task<DateTime?> GetLastSyncByWalletAsync(string walletType);
 }

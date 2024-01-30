@@ -10,7 +10,7 @@ public class InMemoryDbContextFactory
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase("InMemoryApplicationDatabase")
             .Options;
-        var dbContext = new ApplicationDbContext(options);
+        var dbContext = new ApplicationDbContext(options, null);
 
         return dbContext;
     }

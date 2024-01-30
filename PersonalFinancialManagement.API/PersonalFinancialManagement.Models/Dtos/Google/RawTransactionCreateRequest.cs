@@ -2,7 +2,8 @@
 
 namespace PersonalFinancialManagement.Models.Dtos.Google;
 
-public class RawTransactionCreateRequest : BaseCreateRequest, IBaseRawTransactionModel
+public class RawTransactionCreateRequest : BaseCreateRequest,
+    IBaseRawTransactionModel
 {
     public string No { get; set; } = "";
     public string MailId { get; set; } = "";
@@ -11,6 +12,7 @@ public class RawTransactionCreateRequest : BaseCreateRequest, IBaseRawTransactio
     public double Amount { get; set; }
     public DateTime TransactionDate { get; set; }
     public string WalletId { get; set; } = "";
+    public string WalletType { get; set; } = "";
     public string ReferenceCode { get; set; } = "";
     public double Balance { get; set; }
 

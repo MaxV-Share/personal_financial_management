@@ -14,23 +14,16 @@ using PersonalFinancialManagement.Models.Entities.Identities;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
-public class AuthController : ApiController
+public class AuthController(
+    UserManager<User> userManager,
+    RoleManager<Role> roleManager,
+    ApplicationDbContext context,
+    IOptions<JwtOptions> jwtOptions,
+    ILogger<AuthController> logger
+)
+    : ApiController(logger)
 {
-    private readonly ApplicationDbContext _context;
-    private readonly JwtOptions _jwtOptions;
-    private readonly RoleManager<Role> _roleManager;
-    private readonly UserManager<User> _userManager;
-
-    public AuthController(UserManager<User> userManager,
-        RoleManager<Role> roleManager,
-        ApplicationDbContext context, IOptions<JwtOptions> jwtOptions,
-        ILogger<AuthController> logger) : base(logger)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _context = context;
-        _jwtOptions = jwtOptions.Value;
-    }
+    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
     [HttpPost("register")]
     public async Task<IActionResult> PostUser(RegisterViewModel request)
@@ -45,7 +38,7 @@ public class AuthController : ApiController
             PhoneNumber = request.PhoneNumber,
             FullName = request.FullName
         };
-        var result = await _userManager.CreateAsync(user, request.Password);
+        var result = await userManager.CreateAsync(user, request.Password);
         if (result.Succeeded)
             return CreatedAtAction(nameof(GetById), new { id = user.Id }, request);
         return BadRequest(result);
@@ -56,7 +49,7 @@ public class AuthController : ApiController
     [Authorize]
     public async Task<IActionResult> GetById(string id)
     {
-        var user = await _userManager.FindByIdAsync(id);
+        var user = await userManager.FindByIdAsync(id);
         if (user == null)
             return NotFound($"Cannot found user with id: {id}");
 
@@ -75,7 +68,7 @@ public class AuthController : ApiController
     public async Task<IActionResult> GetByUserName()
     {
         var userName = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "";
-        var user = await _userManager.FindByNameAsync(userName);
+        var user = await userManager.FindByNameAsync(userName);
         if (user == null)
             return BadRequest();
 
@@ -114,12 +107,12 @@ public class AuthController : ApiController
     public async Task<IActionResult> PutUserPassword(string id,
         [FromBody] UserPasswordChangeRequest request)
     {
-        var user = await _userManager.FindByIdAsync(id);
+        var user = await userManager.FindByIdAsync(id);
         if (user == null)
             return NotFound($"Cannot found user with id: {id}");
 
         var result =
-            await _userManager.ChangePasswordAsync(user, request.CurrentPassword,
+            await userManager.ChangePasswordAsync(user, request.CurrentPassword,
                 request.NewPassword);
 
         if (result.Succeeded) return NoContent();
@@ -131,16 +124,16 @@ public class AuthController : ApiController
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var user = await _userManager.FindByNameAsync(model.UserName);
-        var userEmail = await _userManager.FindByEmailAsync(model.UserName);
+        var user = await userManager.FindByNameAsync(model.UserName);
+        var userEmail = await userManager.FindByEmailAsync(model.UserName);
         if (user != null || userEmail != null)
         {
-            var checkPassword = await _userManager.CheckPasswordAsync(user!, model.Password);
+            var checkPassword = await userManager.CheckPasswordAsync(user!, model.Password);
             if (checkPassword)
                 return Ok(GenerateToken(user!));
 
             var checkPasswordEmail =
-                await _userManager.CheckPasswordAsync(userEmail!, model.Password);
+                await userManager.CheckPasswordAsync(userEmail!, model.Password);
             if (checkPasswordEmail)
                 return Ok(GenerateToken(userEmail!));
         }

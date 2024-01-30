@@ -22,25 +22,31 @@ public class RawTransactionService(
         RawTransactionUpdateRequest,
         RawTransactionViewModel,
         Guid
-    >(mapper, unitOffWork, logger),
+        >(mapper, unitOffWork, logger),
         IRawTransactionService
 {
-    public async Task<List<string>> GetMailIdsAsync(string walletId)
+    public async Task<List<string>> GetMailIdsAsync(string walletType)
     {
         return await _unitOffWork
             .Repository<RawTransaction, Guid>()
             .GetNoTrackingEntities()
-            .Where(e => !string.IsNullOrEmpty(e.WalletId) && e.WalletId.Contains(walletId))
-            .Select(e => e.WalletId ?? string.Empty)
+            .Where(e =>
+                !string.IsNullOrEmpty(e.WalletId) &&
+                !string.IsNullOrEmpty(e.WalletType) &&
+                e.WalletType.Contains(walletType))
+            .Select(e => e.MailId ?? string.Empty)
             .ToListAsync();
     }
 
-    public async Task<DateTime> GetLastSyncByWalletAsync(string walletId)
+    public async Task<DateTime?> GetLastSyncByWalletAsync(string walletType)
     {
         return await _unitOffWork
             .Repository<RawTransaction, Guid>()
             .GetNoTrackingEntities()
-            .Where(e => !string.IsNullOrEmpty(e.WalletId) && e.WalletId.Contains(walletId))
+            .Where(e =>
+                !string.IsNullOrEmpty(e.WalletId) &&
+                !string.IsNullOrEmpty(e.WalletType) &&
+                e.WalletType.Contains(walletType))
             .Select(e => e.TransactionDate)
             .OrderByDescending(e => e)
             .FirstOrDefaultAsync();

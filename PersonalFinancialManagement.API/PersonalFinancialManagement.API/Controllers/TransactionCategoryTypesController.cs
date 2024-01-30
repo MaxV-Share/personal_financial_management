@@ -1,29 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalFinancialManagement.API.Controllers.Base;
 using PersonalFinancialManagement.Common.Models;
-using PersonalFinancialManagement.Models.DbContexts;
-using PersonalFinancialManagement.Models.Entities;
-using PersonalFinancialManagement.Services.Interfaces;
 using PersonalFinancialManagement.Common.Models.DTOs;
+using PersonalFinancialManagement.Models.DbContexts;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes;
 using PersonalFinancialManagement.Models.Dtos.TransactionCategoryTypes.Requests;
+using PersonalFinancialManagement.Models.Entities;
+using PersonalFinancialManagement.Services.Interfaces;
 
-namespace PersonalFinancialManagement.API.Controllers
+namespace PersonalFinancialManagement.API.Controllers;
+
+public class TransactionCategoryTypesController(
+    ILogger<TransactionCategoryTypesController> logger,
+    ITransactionCategoryTypeService transactionCategoryTypeService
+)
+    : CrudController<ApplicationDbContext, TransactionCategoryType,
+        TransactionCategoryTypeCreateRequest, TransactionCategoryTypeUpdateRequest,
+        TransactionCategoryTypeViewModel, Guid>(logger, transactionCategoryTypeService)
 {
-    public class TransactionCategoryTypesController : CrudController<ApplicationDbContext, TransactionCategoryType, TransactionCategoryTypeCreateRequest, TransactionCategoryTypeUpdateRequest, TransactionCategoryTypeViewModel, Guid>
+    [ProducesResponseType(StatusCodes.Status200OK,
+        Type = typeof(BasePaging<TransactionCategoryTypeViewModel>))]
+    public override async Task<ActionResult<IBasePaging<TransactionCategoryTypeViewModel>>>
+        GetPaging(FilterBodyRequest request)
     {
-        private readonly ITransactionCategoryTypeService _transactionCategoryTypeService;
-
-        public TransactionCategoryTypesController(ILogger<TransactionCategoryTypesController> logger, ITransactionCategoryTypeService transactionCategoryTypeService) : base(logger, transactionCategoryTypeService)
-        {
-            _transactionCategoryTypeService = transactionCategoryTypeService;
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionCategoryTypeViewModel>))]
-        public override async Task<ActionResult<IBasePaging<TransactionCategoryTypeViewModel>>> GetPaging(FilterBodyRequest request)
-        {
-            var result = await _transactionCategoryTypeService.GetPagingAsync(request);
-            return Ok(result);
-        }
+        var result = await transactionCategoryTypeService.GetPagingAsync(request);
+        return Ok(result);
     }
 }

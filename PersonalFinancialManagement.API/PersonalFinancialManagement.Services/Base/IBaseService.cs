@@ -5,7 +5,7 @@ using PersonalFinancialManagement.Common.Models.DTOs;
 namespace PersonalFinancialManagement.Services.Base;
 
 // ReSharper disable once UnusedTypeParameter
-public interface IBaseService<TContext, TEntity, in TCreateRequest, in TUpdateRequest, TViewModel,
+public interface IBaseService<TContext, TEntity, TCreateRequest, in TUpdateRequest, TViewModel,
     in TKey>
     where TEntity : BaseEntity<TKey>?, new()
     where TCreateRequest : BaseCreateRequest, new()
@@ -19,5 +19,5 @@ public interface IBaseService<TContext, TEntity, in TCreateRequest, in TUpdateRe
     Task<int?> DeleteSoftAsync(TKey id);
     Task<TViewModel?> UpdateAsync(TKey id, TUpdateRequest request);
     Task<TViewModel?> CreateAsync(TCreateRequest request);
-    Task<IEnumerable<TViewModel>?> CreateAsync(IEnumerable<TCreateRequest> request);
+    Task<IEnumerable<TViewModel>?> CreateAsync(List<TCreateRequest> request);
 }

@@ -4,6 +4,7 @@ using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
 using PersonalFinancialManagement.Models.Dtos.Google;
 using PersonalFinancialManagement.Services.Interfaces;
+using PersonalFinancialManagement.Services.Mails;
 using PersonalFinancialManagement.Services.Mails.Interfaces;
 
 namespace PersonalFinancialManagement.Services.Jobs;
@@ -22,17 +23,25 @@ public class VpBankCreditJob(
         {
             logger.LogInformation("Start VpBankCreditJob Process");
             // get old data in DB
-            var oldMailInDB = await rawTransactionService.GetMailIdsAsync("VpBankCreditJob");
+            var oldMailInDb =
+                await rawTransactionService.GetMailIdsAsync(VpBankCreditGmailService.WalletType);
 
-            var lastSync = await rawTransactionService.GetLastSyncByWalletAsync("VpBankCreditJob");
-
+            var lastSync =
+                await rawTransactionService.GetLastSyncByWalletAsync(VpBankCreditGmailService
+                    .WalletType);
+            if (lastSync == new DateTime())
+                lastSync = new DateTime(2023, 11, 1);
             // get old data in Google Sheet
-            var oldData = await vpBankCreditGoogleSheetService.GetOldDataInGoogleSheetAsync();
-            logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
+            //var oldData = await vpBankCreditGoogleSheetService.GetOldDataInGoogleSheetAsync();
+            //logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
+            //if (oldData >)
+            //{
+
+            //}
 
             var rawTransactions = await vpBankCreditGmailService.GetCreditWalletGoogles(
-                oldData?.Item2,
-                oldData?.Item1
+                lastSync,
+                oldMailInDb
             );
             logger.LogTrace($"{nameof(rawTransactions)}: {rawTransactions.TryParseToString()}");
 

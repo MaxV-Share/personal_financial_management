@@ -11,6 +11,7 @@ public class RawTransaction : BaseEntity<Guid>
     public double Amount { get; set; }
     public DateTime TransactionDate { get; set; }
     public string? WalletId { get; set; }
+    public string? WalletType { get; set; }
     public string? ReferenceCode { get; set; }
     public double Balance { get; set; }
     public double RawString { get; set; }

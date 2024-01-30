@@ -14,8 +14,10 @@ namespace PersonalFinancialManagement.Services.Mails;
 
 public class VpBankCreditGmailService(
     ILogger<GmailServices> logger,
-    IOptions<GoogleCloudSetting> googleCloudSetting)
-    : CreditGmailService, IVpBankCreditGmailService
+    IOptions<GoogleCloudSetting> googleCloudSetting
+)
+    : CreditGmailService,
+        IVpBankCreditGmailService
 {
     private const string RegexCredit =
         @"<table cellpadding=""0"" cellspacing=""0"" class=""es-left"" align=""left"" style=""mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left""> <tr style=""border-collapse:collapse""> <td class=""es-m-p20b"" align=""left"" style=""padding:0;Margin:0;width:280px""> <table cellpadding=""0"" cellspacing=""0"" width=""100%"" role=""presentation"" style=""mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px""> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:5px;Margin:0""><h5 style=""Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:14px;color:#ff0000""><b>(.*) <\/b><\/h5><p style=""Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:20px;color:#333333;font-size:13px"">Số tiền thay đổi \/ <span style=""font-size:12px""><em>Changed Amount<\/em><\/span><\/p><\/td> <\/tr> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:5px;Margin:0""><h5 style=""Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:14px""><b>(.*)<\/b><\/h5><p style=""Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:20px;color:#333333;font-size:13px"">Nội dung \/ <span style=""font-size:12px""><em>Transaction Content<\/em><\/span><\/p><\/td> <\/tr> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:5px;Margin:0""><h5 style=""Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:14px""><b>(.*)<\/b><\/h5><p style=""Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:20px;color:#333333;font-size:13px"">Thời gian&nbsp;\/<span style=""font-size:12px""><em>Time<\/em><\/span><\/p><\/td> <\/tr> <\/table><\/td> <\/tr> <\/table><!--.*--> <table cellpadding=""0"" cellspacing=""0"" class=""es-right"" align=""right"" style=""mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right""> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:0;Margin:0;width:275px""> <table cellpadding=""0"" cellspacing=""0"" width=""100%"" role=""presentation"" style=""mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px""> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:5px;Margin:0""><h5 style=""Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:14px;color:#008000""><b>(.*) VND <\/b><\/h5><p style=""Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:20px;color:#333333;font-size:13px"">Hạn mức còn lại \/ <span style=""font-size:12px""><em>Available Limit<\/em><\/span><\/p><\/td> <\/tr> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:5px;Margin:0""><h5 style=""Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:14px""><b>(.*)<\/b><\/h5><p style=""Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:20px;color:#333333;font-size:13px"">Thẻ \/<span style=""font-size:12px""><em> Card<\/em><\/span><\/p><\/td> <\/tr> <tr style=""border-collapse:collapse""> <td align=""left"" style=""padding:5px;Margin:0""><h5 style=""Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:14px""><b>(.*)<\/b><\/h5><p style=""Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:20px;color:#333333;font-size:13px"">Mã giao dịch \/ <span style=""font-size:12px""><em>Transaction Code<\/em><\/span><\/p><\/td> <\/tr> <\/table><\/td> <\/tr> <\/table>";
@@ -24,6 +26,8 @@ public class VpBankCreditGmailService(
 
     private const string TitleFilter =
         "VPBank xin thong bao bien dong so du The tin dung cua Quy khach";
+
+    public const string WalletType = "VPBank Credit";
 
     private readonly GoogleCloudSetting _googleCloudSetting = googleCloudSetting.Value;
 
@@ -58,7 +62,7 @@ public class VpBankCreditGmailService(
         var result = new List<RawTransactionViewModel>();
         if (oldUId != null)
             uIds = uIds.Where(e => !oldUId.Contains(e.ToString())).ToList();
-        if (!uIds.Any()) return null;
+        if (!uIds.Any()) return result;
         foreach (var uid in uIds)
         {
             var message = await inbox.GetMessageAsync(uid);
@@ -67,6 +71,7 @@ public class VpBankCreditGmailService(
             if (rawTransaction == null)
                 continue;
             rawTransaction.MailId = uid.ToString();
+            rawTransaction.WalletType = WalletType;
             result.Add(rawTransaction);
         }
 

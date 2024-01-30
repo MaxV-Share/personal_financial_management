@@ -10,19 +10,18 @@ using PersonalFinancialManagement.Services.Interfaces;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
-public class TransactionsController : CrudController<ApplicationDbContext, Transaction, TransactionCreateRequest, TransactionUpdateRequest, TransactionViewModel, Guid>
+public class TransactionsController(
+    ILogger<TransactionsController> logger,
+    ITransactionService transactionService
+)
+    : CrudController<ApplicationDbContext, Transaction, TransactionCreateRequest,
+        TransactionUpdateRequest, TransactionViewModel, Guid>(logger, transactionService)
 {
-    private readonly ITransactionService _transactionService;
-
-    public TransactionsController(ILogger<TransactionsController> logger, ITransactionService transactionService) : base(logger, transactionService)
-    {
-        _transactionService = transactionService;
-    }
-
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<TransactionViewModel>))]
-    public override async Task<ActionResult<IBasePaging<TransactionViewModel>>> GetPaging(FilterBodyRequest request)
+    public override async Task<ActionResult<IBasePaging<TransactionViewModel>>> GetPaging(
+        FilterBodyRequest request)
     {
-        var result = await _transactionService.GetPagingAsync(request);
+        var result = await transactionService.GetPagingAsync(request);
         return Ok(result);
     }
 
@@ -31,7 +30,7 @@ public class TransactionsController : CrudController<ApplicationDbContext, Trans
     {
         if (request?.FromPaymentAccountId == null)
             return BadRequest();
-        var result = await _transactionService.CreateAsync(request);
+        var result = await transactionService.CreateAsync(request);
 
         if (null == result)
             return StatusCode(StatusCodes.Status500InternalServerError);

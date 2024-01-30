@@ -17,7 +17,11 @@ namespace PersonalFinancialManagement.Services.Base;
 /// <typeparam name="TKey"></typeparam>
 /// <typeparam name="TContext"></typeparam>
 public abstract class BaseService<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel,
-    TKey>(IMapper mapper, IUnitOffWork<TContext> unitOffWork, ILogger logger)
+    TKey>(
+    IMapper mapper,
+    IUnitOffWork<TContext> unitOffWork,
+    ILogger logger
+)
     : IBaseService<TContext, TEntity, TCreateRequest, TUpdateRequest, TViewModel, TKey>
     where TEntity : BaseEntity<TKey>, new()
     where TCreateRequest : BaseCreateRequest, new()
@@ -119,22 +123,33 @@ public abstract class BaseService<TContext, TEntity, TCreateRequest, TUpdateRequ
     /// <returns></returns>
     /// <exception cref="NullReferenceException"></exception>
     public virtual async Task<IEnumerable<TViewModel>?> CreateAsync(
-        IEnumerable<TCreateRequest> request)
+        List<TCreateRequest> request)
     {
+        if (!request.Any())
+        {
+            _logger.LogInformation("Request Is Empty");
+            return new List<TViewModel>();
+        }
+
         return await _unitOffWork.DoWorkWithTransaction(async () =>
         {
-            _logger.LogTrace($"CreateAsync request: {request.TryParseToString()}");
+            var baseCreateRequests = request as TCreateRequest[] ?? request.ToArray();
+            _logger.LogTrace($"CreateAsync request: {baseCreateRequests.TryParseToString()}");
+
             var entitiesNew = new List<TEntity>();
-            _mapper.Map(request, entitiesNew);
+            _mapper.Map(baseCreateRequests, entitiesNew);
             _logger.LogTrace($"CreateAsync entitiesNew: {entitiesNew.TryParseToString()}");
-            IEnumerable<TEntity> response = new List<TEntity>();
+
             var effectedCount =
                 await _unitOffWork.Repository<TEntity, TKey>().CreateAsync(entitiesNew);
             _logger.LogTrace($"CreateAsync affectedCount: {effectedCount}");
+
             if (effectedCount <= 0) throw new NullReferenceException();
-            var result = _mapper.Map<IEnumerable<TViewModel>>(response);
-            _logger.LogTrace($"CreateAsync result: {result.TryParseToString()}");
-            return result;
+
+            var result = _mapper.Map<IEnumerable<TViewModel>>(entitiesNew);
+            var baseViewModels = result as TViewModel[] ?? result.ToArray();
+            _logger.LogTrace($"CreateAsync result: {baseViewModels.TryParseToString()}");
+            return baseViewModels;
         });
     }
 }
