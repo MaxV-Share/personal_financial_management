@@ -27,7 +27,9 @@ public static class ServiceExtensions
         services.AddProxiedScoped<IPaymentAccountService, PaymentAccountService>();
         services.AddProxiedScoped<IRawTransactionService, RawTransactionService>();
         services.AddScoped<IVpBankCreditGoogleSheetService, VpBankCreditGoogleSheetService>();
+        services.AddScoped<ITpBankCreditGoogleSheetService, TpBankCreditGoogleSheetService>();
         services.AddScoped<IVpBankCreditGmailService, VpBankCreditGmailService>();
+        services.AddScoped<ITpBankCreditGmailService, TpBankCreditGmailService>();
         services.AddScoped<GoogleSheetService, GoogleSheetService>();
         services.AddScoped<VpBankCreditJob, VpBankCreditJob>();
 

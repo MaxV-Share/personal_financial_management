@@ -7,16 +7,13 @@ using PersonalFinancialManagement.Common.Models.Configurations.Google;
 
 namespace PersonalFinancialManagement.GoogleServices;
 
-public class GoogleSheetService
+public class GoogleSheetService(
+    IOptions<GoogleCloudSetting> googleCloudSetting
+)
 {
-    private readonly GoogleCloudSetting _googleCloudSetting;
-    private readonly string[] _scopes = { SheetsService.Scope.Spreadsheets };
+    private readonly GoogleCloudSetting _googleCloudSetting = googleCloudSetting.Value;
+    private readonly string[] _scopes = [SheetsService.Scope.Spreadsheets];
     protected UserCredential? _userCredential;
-
-    public GoogleSheetService(IOptions<GoogleCloudSetting> googleCloudSetting)
-    {
-        _googleCloudSetting = googleCloudSetting.Value;
-    }
 
     public async Task<Spreadsheet> GetSpreadsheetById(string id)
     {
@@ -143,14 +140,10 @@ public class GoogleSheetService
             sheetName + "!A" + rowIndex
         );
         // Choose the input value type (RAW, USER_ENTERED, ...)
-        appendRequest.ValueInputOption = SpreadsheetsResource
-            .ValuesResource
-            .AppendRequest
+        appendRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest
             .ValueInputOptionEnum
             .USERENTERED;
-        appendRequest.InsertDataOption = SpreadsheetsResource
-            .ValuesResource
-            .AppendRequest
+        appendRequest.InsertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest
             .InsertDataOptionEnum
             .INSERTROWS;
 

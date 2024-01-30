@@ -5,7 +5,10 @@ using PersonalFinancialManagement.Services.Jobs;
 
 namespace PersonalFinancialManagement.API.Controllers;
 
-public class JobsController(ILogger<JobsController> logger, VpBankCreditJob vpBankCreditJob)
+public class JobsController(
+    ILogger<JobsController> logger,
+    VpBankCreditJob vpBankCreditJob
+)
     : ApiController(logger)
 {
     [HttpGet("recurring-job-vpBank-credit")]
@@ -21,6 +24,13 @@ public class JobsController(ILogger<JobsController> logger, VpBankCreditJob vpBa
     public IActionResult RunJobVpBankCredit()
     {
         BackgroundJob.Enqueue<VpBankCreditJob>(e => e.Process());
+        return Ok();
+    }
+
+    [HttpGet("run-background-job-tpBank-credit")]
+    public IActionResult RunJobTpBankCredit()
+    {
+        BackgroundJob.Enqueue<TpBankCreditJob>(e => e.Process());
         return Ok();
     }
 
