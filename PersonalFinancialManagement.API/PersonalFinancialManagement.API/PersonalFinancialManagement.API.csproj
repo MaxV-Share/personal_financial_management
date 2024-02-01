@@ -52,8 +52,4 @@
     <ProjectReference Include="..\PersonalFinancialManagement.Services.Mails\PersonalFinancialManagement.Services.Mails.csproj" />
     <ProjectReference Include="..\PersonalFinancialManagement.Services\PersonalFinancialManagement.Services.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Logs\" />
-  </ItemGroup>
 </Project>

@@ -39,7 +39,8 @@ async Task CreateDbIfNotExistsAsync(IHost host)
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", false, true)
     .AddJsonFile(
-        $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json")
+        $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+        true, true)
     .Build();
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
@@ -109,7 +110,6 @@ app.Map("/", context => Task.Run(() => context.Response.Redirect("/swagger/index
 
 app.MapControllers();
 
-app.UseHangfireServer();
 app.UseHangfireDashboard();
 
 await CreateDbIfNotExistsAsync(app);
