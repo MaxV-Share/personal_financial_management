@@ -1,7 +1,9 @@
-﻿namespace PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
+﻿using PersonalFinancialManagement.Models.Dtos.RawTransactions;
+
+namespace PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
 
 public interface IVpBankCreditGoogleSheetService
 {
     Task ExecuteAsync(List<List<object>> creditWalletGoogles);
-    Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheetAsync();
+    Task<GetOldDataInGoogleSheetResult?> GetOldDataInGoogleSheetAsync();
 }

@@ -32,12 +32,14 @@ public class TpBankCreditJob(
             if (lastSync == new DateTime())
                 lastSync = new DateTime(2023, 11, 1);
             // get old data in Google Sheet
-            //var oldData = await tpBankCreditGoogleSheetService.GetOldDataInGoogleSheetAsync();
-            //logger.LogTrace($"{nameof(oldData)}: {oldData.TryParseToString()}");
-            //if (oldData >)
-            //{
-
-            //}
+            var oldDataDataInGoogleSheet =
+                await tpBankCreditGoogleSheetService.GetOldDataInGoogleSheetAsync();
+            logger.LogTrace(
+                $"{nameof(oldDataDataInGoogleSheet)}: {oldDataDataInGoogleSheet.TryParseToString()}");
+            if (oldDataDataInGoogleSheet != null && oldDataDataInGoogleSheet.LastUpdate < lastSync)
+            {
+                lastSync = oldDataDataInGoogleSheet.LastUpdate;
+            }
 
             var rawTransactions = await tpBankCreditGmailService.GetCreditWalletGoogles(
                 lastSync,
@@ -57,8 +59,10 @@ public class TpBankCreditJob(
             );
             logger.LogTrace($"{nameof(resultCreate)}: {resultCreate.TryParseToString()}");
 
-            var rawGoogleSheetTransactions = rawTransactions.OrderBy(e => e.TransactionDate)
-                .Select(e => e.ToGoogleSheetList()).ToList();
+            var rawGoogleSheetTransactions = rawTransactions
+                .OrderBy(e => e.TransactionDate)
+                .Select(e => e.ToGoogleSheetList())
+                .ToList();
             logger.LogTrace(
                 $"{nameof(rawGoogleSheetTransactions)}: {rawGoogleSheetTransactions.TryParseToString()}");
 

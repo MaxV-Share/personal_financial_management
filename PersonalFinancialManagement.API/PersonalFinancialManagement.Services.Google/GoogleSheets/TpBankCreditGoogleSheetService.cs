@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
+using PersonalFinancialManagement.Models.Dtos.RawTransactions;
 
 namespace PersonalFinancialManagement.GoogleServices.GoogleSheets;
 
@@ -40,9 +41,9 @@ public class TpBankCreditGoogleSheetService(
         logger.LogInformation("End TpBankCreditGoogleSheetService ExecuteAsync");
     }
 
-    public async Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheetAsync()
+    public async Task<GetOldDataInGoogleSheetResult?> GetOldDataInGoogleSheetAsync()
     {
-        logger.LogInformation("Start GetOldDataInGoogleSheet");
+        logger.LogInformation("Start GetOldDataInGoogleSheetAsync");
         var spreadsheet = await googleSheetService.GetRangeValue(
             SpreadsheetId,
             SheetName,
@@ -81,8 +82,8 @@ public class TpBankCreditGoogleSheetService(
 
         logger.LogTrace($"{nameof(uIds)}: {uIds.TryParseToString()}");
         logger.LogTrace($"{nameof(lastUpdate)}: {lastUpdate}");
-        logger.LogInformation("End GetOldDataInGoogleSheet");
+        logger.LogInformation("End GetOldDataInGoogleSheetAsync");
 
-        return new Tuple<List<string>?, DateTime?>(uIds, lastUpdate);
+        return new GetOldDataInGoogleSheetResult(lastUpdate, uIds);
     }
 }

@@ -26,6 +26,19 @@ public class RawTransactionService(
         >(mapper, unitOffWork, logger),
         IRawTransactionService
 {
+    public override Task<IEnumerable<RawTransactionViewModel>?> CreateAsync(
+        List<RawTransactionCreateRequest> request)
+    {
+        var newMailIds = request.Select(e => e.MailId).ToList();
+        var mailIdsExistInDb = _unitOffWork.Repository<RawTransaction, Guid>()
+            .GetNoTrackingEntities()
+            .Where(e => e.MailId != null && newMailIds.Contains(e.MailId)).Select(e => e.MailId)
+            .ToList();
+        var newRawTransaction = request.Where(e => !mailIdsExistInDb.Contains(e.MailId)).ToList();
+
+        return base.CreateAsync(newRawTransaction);
+    }
+
     public async Task<List<string>> GetMailIdsAsync(string walletType)
     {
         return await _unitOffWork
@@ -107,7 +120,7 @@ public class RawTransactionService(
             return false;
         if (transactions.Count == countEffect)
             return true;
-        _logger.LogDebug(
+        logger.LogDebug(
             $"Transaction update incorrect: {transactions.Where(e => e.GoogleDriveSynced != true).TryParseToString()}");
         return false;
     }

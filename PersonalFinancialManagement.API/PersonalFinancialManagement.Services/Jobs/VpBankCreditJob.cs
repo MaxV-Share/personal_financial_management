@@ -65,8 +65,8 @@ public class VpBankCreditJob(
             //if (rawGoogleSheetTransactions?.Any() ?? false)
             //    await vpBankCreditGoogleSheetService.ExecuteAsync(rawGoogleSheetTransactions);
 
-            //logger.LogInformation(
-            //    $"End VpBankCreditJob Process with: {rawGoogleSheetTransactions!.Count}");
+            logger.LogInformation(
+                $"End VpBankCreditJob Process with: {rawTransactions.Count}");
         }
         catch (Exception e)
         {

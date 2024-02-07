@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PersonalFinancialManagement.Common;
 using PersonalFinancialManagement.GoogleServices.GoogleSheets.Interface;
+using PersonalFinancialManagement.Models.Dtos.RawTransactions;
 
 namespace PersonalFinancialManagement.GoogleServices.GoogleSheets;
 
@@ -40,7 +41,7 @@ public class VpBankCreditGoogleSheetService(
         _logger.LogInformation("End VpBankCreditGoogleSheetService ExecuteAsync");
     }
 
-    public async Task<Tuple<List<string>?, DateTime?>?> GetOldDataInGoogleSheetAsync()
+    public async Task<GetOldDataInGoogleSheetResult?> GetOldDataInGoogleSheetAsync()
     {
         _logger.LogInformation("Start GetOldDataInGoogleSheet");
         var spreadsheet = await googleSheetService.GetRangeValue(
@@ -83,6 +84,6 @@ public class VpBankCreditGoogleSheetService(
         _logger.LogTrace($"{nameof(lastUpdate)}: {lastUpdate}");
         _logger.LogInformation("End GetOldDataInGoogleSheet");
 
-        return new Tuple<List<string>?, DateTime?>(uIds, lastUpdate);
+        return new GetOldDataInGoogleSheetResult(lastUpdate, uIds);
     }
 }
