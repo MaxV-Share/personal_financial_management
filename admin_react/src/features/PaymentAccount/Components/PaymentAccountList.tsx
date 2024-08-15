@@ -9,7 +9,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useNavigate } from "react-router";
-import { IPaymentAccountModel } from "src/models/PaymentAccount";
+import { useAppSelector } from "src/app/hooks";
+import { selectPaymentAccounts } from "../paymentAccountSlice";
 import PaymentAccountItem from "./PaymentAccountItem";
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -46,38 +47,40 @@ export interface IPaymentAccountListProps {}
 
 export default function PaymentAccountList(props: IPaymentAccountListProps) {
   const navigate = useNavigate();
-  const paymentAccounts: IPaymentAccountModel[] = [
-    {
-      id: "id1",
-      name: "Tiền mặt",
-      description: "Mô tả",
-      currentBalance: 100000.1,
-      availableBalance: 100000.1,
-      creditLimit: 0,
-      initialMoney: 0,
-      isReport: true,
-    },
-    {
-      id: "id2",
-      name: "Vietcombank",
-      description: "Mô tả",
-      currentBalance: 100000,
-      availableBalance: 100000,
-      creditLimit: 0,
-      initialMoney: 0,
-      isReport: true,
-    },
-    {
-      id: "id2",
-      name: "VCB Credit 10",
-      description: "Mô tả",
-      availableBalance: 1000000,
-      currentBalance: -9000000,
-      creditLimit: 10000000,
-      initialMoney: 0,
-      isReport: true,
-    },
-  ];
+
+  const paymentAccounts = useAppSelector(selectPaymentAccounts);
+  // const paymentAccounts: IPaymentAccountModel[] = [
+  //   {
+  //     id: "id1",
+  //     name: "Tiền mặt",
+  //     description: "Mô tả",
+  //     currentBalance: 100000.1,
+  //     availableBalance: 100000.1,
+  //     creditLimit: 0,
+  //     initialMoney: 0,
+  //     isReport: true,
+  //   },
+  //   {
+  //     id: "id2",
+  //     name: "Vietcombank",
+  //     description: "Mô tả",
+  //     currentBalance: 100000,
+  //     availableBalance: 100000,
+  //     creditLimit: 0,
+  //     initialMoney: 0,
+  //     isReport: true,
+  //   },
+  //   {
+  //     id: "id2",
+  //     name: "VCB Credit 10",
+  //     description: "Mô tả",
+  //     availableBalance: 1000000,
+  //     currentBalance: -9000000,
+  //     creditLimit: 10000000,
+  //     initialMoney: 0,
+  //     isReport: true,
+  //   },
+  // ];
   return (
     <>
       <Grid container spacing={3}>

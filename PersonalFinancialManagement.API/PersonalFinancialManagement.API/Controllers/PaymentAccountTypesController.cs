@@ -1,29 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using PersonalFinancialManagement.API.Controllers.Base;
 using PersonalFinancialManagement.Common.Models;
+using PersonalFinancialManagement.Common.Models.DTOs;
 using PersonalFinancialManagement.Models.DbContexts;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
+using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
 using PersonalFinancialManagement.Models.Entities;
 using PersonalFinancialManagement.Services.Interfaces;
-using PersonalFinancialManagement.Common.Models.DTOs;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType.Requests;
-using PersonalFinancialManagement.Models.Dtos.TransactionCategoryType;
 
-namespace PersonalFinancialManagement.API.Controllers
+namespace PersonalFinancialManagement.API.Controllers;
+
+public class PaymentAccountTypesController(
+    ILogger<PaymentAccountTypesController> logger,
+    IPaymentAccountTypeService paymentAccountTypeService
+)
+    : CrudController<ApplicationDbContext, PaymentAccountType, PaymentAccountTypeCreateRequest,
+        PaymentAccountTypeUpdateRequest, PaymentAccountTypeViewModel, Guid>(logger,
+            paymentAccountTypeService)
 {
-    public class PaymentAccountTypesController : CrudController<ApplicationDbContext, PaymentAccountType, PaymentAccountTypeCreateRequest, PaymentAccountTypeUpdateRequest, PaymentAccountTypeViewModel, Guid>
+    [ProducesResponseType(StatusCodes.Status200OK,
+        Type = typeof(BasePaging<PaymentAccountTypeViewModel>))]
+    public override async Task<ActionResult<IBasePaging<PaymentAccountTypeViewModel>>> GetPaging(
+        FilterBodyRequest request)
     {
-        private readonly IPaymentAccountTypeService _paymentAccountTypeService;
-
-        public PaymentAccountTypesController(ILogger<PaymentAccountTypesController> logger, IPaymentAccountTypeService paymentAccountTypeService) : base(logger, paymentAccountTypeService)
-        {
-            _paymentAccountTypeService = paymentAccountTypeService;
-        }
-
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BasePaging<PaymentAccountTypeViewModel>))]
-        public override async Task<ActionResult<IBasePaging<PaymentAccountTypeViewModel>>> GetPaging(FilterBodyRequest request)
-        {
-            var result = await _paymentAccountTypeService.GetPagingAsync(request);
-            return Ok(result);
-        }
+        var result = await paymentAccountTypeService.GetPagingAsync(request);
+        return Ok(result);
     }
 }

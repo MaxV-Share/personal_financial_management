@@ -1,54 +1,57 @@
-﻿using Castle.DynamicProxy;
+﻿using System.Diagnostics;
+using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 
-namespace PersonalFinancialManagement.Common.Interceptors
+namespace PersonalFinancialManagement.Common.Interceptors;
+
+public class MonitoringInterceptor(
+    ILogger<MonitoringInterceptor> logger,
+    IHttpContextAccessor httpContextAccessor)
+    : AsyncTimingInterceptor
 {
-    public class MonitoringInterceptor : AsyncTimingInterceptor
+    private readonly ILogger _logger = logger;
+
+    protected override void CompletedTiming(IInvocation invocation, Stopwatch stopwatch)
     {
-        private readonly ILogger _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public MonitoringInterceptor(ILogger<MonitoringInterceptor> logger, IHttpContextAccessor httpContextAccessor)
+        var requestCtx = InitRequest();
+        _logger.LogInformation(
+            $"[PERF] - RequestId - [{requestCtx.Item1}] - Method {ToStringInvocation(invocation)} completed in {stopwatch.ElapsedMilliseconds}ms");
+    }
+
+    protected override void StartingTiming(IInvocation invocation)
+    {
+        var requestCtx = InitRequest();
+        _logger.LogInformation(
+            $"[PERF] - RequestId - [{requestCtx.Item1}] - Method {ToStringInvocation(invocation)} invoked!");
+    }
+
+    private Tuple<string?, DateTime> InitRequest()
+    {
+        var startTime = DateTime.UtcNow;
+        var request = httpContextAccessor.HttpContext;
+        try
         {
-            this._logger = logger;
-            _httpContextAccessor = httpContextAccessor;
+            if (request != null)
+            {
+                if (request.Items.TryGetValue("_RequestStartedAt", out var item))
+                    startTime = (DateTime)item;
+                else
+                    request.Items["_RequestStartedAt"] = startTime;
+            }
         }
-        protected override void CompletedTiming(IInvocation invocation, Stopwatch stopwatch)
+        catch
         {
-            var requestCtx = InitRequest();
-            _logger.LogInformation($"[PERF] - RequestId - [{requestCtx.Item1}] - Method {ToStringInvocation(invocation)} completed in {stopwatch.ElapsedMilliseconds}ms");
+            // ignored
         }
 
-        protected override void StartingTiming(IInvocation invocation)
-        {
-            var requestCtx = InitRequest();
-            _logger.LogInformation($"[PERF] - RequestId - [{requestCtx.Item1}] - Method {ToStringInvocation(invocation)} invoked!");
-        }
+        return Tuple.Create(request?.TraceIdentifier, startTime);
+    }
 
-        private Tuple<string, DateTime> InitRequest()
-        {
-            var startTime = DateTime.UtcNow;
-            var request = _httpContextAccessor.HttpContext;
-            if (request.Items.ContainsKey("_RequestStartedAt"))
-            {
-                startTime = (DateTime)request.Items["_RequestStartedAt"];
-            }
-            else
-            {
-                request.Items["_RequestStartedAt"] = startTime;
-            }
-            return Tuple.Create(request.TraceIdentifier, startTime);
-        }
-
-        private string ToStringInvocation(IInvocation invocation)
-        {
-            var result = string.Empty;
-            if (invocation.MethodInvocationTarget != null)
-            {
-                return $"{invocation.MethodInvocationTarget.ReflectedType?.FullName}.{invocation.MethodInvocationTarget.Name}";
-            }
-            return result.ToString();
-        }
+    private string ToStringInvocation(IInvocation invocation)
+    {
+        return invocation.MethodInvocationTarget != null
+            ? $"{invocation.MethodInvocationTarget.ReflectedType?.FullName}.{invocation.MethodInvocationTarget.Name}"
+            : string.Empty;
     }
 }

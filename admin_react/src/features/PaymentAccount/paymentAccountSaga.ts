@@ -1,64 +1,23 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
-import { put, takeLatest } from "redux-saga/effects";
+import { toast } from "react-toastify";
+import { call, put, takeLatest } from "redux-saga/effects";
+import paymentAccountApi from "src/apis/paymentAccountApi";
 import { IBasePaging, IFilterBodyRequest } from "src/models/Bases";
-import { IPaymentAccountModel } from "src/models/PaymentAccount";
+import {
+  IPaymentAccountCreateOrUpdateModel,
+  IPaymentAccountModel,
+} from "src/models/PaymentAccount";
 import { IFetchTransactionsByPaymentAccountRequest } from "src/models/PaymentAccount/Requests/IFetchTransactionsByPaymentAccountRequest";
 import { ITransactionPerDateModelList } from "src/models/Transaction/ITransactionPerDateModelList";
 import { paymentAccountActions } from "./paymentAccountSlice";
 
 function* fetchPaymentAccounts(action: PayloadAction<IFilterBodyRequest>) {
   try {
-    // const res: IBasePaging<IPaymentAccountModel> = yield call(
-    //   paymentAccountApi.getAll,
-    //   action.payload
-    // );
-    const res: IBasePaging<IPaymentAccountModel> = {
-      data: [
-        {
-          id: "id",
-          name: "tiền mặt",
-          isReport: false,
-          description: "Description",
-          initialMoney: 1000000,
-          type: {
-            id: "id",
-            code: "code",
-            name: "type Name",
-          },
-          currency: {
-            code: "VND",
-            name: "name",
-            icon: "",
-            id: "id",
-          },
-        },
-        {
-          id: "id1",
-          name: "name",
-          isReport: false,
-          description: "Description",
-          initialMoney: 10000000,
-          type: {
-            id: "id",
-            code: "code",
-            name: "type Name",
-          },
-          currency: {
-            code: "VND",
-            name: "name",
-            icon: "",
-            id: "id",
-          },
-        },
-      ],
-      pagination: {
-        pageIndex: 1,
-        pagesCount: 10,
-        pageSize: 10,
-        totalRows: 100,
-      },
-    };
+    const res: IBasePaging<IPaymentAccountModel> = yield call(
+      paymentAccountApi.getAll,
+      action.payload
+    );
     yield put(paymentAccountActions.fetchPaymentAccountsSuccess(res));
   } catch (error) {
     // toast
@@ -131,6 +90,59 @@ function* fetchTransactionsByPaymentAccount(
     );
   } catch (error) {}
 }
+function* savePaymentAccount(
+  action: PayloadAction<IPaymentAccountCreateOrUpdateModel>
+) {
+  try {
+    if (action.payload.id == null) {
+      yield call(
+        paymentAccountApi.create,
+        action.payload as IPaymentAccountCreateOrUpdateModel
+      );
+    } else {
+      yield call(
+        paymentAccountApi.update,
+        action.payload as IPaymentAccountCreateOrUpdateModel
+      );
+    }
+    yield put(paymentAccountActions.savePaymentAccountSuccess({}));
+    yield put(paymentAccountActions.fetchPaymentAccounts({}));
+    toast.success(`Save PaymentAccountError Successful!`);
+    // history.go(-1);
+  } catch (error) {
+    yield put(paymentAccountActions.savePaymentAccountError(error));
+    toast.error(`Save PaymentAccountError Error!`);
+  }
+}
+
+function* fetchPaymentAccount(action: PayloadAction<string>) {
+  try {
+    // call api get by id
+    // const res: IPaymentAccountCreateOrUpdateModel =
+    //   mockIPaymentAccountModel.data.find((e) => e.id == action.payload);
+    const res: IPaymentAccountCreateOrUpdateModel = yield call(
+      paymentAccountApi.getById,
+      action.payload
+    );
+    if (res == null) {
+      yield put(paymentAccountActions.fetchPaymentAccountError({}));
+    } else {
+      yield put(paymentAccountActions.fetchPaymentAccountSuccess(res));
+    }
+  } catch (error) {
+    yield put(paymentAccountActions.fetchPaymentAccountError({}));
+  }
+}
+
+function* deletePaymentAccount(action: PayloadAction<string>) {
+  try {
+    // call api delete payment account type
+    const result = yield call(paymentAccountApi.delete, action.payload);
+    yield put(paymentAccountActions.resetFilter());
+  } catch (error) {
+    yield put(paymentAccountActions.deletePaymentAccountError({}));
+  }
+}
 
 export default function* paymentAccountSaga() {
   yield takeLatest(
@@ -138,7 +150,19 @@ export default function* paymentAccountSaga() {
     fetchPaymentAccounts
   );
   yield takeLatest(
+    paymentAccountActions.fetchPaymentAccount,
+    fetchPaymentAccount
+  );
+  yield takeLatest(
     paymentAccountActions.fetchTransactionsByPaymentAccount,
     fetchTransactionsByPaymentAccount
+  );
+  yield takeLatest(
+    paymentAccountActions.deletePaymentAccount,
+    deletePaymentAccount
+  );
+  yield takeLatest(
+    paymentAccountActions.savePaymentAccount,
+    savePaymentAccount
   );
 }

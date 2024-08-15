@@ -17,7 +17,7 @@ namespace PersonalFinancialManagement.Models.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -320,6 +320,76 @@ namespace PersonalFinancialManagement.Models.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.PaymentAccount", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_at");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("create_by");
+
+                    b.Property<Guid?>("CurrencyId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("currency_id");
+
+                    b.Property<string>("Deleted")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("icon");
+
+                    b.Property<decimal?>("InitialMoney")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("initial_money");
+
+                    b.Property<bool?>("IsReport")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_report");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid?>("TypeId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("type_id");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_at");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("update_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_payment_accounts");
+
+                    b.HasIndex("CurrencyId")
+                        .HasDatabaseName("ix_payment_accounts_currency_id");
+
+                    b.HasIndex("Id")
+                        .HasDatabaseName("ix_payment_accounts_id");
+
+                    b.HasIndex("TypeId")
+                        .HasDatabaseName("ix_payment_accounts_type_id");
+
+                    b.ToTable("payment_accounts", (string)null);
+                });
+
             modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.PaymentAccountType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -362,6 +432,244 @@ namespace PersonalFinancialManagement.Models.Migrations
                         .HasDatabaseName("ix_payment_account_types_id");
 
                     b.ToTable("payment_account_types", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.RawTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float")
+                        .HasColumnName("amount");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float")
+                        .HasColumnName("balance");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_at");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("create_by");
+
+                    b.Property<string>("Deleted")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<bool?>("GoogleDriveSynced")
+                        .HasColumnType("bit")
+                        .HasColumnName("google_drive_synced");
+
+                    b.Property<string>("MailId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("mail_id");
+
+                    b.Property<string>("No")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("no");
+
+                    b.Property<double>("RawString")
+                        .HasColumnType("float")
+                        .HasColumnName("raw_string");
+
+                    b.Property<string>("ReferenceCode")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("reference_code");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("transaction_date");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("transaction_id");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_at");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("update_by");
+
+                    b.Property<string>("WalletId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("wallet_id");
+
+                    b.Property<string>("WalletType")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("wallet_type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_raw_transactions");
+
+                    b.HasIndex("Id")
+                        .HasDatabaseName("ix_raw_transactions_id");
+
+                    b.ToTable("raw_transactions", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<double?>("Amount")
+                        .HasColumnType("float")
+                        .HasColumnName("amount");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("category_id");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_at");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("create_by");
+
+                    b.Property<string>("Deleted")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<double?>("Fees")
+                        .HasColumnType("float")
+                        .HasColumnName("fees");
+
+                    b.Property<Guid?>("FeesCategoryId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("fees_category_id");
+
+                    b.Property<Guid?>("FromPaymentAccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("from_payment_account_id");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
+
+                    b.Property<bool?>("IsReport")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_report");
+
+                    b.Property<Guid?>("ToPaymentAccountId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("to_payment_account_id");
+
+                    b.Property<double?>("TotalAmount")
+                        .HasColumnType("float")
+                        .HasColumnName("total_amount");
+
+                    b.Property<DateTime?>("TransactionDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("transaction_date");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_at");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("update_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_transactions");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_transactions_category_id");
+
+                    b.HasIndex("FeesCategoryId")
+                        .HasDatabaseName("ix_transactions_fees_category_id");
+
+                    b.HasIndex("FromPaymentAccountId")
+                        .HasDatabaseName("ix_transactions_from_payment_account_id");
+
+                    b.HasIndex("Id")
+                        .HasDatabaseName("ix_transactions_id");
+
+                    b.HasIndex("ToPaymentAccountId")
+                        .HasDatabaseName("ix_transactions_to_payment_account_id");
+
+                    b.ToTable("transactions", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.TransactionCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_at");
+
+                    b.Property<string>("CreateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("create_by");
+
+                    b.Property<string>("Deleted")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("deleted");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("icon");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("parent_id");
+
+                    b.Property<Guid?>("TypeId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("type_id");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_at");
+
+                    b.Property<string>("UpdateBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("update_by");
+
+                    b.HasKey("Id")
+                        .HasName("pk_transaction_categories");
+
+                    b.HasIndex("Id")
+                        .HasDatabaseName("ix_transaction_categories_id");
+
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_transaction_categories_parent_id");
+
+                    b.HasIndex("TypeId")
+                        .HasDatabaseName("ix_transaction_categories_type_id");
+
+                    b.ToTable("transaction_categories", (string)null);
                 });
 
             modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.TransactionCategoryType", b =>
@@ -473,6 +781,71 @@ namespace PersonalFinancialManagement.Models.Migrations
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
                 });
 
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.PaymentAccount", b =>
+                {
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .HasConstraintName("fk_payment_accounts_currencies_currency_id");
+
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.PaymentAccountType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .HasConstraintName("fk_payment_accounts_payment_account_types_type_id");
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.Transaction", b =>
+                {
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.TransactionCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .HasConstraintName("fk_transactions_transaction_categories_category_id");
+
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.TransactionCategory", "FeesCategory")
+                        .WithMany()
+                        .HasForeignKey("FeesCategoryId")
+                        .HasConstraintName("fk_transactions_transaction_categories_fees_category_id");
+
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.PaymentAccount", "FromPaymentAccount")
+                        .WithMany()
+                        .HasForeignKey("FromPaymentAccountId")
+                        .HasConstraintName("fk_transactions_payment_accounts_from_payment_account_id");
+
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.PaymentAccount", "ToPaymentAccount")
+                        .WithMany()
+                        .HasForeignKey("ToPaymentAccountId")
+                        .HasConstraintName("fk_transactions_payment_accounts_to_payment_account_id");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("FeesCategory");
+
+                    b.Navigation("FromPaymentAccount");
+
+                    b.Navigation("ToPaymentAccount");
+                });
+
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.TransactionCategory", b =>
+                {
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.TransactionCategory", "Parent")
+                        .WithMany("Childrens")
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_transaction_categories_transaction_categories_parent_id");
+
+                    b.HasOne("PersonalFinancialManagement.Models.Entities.TransactionCategoryType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .HasConstraintName("fk_transaction_categories_transaction_category_types_type_id");
+
+                    b.Navigation("Parent");
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.Identities.Role", b =>
                 {
                     b.Navigation("RoleClaims");
@@ -485,6 +858,11 @@ namespace PersonalFinancialManagement.Models.Migrations
                     b.Navigation("UserClaims");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("PersonalFinancialManagement.Models.Entities.TransactionCategory", b =>
+                {
+                    b.Navigation("Childrens");
                 });
 #pragma warning restore 612, 618
         }

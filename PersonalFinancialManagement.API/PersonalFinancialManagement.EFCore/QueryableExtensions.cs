@@ -16,12 +16,12 @@ namespace PersonalFinancialManagement.EFCore
                 return source;
             }
             var fields = typeof(T).GetProperties();
-            var filters = filter.Details!.Where(d => fields.Any(f => string.Equals(d.AttributeName, f.Name, StringComparison.OrdinalIgnoreCase))).Select(e => new FilterDescriptor()
+            var filters = filter.Details!.Where(d => fields.Any(f => string.Equals(d.AttributeName, f.Name, StringComparison.OrdinalIgnoreCase))).Select(e => new FilterDescriptor
             {
                 Field = e.AttributeName,
-                Values = e.FilterType == FilterType.In ? e.Value.Split("|") : new string[] { e.Value },
+                Values = e.FilterType == FilterType.In ? e.Value!.Split("|") : new[] { e.Value ?? "" },
                 LogicalOperator = filter.LogicalOperator,
-                Operator = e.FilterType,
+                Operator = e.FilterType
             }).ToList();
             return source.Where(ExpressionBuilder.Build<T>(filters));
         }
@@ -29,7 +29,7 @@ namespace PersonalFinancialManagement.EFCore
         /// <summary> 
         /// Determines whether this instance is ordered. 
         /// </summary>
-        /// <typeparam name = "T" ></ typeparam >
+        /// <typeparam name = "T" ></typeparam >
         /// <param name="source">The queryable.</param> 
         /// <returns> 
         /// <c>true</c> if the specified queryable is ordered; otherwise, <c>false</c>. 
@@ -45,7 +45,7 @@ namespace PersonalFinancialManagement.EFCore
         /// <summary> 
         /// Filters data in the given source with filter descriptor. 
         /// </summary> WII <typeparam name="T"></typeparam> 
-        /// <param name="source">The source.</param> WII <param name="filter">The filter.</param 
+        /// <param name="source">The source.</param> WII <param name="filter">The filter.</param> 
         /// <param name="parameterName">Name of the parameter.</param> 
         /// <returns></returns> 2 references 
         public static IQueryable<T> Where<T>(this IQueryable<T> source, FilterDescriptor filter, string parameterName = "x")
@@ -89,7 +89,7 @@ namespace PersonalFinancialManagement.EFCore
         /// <param name="sort">The sort.</param>
         /// <param name = "replaceOrder" >if set to<c>true</c> [replace the current order in source].</param> 
         /// <returns></returns> O references 
-        public static IQueryable<T> OrderBy<T>(this IQueryable<T>? source, SortDescriptor? sort, bool replaceOrder = true)
+        public static IQueryable<T>? OrderBy<T>(this IQueryable<T>? source, SortDescriptor? sort, bool replaceOrder = true)
         where T : class
         {
             if (source == null || sort == null)
@@ -104,7 +104,7 @@ namespace PersonalFinancialManagement.EFCore
         /// </summary> 
         /// <typeparam name="T"></typeparam> 
         /// <param name="source">The source.</param> MI <param name="sorts">The sorts.</param>
-        /// <param name = "replaceOrder" >if set to<c>true</c> [replace the current order in source].</param)
+        /// <param name = "replaceOrder" >if set to<c>true</c> [replace the current order in source].</param>)
         /// <returns></returns> 5 references 
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, IEnumerable<SortDescriptor>? sorts, bool replaceOrder = true)
         where T : class
@@ -283,11 +283,13 @@ namespace PersonalFinancialManagement.EFCore
                                    .Skip(skip)
                                    .Take(pageSize)
                                    .ToListAsync();
-            var newPagination = new Pagination();
-            newPagination.TotalRow = totalRow;
-            newPagination.PageCount = totalRow > 0 ? (int)Math.Ceiling(totalRow / (double)pageSize) : 0;
-            newPagination.PageIndex = pageIndex;
-            newPagination.PageSize = pageSize;
+            var newPagination = new Pagination
+            {
+                TotalRow = totalRow,
+                PageCount = totalRow > 0 ? (int)Math.Ceiling(totalRow / (double)pageSize) : 0,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
             result.Pagination = newPagination;
             return result;
         }

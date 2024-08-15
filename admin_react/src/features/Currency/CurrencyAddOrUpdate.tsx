@@ -3,11 +3,12 @@ import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import { useAppDispatch } from "src/app/hooks";
 import { InputField } from "src/components/FormFields/InputField";
-import { SelectField } from "src/components/FormFields/SelectField";
 import PageTitleWrapper from "src/components/PageTitleWrapper";
 import { IBaseAddOrUpdateBodyRequest } from "src/models/Bases";
 import * as yup from "yup";
+import { currencyActions } from "./currencySlice";
 export interface ICurrencyAddOrUpdateProps {}
 export type ICurrencyAddOrUpdateParams = {
   id?: string;
@@ -23,6 +24,7 @@ const schema = yup.object().shape({
 export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
   const { id } = useParams<ICurrencyAddOrUpdateParams>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -38,6 +40,7 @@ export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
     resolver: yupResolver(schema),
   });
   const onSubmit = (object) => {
+    dispatch(currencyActions.createCurrency(object.data));
     console.log(object);
   };
   return (
@@ -65,11 +68,11 @@ export default function CurrencyAddOrUpdate(props: ICurrencyAddOrUpdateProps) {
             control={control}
             label={`Currency name`}
           />
-          <SelectField
+          <InputField
+            id={`data.icon`}
             name={`data.icon`}
             control={control}
-            label={`Label`}
-            options={[{ value: 1, label: "1" }]}
+            label={`Currency icon`}
           />
           <Box
             sx={{

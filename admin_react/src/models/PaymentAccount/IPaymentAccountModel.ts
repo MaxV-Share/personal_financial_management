@@ -1,9 +1,9 @@
 import { ICurrencyModel } from "../Currency";
 import { IPaymentAccountTypeModel } from "../PaymentAccountType/IPaymentAccountTypeModel";
-import { IPaymentAccountCreateOrUpdateRequestModel } from "./Requests/IPaymentAccountCreateOrUpdateRequestModel";
+import { IPaymentAccountCreateOrUpdateModel } from "./Requests/IPaymentAccountCreateOrUpdateModel";
 
 export interface IPaymentAccountModel
-  extends IPaymentAccountCreateOrUpdateRequestModel {
+  extends IPaymentAccountCreateOrUpdateModel {
   availableBalance?: number;
   currentBalance?: number;
   currency?: ICurrencyModel;
